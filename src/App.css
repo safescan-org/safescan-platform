@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Akaya+Telivigala&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Akaya+Telivigala&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap");
 /* 
 #root {
   margin: 0;
@@ -9,12 +9,11 @@
   scroll-behavior: smooth;
 }
 
-select{
-  -moz-appearance: none; 
-  -webkit-appearance: none; 
+select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
   appearance: none;
 }
-
 
 @layer {
   .scrollbar::-webkit-scrollbar {
@@ -38,9 +37,6 @@ select{
   }
 }
 
-
-
-
 .Baloo2_font {
   font-family: "Baloo2";
 }
@@ -55,7 +51,7 @@ body {
   font-family: "DM Sans", sans-serif;
   scroll-behavior: smooth;
   /* background-color: #c2cadd; */
-  background-color: #F4F7FE;
+  background-color: #f4f7fe;
 }
 
 .css-h0q0iv-MuiButtonBase-root-MuiTab-root {
@@ -65,24 +61,30 @@ body {
   font-weight: 400 !important;
 }
 
-
 .swiper {
   width: 100% !important;
   height: 100% !important;
 }
 
 .swiper-slide {
-
   width: 100%;
 }
 
 #sidebar_hover:hover {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.00) 104.88%) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0) 104.88%
+  ) !important;
   color: #fff;
 }
 
 .bg_color_gradient {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.00) 104.88%) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0) 104.88%
+  ) !important;
 }
 
 .swiper-slide img {
@@ -102,16 +104,15 @@ body {
   -webkit-appearance: none;
   padding-left: 30px;
   /* Space for icon */
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16"><path d="M8 0a4 4 0 0 0-4 4c0 3 4 8 4 8s4-5 4-8a4 4 0 0 0-4-4zm0 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>') no-repeat right center;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16"><path d="M8 0a4 4 0 0 0-4 4c0 3 4 8 4 8s4-5 4-8a4 4 0 0 0-4-4zm0 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>')
+    no-repeat right center;
   background-size: 20px 20px;
   /* Size of icon */
 }
 
-
 .css-19kzrtu {
   padding: 0px !important;
 }
-
 
 .border__item {
   border: 8px solid transparent;
@@ -123,16 +124,14 @@ body {
   font-size: 16px;
 }
 
-
-
 /* ---------style for ant design table----------- */
 
 .ant-table-cell {
-  color: #5D6670;
+  color: #5d6670;
 }
 
-.ant-table-thead>tr>th {
-  color: #68709C !important;
+.ant-table-thead > tr > th {
+  color: #68709c !important;
   font-size: 13px !important;
   font-weight: 700 !important;
 }
@@ -146,7 +145,7 @@ body {
 } */
 
 .ant-table-thead .ant-table-cell {
-  background-color: #F7F7F9 !important;
+  background-color: #f7f7f9 !important;
   border-radius: 0px !important;
   padding: 16px 10px !important;
   padding-left: 16px !important;
@@ -165,8 +164,6 @@ body {
   width: 10px !important;
 } */
 
-
-
 /* .ant-table-tbody .ant-table-cell:last-child {
   padding-right: 22px !important;
 }
@@ -183,17 +180,16 @@ body {
 
 /* -----------support agent > dashboard > activity > elderly conditions date picker------------- */
 
-#elderlyDatePicker .ant-picker-input>input {
+#elderlyDatePicker .ant-picker-input > input {
   color: white !important;
 }
 
-#elderlyDatePicker .ant-picker-input>span {
+#elderlyDatePicker .ant-picker-input > span {
   color: white !important;
 }
 
 #elderlyDatePicker input::placeholder {
   color: rgb(248, 248, 248);
-
 }
 
 #suspendAdmin__swiper .mySwiper2 .swiper {
@@ -202,11 +198,9 @@ body {
 }
 
 /* this is audio track*/
-#waveform>div {
+#waveform > div {
   margin-bottom: 64px !important;
 }
-
-
 
 /* ----------swiper button--------- */
 .swiper-button-next:after {
@@ -223,7 +217,6 @@ body {
   width: 38px !important;
   margin-right: -10px;
   content: "bbb";
-  
 }
 
 .swiper-button-prev::after {
@@ -242,7 +235,6 @@ body {
 
 /* ===========ant modal css========== */
 
-
 .ant-modal {
   border-radius: 30px !important;
   padding: 0px !important;
@@ -252,7 +244,6 @@ body {
   border-radius: 30px !important;
   padding: 0px !important;
 }
-
 
 /* its use for divice finding--------------- */
 @keyframes rotate {
@@ -280,8 +271,6 @@ body {
   height: 100%;
 }
 
-
-
 /* ----------start rounded checkbox ----------- */
 .rounded-checkbox .ant-checkbox-wrapper {
   border-radius: 50%;
@@ -292,30 +281,30 @@ body {
 }
 
 /* -------------checkbox --------------- */
-:where(.css-dev-only-do-not-override-nllxry).ant-checkbox-checked .ant-checkbox-inner {
-  background-color: #252F67 !important;
-  border: 1px solid #252F67 !important;
+:where(.css-dev-only-do-not-override-nllxry).ant-checkbox-checked
+  .ant-checkbox-inner {
+  background-color: #252f67 !important;
+  border: 1px solid #252f67 !important;
 }
 
 .ant-checkbox-inner {
-
-  border: 1px solid #252F67 !important;
+  border: 1px solid #252f67 !important;
 }
 
 /* -----------------style for switch------------- */
 :where(.css-dev-only-do-not-override-nllxry).ant-switch:hover {
-  background-color: #252F67 !important;
+  background-color: #252f67 !important;
 }
 
 :where(.css-dev-only-do-not-override-nllxry).ant-switch.ant-switch-checked {
-  background: #252F67;
+  background: #252f67;
 }
 
-
-
-
 /* -------------------devices tabs---------------------- */
-#device :where(.css-dev-only-do-not-override-nllxry).ant-tabs .ant-tabs-tab+.ant-tabs-tab {
+#device
+  :where(.css-dev-only-do-not-override-nllxry).ant-tabs
+  .ant-tabs-tab
+  + .ant-tabs-tab {
   margin-right: 10px !important;
   margin-top: 0px !important;
   margin-left: 0px !important;
@@ -328,25 +317,32 @@ body {
   border-radius: 38px;
   font-size: 16px !important;
   font-weight: 500 !important;
-  color: #2B3674;
+  color: #2b3674;
 }
 
-#device :where(.css-dev-only-do-not-override-nllxry).ant-tabs-top>.ant-tabs-nav::before {
+#device
+  :where(.css-dev-only-do-not-override-nllxry).ant-tabs-top
+  > .ant-tabs-nav::before {
   border-bottom: 0px !important;
 }
 
-
-#device :where(.css-dev-only-do-not-override-nllxry).ant-tabs .ant-tabs-tab.ant-tabs-tab-active {
-
+#device
+  :where(.css-dev-only-do-not-override-nllxry).ant-tabs
+  .ant-tabs-tab.ant-tabs-tab-active {
   background-color: #ff394a00;
 }
 
-#device :where(.css-dev-only-do-not-override-nllxry).ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: #252F67 !important;
+#device
+  :where(.css-dev-only-do-not-override-nllxry).ant-tabs
+  .ant-tabs-tab.ant-tabs-tab-active
+  .ant-tabs-tab-btn {
+  color: #252f67 !important;
 }
 
-#device :where(.css-dev-only-do-not-override-nllxry).ant-tabs-top>.ant-tabs-nav,
-:where(.css-dev-only-do-not-override-nllxry).ant-tabs-bottom>.ant-tabs-nav {
+#device
+  :where(.css-dev-only-do-not-override-nllxry).ant-tabs-top
+  > .ant-tabs-nav,
+:where(.css-dev-only-do-not-override-nllxry).ant-tabs-bottom > .ant-tabs-nav {
   margin-bottom: 0px !important;
   background-color: rgba(255, 255, 255, 0);
   padding: 8px !important;
@@ -354,9 +350,8 @@ body {
 }
 
 #device .ant-tabs-ink-bar {
-  background: #252F67 !important;
+  background: #252f67 !important;
 }
-
 
 /* -------------------------------members overview in customer------------- */
 #member .g2-html-annotation {
@@ -368,7 +363,6 @@ body {
 #elderly-overview .g2-html-annotation {
   color: white !important;
 }
-
 
 /* ---------------------style for popover------------------- */
 .ant-popover .ant-popover-inner {
@@ -388,7 +382,7 @@ body {
 }
 
 #alert .g2-tooltip {
-  background-color: #252F67 !important;
+  background-color: #252f67 !important;
   color: white;
 }
 
@@ -398,12 +392,10 @@ body {
   margin-right: 22px !important;
 }
 
-
 .ant-pagination-prev {
   border-radius: 8px !important;
   padding: 0px 6px !important;
   background-color: #dfdfe046;
-
 }
 
 .ant-pagination-item-link {
@@ -421,17 +413,13 @@ body {
   background-color: #dfdfe046;
 }
 
-
 .ant-pagination-item {
   border-radius: 8px !important;
   margin: 0px !important;
-
 }
-
 
 .ant-pagination-item a {
   color: rgba(43, 54, 116, 0.6) !important;
-
 }
 
 .ant-pagination-item-active {
@@ -440,10 +428,9 @@ body {
 }
 
 .ant-pagination-item-active a {
-  color: #664DFF !important;
+  color: #664dff !important;
   font-size: 13px !important;
   font-weight: bold !important;
-
 }
 
 /* ----- -----------------style for scrollbar----------------*/
@@ -455,7 +442,6 @@ body {
   background: rgb(172, 172, 194);
   border-radius: 10px;
 }
-
 
 /* --------------loading----------------- */
 /* .loader {
@@ -483,7 +469,6 @@ body {
     transform: rotate(360deg);
   }
 } */
-
 
 /* --------------second loading------------ */
 /* .second-loading {
@@ -604,13 +589,11 @@ body {
   padding: 0 !important;
 } */
 
-
 /* -------------------ant slider style------------------------------ */
 
 .ant-slider-handle::after {
-  box-shadow: 0 0 0 3px #252F67 !important;
+  box-shadow: 0 0 0 3px #252f67 !important;
 }
-
 
 /* @media screen and (min-device-width: 1020px) and (max-device-width: 1580px) { 
     .add_zoom{
@@ -618,8 +601,7 @@ body {
     }
 } */
 
-
-@media only screen and (min-width:1020px) and (max-width: 1580px) {
+@media only screen and (min-width: 1020px) and (max-width: 1580px) {
   #add_zoom {
     zoom: 80% !important;
   }
@@ -644,7 +626,7 @@ body {
 .loader div {
   width: 10%;
   height: 35%;
-  background: #664DFF;
+  background: #664dff;
   position: absolute;
   left: 50%;
   top: 30%;
@@ -819,68 +801,66 @@ body {
 
 /* -------------end btn loader------------ */
 
-
 /* ========react calendar style======= */
 
-.react-calendar{
+.react-calendar {
   border: none !important;
 }
 
-.react-calendar__navigation button{
+.react-calendar__navigation button {
   font-size: 20px !important;
   font-weight: 600 !important;
-  color: #2B3674 !important;
+  color: #2b3674 !important;
 }
 
-.react-calendar__month-view__weekdays__weekday{
+.react-calendar__month-view__weekdays__weekday {
   border: none !important;
   font-size: 14px !important;
   font-weight: 600 !important;
-  color: #8F95B2 !important;
+  color: #8f95b2 !important;
   text-decoration: none !important;
 }
-.react-calendar__tile{
+.react-calendar__tile {
   font-size: 16px !important;
   font-weight: 500 !important;
-  color: #2B3674 !important;
+  color: #2b3674 !important;
 }
 
-.react-calendar__tile--active{
-  background-color:#E9F1FF !important;
-  color: #664DFF !important;
+.react-calendar__tile--active {
+  background-color: #e9f1ff !important;
+  color: #664dff !important;
 }
 
 /* -----------date picker---------- */
-#date .react-datepicker-wrapper{
-width: 100% !important;
+#date .react-datepicker-wrapper {
+  width: 100% !important;
+}
+
+#pppp .react-datepicker-wrapper {
+  width: 100% !important;
+  outline: none !important;
 }
 /* -----------end date picker---------- */
 
-
-
-.flag-dropdown .selected-flag.open:before{
+.flag-dropdown .selected-flag.open:before {
   border-color: #fff !important;
   box-shadow: none !important;
 }
 
-.react-tel-input .selected-flag:before{
+.react-tel-input .selected-flag:before {
   border: none !important;
   transform: none !important;
   color: rgb(231, 228, 228);
 }
 
-
-.react-tel-input .selected-flag:focus:before{
+.react-tel-input .selected-flag:focus:before {
   box-shadow: none !important;
 }
 
-.react-tel-input .form-control{
+.react-tel-input .form-control {
   transform: none !important;
   box-shadow: none !important;
 }
-
-
-
 
 .select-container {
   display: flex;
@@ -892,21 +872,21 @@ width: 100% !important;
   margin-bottom: 8px;
   font-weight: 500;
   font-size: 16px;
-  color: #2D396B; /* Dark gray color */
+  color: #2d396b; /* Dark gray color */
 }
 
 .custom-select {
   padding: 5px;
   height: 44px;
   padding-left: 14px;
-  color:#2D396B; /* Dark gray color */
+  color: #2d396b; /* Dark gray color */
   placeholder-color: #a3aed0; /* Placeholder color */
   border-radius: 10px;
   width: 100%;
   font-size: 14px;
   font-weight: 500;
   outline: none;
-  border: 1px solid #E1E9F8;
+  border: 1px solid #e1e9f8;
   transition: border-color 0.2s ease;
 }
 

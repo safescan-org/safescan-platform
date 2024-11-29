@@ -19,6 +19,7 @@ import SuperAdmin from "./Layout/SuperAdmin/SuperAdmin";
 import Customer from "./Pages/SuperAdmin/Customer/Customer";
 import "react-datepicker/dist/react-datepicker.css";
 import Issues from "./Pages/Issues/Issues";
+import InductionPage from "./Pages/Induction/InductionPage";
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
             <Route path="/admin/reported-issues" element={<Issues />} />
             <Route path="/admin/notifications" element={<Notifications />} />
             <Route path="/admin/profile-settings" element={<ProfileSettings />} />
+            <Route path="/admin/induction" element={<InductionPage />} />
           </Route>
 
           <Route path="/super-admin" element={<SuperAdmin />}>

@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import CustomModal from "../../Shared/modal/CustomModal";
 import CustomInput from "../../Shared/input/CustomInput";
 import DatePicker from "react-datepicker";
 import CustomModal2 from "../../Shared/modal/CustomModal2";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Link } from "react-router-dom";
 
-const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
-  const [nextDate, setNextDate] = useState(null);
+const InductionEdit = ({ item, setModalOpen, modalOPen }) => {
+  const [nextDate, setNextDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
   const [fileTitle, setFileTitle] = useState("");
   const [fileData, setFileData] = useState([]);
@@ -18,7 +17,15 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm();
+
+  useEffect(() => {
+    if (item) {
+      setValue("title", item.title);
+      setValue("video", item.video);
+    }
+  }, [item, setValue]);
 
   const onSubmit = async (data) => {};
 
@@ -47,14 +54,14 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
         setModalOpen={setModalOpen}
         handleSubmit={handleSubmit(onSubmit)}
         width={560}
-        title="Create Induction"
+        title="edit Induction"
         buttonText={
           loading ? (
             <>
               <p>Loading...</p>
             </>
           ) : (
-            "Create Induction"
+            "Save"
           )
         }
       >
@@ -172,7 +179,8 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
             </label>
 
             <div className=" flex items-center gap-5 w-full mt-2">
-              <Link to={`/admin/induction-admin/${123}`}
+              <Link
+                to={`/admin/induction-admin/${123}`}
                 type="button"
                 className=" w-full flex border  items-center gap-1 justify-center h-[40px] rounded-[10px] font-medium text-[16px]"
               >
@@ -198,4 +206,4 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
   );
 };
 
-export default AddInduction;
+export default InductionEdit;

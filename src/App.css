@@ -180,6 +180,10 @@ body {
 
 /* -----------support agent > dashboard > activity > elderly conditions date picker------------- */
 
+.ant-table-tbody .ant-table-cell:first-child {
+  padding-left: 16px !important;
+} 
+
 #elderlyDatePicker .ant-picker-input > input {
   color: white !important;
 }

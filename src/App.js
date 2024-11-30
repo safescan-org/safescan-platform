@@ -20,10 +20,10 @@ import Customer from "./Pages/SuperAdmin/Customer/Customer";
 import "react-datepicker/dist/react-datepicker.css";
 import Issues from "./Pages/Issues/Issues";
 import InductionPage from "./Pages/Induction/InductionPage";
+import InductionAdmin from "./Pages/Induction/InductionAdmin";
+import InductionWorker from "./Pages/Induction/InductionWorker";
 
 function App() {
-
-
   return (
     <>
       <div>
@@ -42,20 +42,32 @@ function App() {
             <Route path="/admin/create-worker" element={<CreateWorker />} />
             <Route path="/admin/reported-issues" element={<Issues />} />
             <Route path="/admin/notifications" element={<Notifications />} />
-            <Route path="/admin/profile-settings" element={<ProfileSettings />} />
+            <Route
+              path="/admin/profile-settings"
+              element={<ProfileSettings />}
+            />
             <Route path="/admin/induction" element={<InductionPage />} />
+            <Route
+              path="/admin/induction-admin/:id"
+              element={<InductionAdmin />}
+            />
+
+            <Route
+              path="/admin/induction-worker/:id"
+              element={<InductionWorker />}
+            />
           </Route>
 
           <Route path="/super-admin" element={<SuperAdmin />}>
             <Route path="/super-admin/customers" element={<Customer />} />
-            <Route path="/super-admin/notifications" element={<Notifications />} />
+            <Route
+              path="/super-admin/notifications"
+              element={<Notifications />}
+            />
           </Route>
-
         </CustomRoutes>
 
-        <Toaster
-          position="top-right"
-          reverseOrder={false} />
+        <Toaster position="top-right" reverseOrder={false} />
       </div>
     </>
   );

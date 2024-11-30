@@ -1,6 +1,7 @@
 import React from "react";
 import CustomTable from "../../Shared/table/CustomTable";
 import InductionAction from "./InductionAction";
+import InductionFiles from "./InductionFiles";
 
 const InductionTable = ({ tableData, rowSelection }) => {
   const columns = [
@@ -30,17 +31,22 @@ const InductionTable = ({ tableData, rowSelection }) => {
       ),
     },
     {
-      title: "Files",
+      title: "Deadline",
       key: "id",
       render: (row) => (
-        <span className=" text-[14px] font-normal text-info">fsd</span>
+        <span className=" text-[14px] font-normal text-info">{row?.deadline}</span>
       ),
+    },
+    {
+      title: "Files",
+      key: "id",
+      render: (row) => <InductionFiles row={row} />,
     },
     {
       title: "Status",
       key: "id",
       render: (row) => (
-        <span className=" text-[14px] font-normal text-info">fsd</span>
+        <span className=" text-[14px] font-normal text-info">{row.status}</span>
       ),
     },
     {

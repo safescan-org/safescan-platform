@@ -1,15 +1,12 @@
 import { Icon } from "@iconify/react";
 import { Tooltip } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DeleteModal from "../../Shared/modal/DeleteModal";
-import toast from "react-hot-toast";
-import SuccessToast from "../../Shared/Toast/SuccessToast";
-import ErrorToast from "../../Shared/Toast/ErrorToast";
+import InductionEdit from "./InductionEdit";
 
 const InductionAction = ({ row, refetch }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [strike, setStrike] = useState(false);
   const isLoading = false;
   //   const [deleteUser, { isSuccess, isLoading, error }] = useDeleteUserMutation();
 
@@ -53,13 +50,13 @@ const InductionAction = ({ row, refetch }) => {
         </Tooltip>
       </div>
 
-      {/* ============= Workers edit Modal============ */}
-      {/* <AdminEdit
+      {/* ============= Induction edit Modal ============ */}
+      <InductionEdit
         item={row}
         modalOPen={edit}
         refetch={()=>{}}
         setModalOpen={setEdit}
-      /> */}
+      />
 
       <DeleteModal
         modalOPen={deleteModal}

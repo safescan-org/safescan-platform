@@ -20,6 +20,7 @@ const InductionPage = () => {
       admin: "13",
       deadline: "May 5, 2022",
       status: "14/17",
+      video: "https://www.youtube.com",
     },
     {
       title: "Induction Title",
@@ -27,6 +28,7 @@ const InductionPage = () => {
       admin: "13",
       deadline: "May 5, 2022",
       status: "14/17",
+      video: "https://www.youtube.com",
     },
     {
       title: "Induction Title",
@@ -34,6 +36,7 @@ const InductionPage = () => {
       admin: "13",
       deadline: "May 5, 2022",
       status: "14/17",
+      video: "https://www.youtube.com",
     },
   ];
 

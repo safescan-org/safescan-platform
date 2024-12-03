@@ -1,17 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import CustomModal from "../../Shared/modal/CustomModal";
 import CustomInput from "../../Shared/input/CustomInput";
 import DatePicker from "react-datepicker";
 import CustomModal2 from "../../Shared/modal/CustomModal2";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { Link } from "react-router-dom";
+import { formattedDate } from "../../../helper/jwt";
+import CustomModal3 from "../../Shared/modal/CustomModal3";
+import InductionAdmin from "../../../Pages/Induction/InductionAdmin";
+import InductionWorker from "../../../Pages/Induction/InductionWorker";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { useCreateInductionsMutation } from "../../../redux/features/inductions/InductionsApi";
+import toast from "react-hot-toast";
+import SuccessToast from "../../Shared/Toast/SuccessToast";
+import ErrorToast from "../../Shared/Toast/ErrorToast";
 
 const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
   const [nextDate, setNextDate] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [fileTitle, setFileTitle] = useState("");
   const [fileData, setFileData] = useState([]);
+  const [adminOpen, setAdminOpen] = useState(false);
+  const [selectedAdmin, setSelectedAdmin] = useState([]);
+  const [workerOpen, setWorkerOpen] = useState(false);
+  const [selectedWorker, setSelectedWorker] = useState([]);
+  const { token } = useSelector((state) => state.auth);
+
+  const [createInductions, { isLoading, error, isSuccess }] =
+    useCreateInductionsMutation();
 
   const {
     register,
@@ -20,7 +35,64 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
     reset,
   } = useForm();
 
-  const onSubmit = async (data) => {};
+  useEffect(() => {
+    if (isSuccess) {
+      const message = "Create inductions success";
+      toast.custom(<SuccessToast message={message} />);
+      refetch();
+      setModalOpen(false);
+      reset();
+    }
+    if (error) {
+      toast.custom(
+        <ErrorToast message={error?.data.error || error?.data.message} />
+      );
+    }
+  }, [isSuccess, error, refetch, setModalOpen, reset]);
+
+  console.log(error);
+
+  const formattedNextDate = formattedDate(nextDate);
+
+  const onSubmit = async (values) => {
+    const data = {
+      title: values?.title,
+      deadline: formattedNextDate,
+      total_worker: selectedWorker.length,
+      total_admin: selectedAdmin.length,
+      files: [""],
+      admins: selectedAdmin,
+      link: values.video,
+      workers: selectedWorker,
+    };
+
+    await createInductions(data);
+  };
+
+  const uploadeCover = async (e) => {
+    const getImage = e.target.files[0];
+    try {
+      const formData = new FormData();
+      formData.append("files", getImage);
+
+      const response = await axios.post(
+        `https://q3vvxu6li2.execute-api.us-east-1.amazonaws.com/api/v1/uploads`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response?.status === 200) {
+        console.log(response?.data);
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fileUpload = (file) => {
     const files = file.target.files[0];
@@ -49,7 +121,7 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
         width={560}
         title="Create Induction"
         buttonText={
-          loading ? (
+          isLoading ? (
             <>
               <p>Loading...</p>
             </>
@@ -121,7 +193,7 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
                   <input
                     id="otp222"
                     type="file"
-                    onChange={fileUpload}
+                    onChange={uploadeCover}
                     className=" hidden"
                   />
                 </label>
@@ -172,28 +244,59 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
             </label>
 
             <div className=" flex items-center gap-5 w-full mt-2">
-              <Link to={`/admin/induction-admin/${123}`}
+              <button
+                // to={`/admin/induction-admin/${123}`}
                 type="button"
+                onClick={() => setAdminOpen(true)}
                 className=" w-full flex border  items-center gap-1 justify-center h-[40px] rounded-[10px] font-medium text-[16px]"
               >
                 Admin{" "}
-                <span className=" bg-[#2D396B] text-[12px] px-2 text-white rounded-md">
-                  12
-                </span>
-              </Link>
-              <Link to={`/admin/induction-worker/${123}`}
+                {selectedAdmin.length > 0 && (
+                  <span className=" bg-[#2D396B] text-[12px] px-2 text-white rounded-md">
+                    {selectedAdmin.length}
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={() => setWorkerOpen(true)}
                 type="button"
                 className=" w-full flex border  items-center gap-1 justify-center h-[40px] rounded-[10px] font-medium text-[16px]"
               >
                 Worker{" "}
-                <span className=" bg-[#2D396B] text-[12px] px-2 text-white rounded-md">
-                  12
-                </span>
-              </Link>
+                {selectedWorker.length > 0 && (
+                  <span className=" bg-[#2D396B] text-[12px] px-2 text-white rounded-md">
+                    {selectedWorker.length}
+                  </span>
+                )}
+              </button>
             </div>
           </div>
         </div>
       </CustomModal2>
+
+      <CustomModal3
+        modalOPen={adminOpen}
+        setModalOpen={setAdminOpen}
+        width={1460}
+      >
+        <InductionAdmin
+          setAdminOpen={setAdminOpen}
+          selectedRowKeys={selectedAdmin}
+          setSelectedRowKeys={setSelectedAdmin}
+        />
+      </CustomModal3>
+
+      <CustomModal3
+        modalOPen={workerOpen}
+        setModalOpen={setWorkerOpen}
+        width={1460}
+      >
+        <InductionWorker
+          setAdminOpen={setWorkerOpen}
+          selectedRowKeys={selectedWorker}
+          setSelectedRowKeys={setSelectedWorker}
+        />
+      </CustomModal3>
     </>
   );
 };

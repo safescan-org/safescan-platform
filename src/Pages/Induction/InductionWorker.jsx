@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SearchInput from "../../Components/Shared/input/SearchInput";
 import SectionHeading from "../../Components/Shared/SectionHeading";
-import {
-  useGetWorkerQuery,
-} from "../../redux/features/admin/adminApi";
+import { useGetWorkerQuery } from "../../redux/features/admin/adminApi";
 import { useDebounce } from "use-debounce";
 import { useSelector } from "react-redux";
 import Loader from "../../Components/Shared/Loader";
@@ -12,9 +10,12 @@ import CustomButton from "../../Components/Shared/CustomButton";
 import InductionTableWorker from "../../Components/pageComponents/Induction/InductionTableWorker";
 import { useNavigate } from "react-router-dom";
 
-const InductionWorker = () => {
+const InductionWorker = ({
+  setAdminOpen,
+  selectedRowKeys,
+  setSelectedRowKeys,
+}) => {
   const [search, setSearch] = React.useState("");
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const [searchQuery, sestSearchQuery] = useState("");
   const [searchValue] = useDebounce(search, 1000);
@@ -29,7 +30,7 @@ const InductionWorker = () => {
 
   useEffect(() => {
     const updateData = data?.map((item) => ({
-      key: item?.userid,
+      key: item?.worker_serial,
       ...item,
     }));
     const update = updateData?.sort(
@@ -72,7 +73,10 @@ const InductionWorker = () => {
     <>
       <div className=" mb-8">
         <div className=" flex items-center justify-between mb-6">
-          <button onClick={()=>handleBack()} className=" flex items-center px-2 border w-[86px] rounded-lg h-[40px] border-[#68769F]">
+          <button
+            onClick={() => setAdminOpen(false)}
+            className=" flex items-center px-2 border w-[86px] rounded-lg h-[40px] border-[#68769F]"
+          >
             <Icon
               icon="ic:round-keyboard-arrow-left"
               className=" text-[#68769F]"
@@ -86,7 +90,12 @@ const InductionWorker = () => {
             <h2 className=" text-[14px] font-medium">
               {selectedRowKeys.length} workers selected
             </h2>
-            <CustomButton className={" w-auto md:w-[175px] "}>Add</CustomButton>
+            <CustomButton
+              onClick={() => setAdminOpen(false)}
+              className={" w-auto md:w-[175px] "}
+            >
+              Add
+            </CustomButton>
           </div>
         </div>
         <div className=" bg-white rounded-[20px] ">
@@ -100,7 +109,7 @@ const InductionWorker = () => {
           </div>
           <div className="w-full">
             {isLoading ? (
-              <div className=" w-full h-[450px] flex items-center justify-center">
+              <div className=" w-full h-full flex items-center justify-center">
                 {" "}
                 <Loader />
               </div>

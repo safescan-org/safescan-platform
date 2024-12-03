@@ -10,9 +10,12 @@ import CustomButton from "../../Components/Shared/CustomButton";
 import InductionTableAdmin from "../../Components/pageComponents/Induction/InductionTableAdmin";
 import { useNavigate } from "react-router-dom";
 
-const InductionAdmin = () => {
+const InductionAdmin = ({
+  setAdminOpen,
+  selectedRowKeys,
+  setSelectedRowKeys,
+}) => {
   const [search, setSearch] = React.useState("");
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const [searchQuery, sestSearchQuery] = useState("");
   const [searchValue] = useDebounce(search, 1000);
@@ -26,7 +29,7 @@ const InductionAdmin = () => {
 
   useEffect(() => {
     const updateData = data?.map((item) => ({
-      key: item?.userid,
+      key: item?.admin_serial,
       ...item,
     }));
     const update = updateData?.sort(
@@ -67,10 +70,10 @@ const InductionAdmin = () => {
 
   return (
     <>
-      <div className=" mb-8">
+      <div className=" mb-8 ">
         <div className=" flex items-center justify-between mb-6">
           <button
-            onClick={() => handleBack()}
+            onClick={() => setAdminOpen(false)}
             className=" flex items-center px-2 border w-[86px] rounded-lg h-[40px] border-[#68769F]"
           >
             <Icon
@@ -86,7 +89,12 @@ const InductionAdmin = () => {
             <h2 className=" text-[14px] font-medium">
               {selectedRowKeys.length} workers selected
             </h2>
-            <CustomButton className={" w-auto md:w-[175px] "}>Add</CustomButton>
+            <CustomButton
+              onClick={() => setAdminOpen(false)}
+              className={" w-auto md:w-[175px] "}
+            >
+              Add
+            </CustomButton>
           </div>
         </div>
         <div className=" bg-white rounded-[20px] ">
@@ -100,7 +108,7 @@ const InductionAdmin = () => {
           </div>
           <div className="w-full">
             {isLoading ? (
-              <div className=" w-full h-[450px] flex items-center justify-center">
+              <div className=" w-full h-[200px] flex items-center justify-center">
                 {" "}
                 <Loader />
               </div>

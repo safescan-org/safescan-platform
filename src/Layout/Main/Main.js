@@ -38,7 +38,7 @@ const Main = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (!user || !tokenString || user?.admin_serial === 1) {
-      // navigate("/");
+      navigate("/");
     }
   }, [user,tokenString]);
 

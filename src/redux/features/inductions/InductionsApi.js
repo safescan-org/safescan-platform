@@ -24,7 +24,7 @@ export const inductionsApi = apiSlice.injectEndpoints({
     }),
     deleteInductions: builder.mutation({
       query: (id) => ({
-        url: `inductions/${id}`,
+        url: `induction/${id}`,
         method: "DELETE",
       }),
     }),

@@ -50,7 +50,6 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
     }
   }, [isSuccess, error, refetch, setModalOpen, reset]);
 
-
   const formattedNextDate = formattedDate(nextDate);
 
   const onSubmit = async (values) => {
@@ -59,7 +58,7 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
       deadline: formattedNextDate,
       total_worker: selectedWorker.length,
       total_admin: selectedAdmin.length,
-      files: [""],
+      files: fileData,
       admins: selectedAdmin,
       link: values.video,
       workers: selectedWorker,
@@ -85,28 +84,20 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
         }
       );
 
-      console.log(response)
-
       if (response?.status === 200) {
-        console.log(response?.data);
+        const files = response?.data?.images[0];
+
+        const data = {
+          title: fileTitle,
+          file: files,
+        };
+
+        setFileData((pre) => [...pre, data]);
       } else {
       }
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const fileUpload = (file) => {
-    const files = file.target.files[0];
-
-    const data = {
-      title: fileTitle,
-      file: files,
-    };
-
-    setFileData((pre) => [...pre, data]);
-
-    setFileTitle("");
   };
 
   const deleteFile = (title) => {
@@ -204,10 +195,10 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
 
             <div className=" flex flex-col gap-3 mt-2">
               {fileData.map((item, index) => (
-                <div>
+                <div key={index}>
                   <h2 className=" text-base text-dark-gray">{item.title}</h2>
                   <div className=" w-full bg-[#CCDBFF52] flex items-center justify-between h-[40px] rounded-[10px] px-4">
-                    <h3 className=" text-sm font-normal">{item?.file.name}</h3>
+                    <h3 className=" text-sm font-normal">{item?.file}</h3>
                     <button
                       onClick={() => deleteFile(item.title)}
                       type="button"

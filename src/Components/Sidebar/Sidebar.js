@@ -54,7 +54,7 @@ const Sidebar = () => {
     },
     {
       title: "Induction",
-      icon: <Icon icon="tabler:wallet" />,
+      icon: <Icon icon="lucide:book-check" />,
       url: "/admin/induction",
     },
     {

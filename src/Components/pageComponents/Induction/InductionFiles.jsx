@@ -6,6 +6,7 @@ import InductionFilesView from "./InductionFilesView";
 const InductionFiles = ({ row }) => {
   const [show, setShow] = useState(false);
 
+
   return (
     <>
       <div className=" flex items-center gap-2">

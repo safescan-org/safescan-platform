@@ -17,12 +17,23 @@ const InductionPage = () => {
   const [searchQuery, sestSearchQuery] = useState("");
   const [searchValue] = useDebounce(search, 1000);
   const { user } = useSelector((state) => state.auth);
+  const [sortData, setSortData] = useState([]);
 
   const { data, refetch, isLoading } = useGetInductionsQuery(searchQuery, {
     refetchOnMountOrArgChange: true,
   });
 
-  console.log(data?.Items);
+  useEffect(() => {
+    const updateData = data?.Items?.map((item) => ({
+      key: item?.userid,
+      ...item,
+    }));
+    const update = updateData?.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
+    setSortData(update);
+  }, [data]);
+
 
   const generateQuery = (searchValue) => {
     const queryParams = [];
@@ -39,7 +50,7 @@ const InductionPage = () => {
     refetch();
   }, [searchValue, refetch, user]);
 
-  console.log(user?.company_serial);
+
 
   // ======table Select function=======
   const onSelectChange = (newSelectedRowKeys) => {
@@ -83,7 +94,7 @@ const InductionPage = () => {
             ) : (
               <div className="w-full">
                 <InductionTable
-                  tableData={data?.Items}
+                  tableData={sortData}
                   rowSelection={rowSelection}
                   refetch={refetch}
                 />
@@ -94,7 +105,7 @@ const InductionPage = () => {
       </div>
 
       <AddInduction
-        refetch={() => {}}
+        refetch={refetch}
         setModalOpen={setCreate}
         modalOPen={create}
       />

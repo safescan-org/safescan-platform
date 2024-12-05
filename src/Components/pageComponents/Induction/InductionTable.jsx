@@ -45,7 +45,7 @@ const InductionTable = ({ tableData, rowSelection,refetch }) => {
     },
     {
       title: "Files",
-      key: "id",
+      key: "Files",
       render: (row) => <InductionFiles row={row} />,
     },
     {

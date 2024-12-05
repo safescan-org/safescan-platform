@@ -4,7 +4,6 @@ import CustomInput from "../../Shared/input/CustomInput";
 import DatePicker from "react-datepicker";
 import CustomModal2 from "../../Shared/modal/CustomModal2";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CustomModal3 from "../../Shared/modal/CustomModal3";
 import InductionAdmin from "../../../Pages/Induction/InductionAdmin";
@@ -14,6 +13,7 @@ import { useUpdateInductionsMutation } from "../../../redux/features/inductions/
 import toast from "react-hot-toast";
 import SuccessToast from "../../Shared/Toast/SuccessToast";
 import ErrorToast from "../../Shared/Toast/ErrorToast";
+import axios from "axios";
 
 const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
   const [nextDate, setNextDate] = useState(new Date());
@@ -43,6 +43,7 @@ const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
       setSelectedWorker(item.workers);
       setSelectedAdmin(item.admins);
       setNextDate(item?.deadline);
+      setFileData(item?.files);
     }
   }, [item, setValue]);
 
@@ -69,7 +70,7 @@ const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
       deadline: formattedNextDate,
       total_worker: selectedWorker.length,
       total_admin: selectedAdmin.length,
-      files: [""],
+      files: fileData,
       admins: selectedAdmin,
       link: values.video,
       workers: selectedWorker,
@@ -80,17 +81,68 @@ const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
     await updateInductions({ id, data });
   };
 
-  const fileUpload = (file) => {
-    const files = file.target.files[0];
+  const uploadeCover = async (e) => {
+    const getImage = e.target.files[0];
 
-    const data = {
-      title: fileTitle,
-      file: files,
-    };
+    // Validation: Check if a file is selected
+    if (!getImage) {
+      alert("No file selected. Please choose a file to upload.");
+      return;
+    }
 
-    setFileData((pre) => [...pre, data]);
+    // Validation: Restrict allowed file types
+    const allowedExtensions = ["xlsx", "pdf", "txt", "ppt", "docx"];
+    const fileExtension = getImage.name.split(".").pop().toLowerCase();
+    if (!allowedExtensions.includes(fileExtension)) {
+      alert(
+        "Invalid file type. Please upload a valid file (xlsx, pdf, txt, ppt, docx)."
+      );
+      return;
+    }
 
-    setFileTitle("");
+    // Validation: Restrict file size (e.g., 5MB)
+    const maxSizeInMB = 5;
+    const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+    if (getImage.size > maxSizeInBytes) {
+      alert(
+        `File size exceeds the limit of ${maxSizeInMB}MB. Please upload a smaller file.`
+      );
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("files", getImage);
+
+      const response = await axios.post(
+        `https://q3vvxu6li2.execute-api.us-east-1.amazonaws.com/api/v1/uploads`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response?.status === 200) {
+        const files = response?.data?.images[0];
+
+        const data = {
+          title: fileTitle,
+          file: files,
+        };
+
+        setFileData((pre) => [...pre, data]);
+
+        setFileTitle("");
+      } else {
+        alert("File upload failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during file upload:", error);
+      alert("An error occurred while uploading the file.");
+    }
   };
 
   const deleteFile = (title) => {
@@ -179,7 +231,8 @@ const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
                   <input
                     id="otp222"
                     type="file"
-                    onChange={fileUpload}
+                    accept=".xlsx,.pdf,.txt,.ppt,.docx"
+                    onChange={uploadeCover}
                     className=" hidden"
                   />
                 </label>
@@ -191,7 +244,7 @@ const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
                 <div>
                   <h2 className=" text-base text-dark-gray">{item.title}</h2>
                   <div className=" w-full bg-[#CCDBFF52] flex items-center justify-between h-[40px] rounded-[10px] px-4">
-                    <h3 className=" text-sm font-normal">{item?.file.name}</h3>
+                    <h3 className=" text-sm font-normal">{item?.file}</h3>
                     <button
                       onClick={() => deleteFile(item.title)}
                       type="button"

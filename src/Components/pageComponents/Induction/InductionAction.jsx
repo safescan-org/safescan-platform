@@ -16,7 +16,7 @@ const InductionAction = ({ row, refetch }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      const message = "Admin Delete success";
+      const message = "Induction Delete success";
       toast.custom(<SuccessToast message={message} />);
       refetch();
       setDeleteModal(false);

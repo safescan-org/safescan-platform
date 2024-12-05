@@ -157,7 +157,7 @@ const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
         setModalOpen={setModalOpen}
         handleSubmit={handleSubmit(onSubmit)}
         width={560}
-        title="edit Induction"
+        title="Edit Induction"
         buttonText={
           isLoading ? (
             <>

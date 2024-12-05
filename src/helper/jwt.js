@@ -174,3 +174,12 @@ export const fetchDataAndCalculateValues = (Data) => {
     },
   ]
   
+
+  export const formatDeadline = (timestamp) => {
+    const date = new Date(timestamp); // Convert timestamp to a Date object
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };

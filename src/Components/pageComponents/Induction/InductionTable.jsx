@@ -2,9 +2,9 @@ import React from "react";
 import CustomTable from "../../Shared/table/CustomTable";
 import InductionAction from "./InductionAction";
 import InductionFiles from "./InductionFiles";
-import { formattedDate } from "../../../helper/jwt";
+import { formatDeadline } from "../../../helper/jwt";
 
-const InductionTable = ({ tableData, rowSelection,refetch }) => {
+const InductionTable = ({ tableData, rowSelection, refetch }) => {
   const columns = [
     {
       title: "Title",
@@ -39,7 +39,7 @@ const InductionTable = ({ tableData, rowSelection,refetch }) => {
       render: (row) => (
         <span className=" text-[14px] font-normal text-info">
           {" "}
-          {formattedDate(row?.deadline)}
+          {formatDeadline(row?.deadline)}
         </span>
       ),
     },

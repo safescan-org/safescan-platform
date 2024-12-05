@@ -47,15 +47,6 @@ function App() {
               element={<ProfileSettings />}
             />
             <Route path="/admin/induction" element={<InductionPage />} />
-            <Route
-              path="/admin/induction-admin/:id"
-              element={<InductionAdmin />}
-            />
-
-            <Route
-              path="/admin/induction-worker/:id"
-              element={<InductionWorker />}
-            />
           </Route>
 
           <Route path="/super-admin" element={<SuperAdmin />}>

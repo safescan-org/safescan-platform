@@ -38,6 +38,9 @@ const InductionAdmin = ({
     setSortData(update);
   }, [data]);
 
+
+  console.log("======admin list====== ",data)
+
   const generateQuery = (searchValue) => {
     const queryParams = [];
     if (searchValue) {

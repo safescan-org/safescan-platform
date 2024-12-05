@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import ReactToPrint from "react-to-print";
 import ShareModal from "../../Shared/modal/ShareModal";
 import ImageDownloader from "../../Shared/DownloadQrc";
-
+import { toPng } from "html-to-image";
 
 const QRCodeModal = ({ row, product = false }) => {
   const [modalOPen, setModalOpen] = useState(false);
@@ -12,7 +12,6 @@ const QRCodeModal = ({ row, product = false }) => {
   const [share, setShare] = useState(false);
   const [shareText, setShareText] = useState("");
   const [type, setType] = useState("Whatsapp");
-
 
   // ======Share funcation=========
   const handleShare = async () => {
@@ -33,7 +32,24 @@ const QRCodeModal = ({ row, product = false }) => {
     }
   };
 
+  const captureAndDownloadImage = async () => {
+    if (componentRef.current) {
+      toPng(componentRef.current, { quality: 1.0 })
+        .then(async (dataUrl) => {
+          downloadImage(dataUrl); // Trigger the download
+        })
+        .catch((err) => {
+          console.error("Error capturing image:", err);
+        });
+    }
+  };
 
+  const downloadImage = (dataUrl) => {
+    const link = document.createElement("a");
+    link.download = "qr.png"; // File name
+    link.href = dataUrl;
+    link.click();
+  };
 
   return (
     <>
@@ -63,8 +79,6 @@ const QRCodeModal = ({ row, product = false }) => {
           <div className=" flex items-center justify-between">
             <h2 className=" text-[28px] font-[700] text-dark-gray">QRC Code</h2>
 
-
-
             <button
               onClick={() => setModalOpen(false)}
               className=" w-[40px] text-[30px] h-[40px] rounded-lg flex items-center justify-center hover:bg-[#FDEEEE] hover:text-[#FF5959] text-[#969BB3]"
@@ -84,7 +98,7 @@ const QRCodeModal = ({ row, product = false }) => {
               />
               <div>
                 <h3 className=" text-[18px] font-bold text-[rk-grey-900#1B2559] mb-[-6px]">
-                Safe Scan
+                  Safe Scan
                 </h3>
                 <h4 className=" text-[#68769F] font-medium text-base">
                   {product
@@ -101,7 +115,6 @@ const QRCodeModal = ({ row, product = false }) => {
                 className="w-[300px] h-[300px]"
               />
             </div>
-
           </div>
           <div className=" flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -124,7 +137,9 @@ const QRCodeModal = ({ row, product = false }) => {
                 imageUrl={`https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`}
                 fileName="qr_code.png"
               />
-             
+
+              {/* <button onClick={captureAndDownloadImage}>ass</button>
+               */}
               <button
                 onClick={() => {
                   setShare(true);

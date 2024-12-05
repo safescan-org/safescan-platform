@@ -1,32 +1,36 @@
 import { Icon } from "@iconify/react";
 import { Tooltip } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DeleteModal from "../../Shared/modal/DeleteModal";
 import InductionEdit from "./InductionEdit";
+import { useDeleteInductionsMutation } from "../../../redux/features/inductions/InductionsApi";
+import toast from "react-hot-toast";
+import SuccessToast from "../../Shared/Toast/SuccessToast";
+import ErrorToast from "../../Shared/Toast/ErrorToast";
 
 const InductionAction = ({ row, refetch }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [edit, setEdit] = useState(false);
-  const isLoading = false;
-  //   const [deleteUser, { isSuccess, isLoading, error }] = useDeleteUserMutation();
+  const [deleteInductions, { isSuccess, isLoading, error }] =
+    useDeleteInductionsMutation();
 
-  //   useEffect(() => {
-  //     if (isSuccess) {
-  //       const message = "Admin Delete success";
-  //       toast.custom(<SuccessToast message={message} />);
-  //       refetch();
-  //       setDeleteModal(false)
-  //     }
-  //     if (error) {
-  //       toast.custom(<ErrorToast message={error?.data.error || error?.data.message} />);
-  //     }
-  //   }, [isSuccess, error]);
+  useEffect(() => {
+    if (isSuccess) {
+      const message = "Admin Delete success";
+      toast.custom(<SuccessToast message={message} />);
+      refetch();
+      setDeleteModal(false);
+    }
+    if (error) {
+      toast.custom(
+        <ErrorToast message={error?.data.error || error?.data.message} />
+      );
+    }
+  }, [isSuccess, error]);
 
   const handelDelete = async () => {
-    const id = `${row?.userid}?username=${row?.username}`;
-    // await deleteUser(id)
-
-    console.log(id);
+    const id = `${row?.inductionid}`;
+    await deleteInductions(id);
   };
 
   return (
@@ -54,7 +58,7 @@ const InductionAction = ({ row, refetch }) => {
       <InductionEdit
         item={row}
         modalOPen={edit}
-        refetch={()=>{}}
+        refetch={refetch}
         setModalOpen={setEdit}
       />
 

@@ -60,8 +60,6 @@ const Products = () => {
     onChange: onSelectChange,
   };
 
-  console.log("=====product=====", sortData);
-
   return (
     <>
       <BreadCrumb

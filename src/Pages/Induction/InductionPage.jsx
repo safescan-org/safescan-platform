@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../Components/Shared/BreadCrumb";
 import SectionHeading from "../../Components/Shared/SectionHeading";
 import SearchInput from "../../Components/Shared/input/SearchInput";
@@ -6,39 +6,40 @@ import Loader from "../../Components/Shared/Loader";
 import CustomButton from "../../Components/Shared/CustomButton";
 import InductionTable from "../../Components/pageComponents/Induction/InductionTable";
 import AddInduction from "../../Components/pageComponents/Induction/AddInduction";
+import { useGetInductionsQuery } from "../../redux/features/inductions/InductionsApi";
+import { useDebounce } from "use-debounce";
+import { useSelector } from "react-redux";
 
 const InductionPage = () => {
   const [search, setSearch] = useState("");
   const [create, setCreate] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const isLoading = false;
+  const [searchQuery, sestSearchQuery] = useState("");
+  const [searchValue] = useDebounce(search, 1000);
+  const { user } = useSelector((state) => state.auth);
 
-  const data = [
-    {
-      title: "Induction Title",
-      worker: "12",
-      admin: "13",
-      deadline: "May 5, 2022",
-      status: "14/17",
-      video: "https://www.youtube.com",
-    },
-    {
-      title: "Induction Title",
-      worker: "12",
-      admin: "13",
-      deadline: "May 5, 2022",
-      status: "14/17",
-      video: "https://www.youtube.com",
-    },
-    {
-      title: "Induction Title",
-      worker: "12",
-      admin: "13",
-      deadline: "May 5, 2022",
-      status: "14/17",
-      video: "https://www.youtube.com",
-    },
-  ];
+  const { data, refetch, isLoading } = useGetInductionsQuery(searchQuery, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  console.log(data?.Items);
+
+  const generateQuery = (searchValue) => {
+    const queryParams = [];
+    if (searchValue) {
+      queryParams.push(`&search=${searchValue}`);
+    }
+
+    return queryParams.join("&");
+  };
+
+  useEffect(() => {
+    const query = generateQuery(searchValue);
+    sestSearchQuery(`company_serial=${user?.company_serial}${query}`);
+    refetch();
+  }, [searchValue, refetch, user]);
+
+  console.log(user?.company_serial);
 
   // ======table Select function=======
   const onSelectChange = (newSelectedRowKeys) => {
@@ -81,7 +82,11 @@ const InductionPage = () => {
               </div>
             ) : (
               <div className="w-full">
-                <InductionTable tableData={data} rowSelection={rowSelection} />
+                <InductionTable
+                  tableData={data?.Items}
+                  rowSelection={rowSelection}
+                  refetch={refetch}
+                />
               </div>
             )}
           </div>

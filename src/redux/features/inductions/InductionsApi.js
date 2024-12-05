@@ -4,7 +4,7 @@ export const inductionsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getInductions: builder.query({
       query: (query) => ({
-        url: `inductions&${query}`,
+        url: `inductions?${query}`,
         method: "GET",
       }),
     }),
@@ -15,23 +15,25 @@ export const inductionsApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    approve: builder.mutation({
+    updateInductions: builder.mutation({
       query: ({ id, data }) => ({
-        url: `user/approve/${id}`,
+        url: `inductions/${id}`,
         method: "PATCH",
         body: data,
       }),
     }),
-    plan: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `user/${id}`,
-        method: "PATCH",
-        body: data,
+    deleteInductions: builder.mutation({
+      query: (id) => ({
+        url: `inductions/${id}`,
+        method: "DELETE",
       }),
     }),
   }),
 });
 
 export const {
-    useCreateInductionsMutation
+  useCreateInductionsMutation,
+  useGetInductionsQuery,
+  useUpdateInductionsMutation,
+  useDeleteInductionsMutation
 } = inductionsApi;

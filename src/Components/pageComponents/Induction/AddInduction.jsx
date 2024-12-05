@@ -50,7 +50,6 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
     }
   }, [isSuccess, error, refetch, setModalOpen, reset]);
 
-  console.log(error);
 
   const formattedNextDate = formattedDate(nextDate);
 
@@ -85,6 +84,9 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
           },
         }
       );
+
+      console.log(response)
+
       if (response?.status === 200) {
         console.log(response?.data);
       } else {

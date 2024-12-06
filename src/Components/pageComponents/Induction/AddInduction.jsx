@@ -69,6 +69,33 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
 
   const uploadeCover = async (e) => {
     const getImage = e.target.files[0];
+
+    // Validation: Check if a file is selected
+    if (!getImage) {
+      alert("No file selected. Please choose a file to upload.");
+      return;
+    }
+
+    // Validation: Restrict allowed file types
+    const allowedExtensions = ["xlsx", "pdf", "txt", "ppt", "docx"];
+    const fileExtension = getImage.name.split(".").pop().toLowerCase();
+    if (!allowedExtensions.includes(fileExtension)) {
+      alert(
+        "Invalid file type. Please upload a valid file (xlsx, pdf, txt, ppt, docx)."
+      );
+      return;
+    }
+
+    // Validation: Restrict file size (e.g., 5MB)
+    const maxSizeInMB = 5;
+    const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+    if (getImage.size > maxSizeInBytes) {
+      alert(
+        `File size exceeds the limit of ${maxSizeInMB}MB. Please upload a smaller file.`
+      );
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append("files", getImage);
@@ -93,13 +120,16 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
         };
 
         setFileData((pre) => [...pre, data]);
+
+        setFileTitle("");
       } else {
+        alert("File upload failed. Please try again.");
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error during file upload:", error);
+      alert("An error occurred while uploading the file.");
     }
   };
-
   const deleteFile = (title) => {
     const update = fileData.filter((item) => item.title !== title);
     setFileData(update);
@@ -186,6 +216,7 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
                   <input
                     id="otp222"
                     type="file"
+                    accept=".xlsx,.pdf,.txt,.ppt,.docx"
                     onChange={uploadeCover}
                     className=" hidden"
                   />

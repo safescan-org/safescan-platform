@@ -46,7 +46,7 @@ const InductionPage = () => {
 
   useEffect(() => {
     const query = generateQuery(searchValue);
-    sestSearchQuery(`company_serial=${user?.company_serial}${query}`);
+    sestSearchQuery(`${query}`);
     refetch();
   }, [searchValue, refetch, user]);
 

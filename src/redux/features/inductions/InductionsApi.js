@@ -8,6 +8,12 @@ export const inductionsApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getInductionsHistory: builder.query({
+      query: (query) => ({
+        url: `induction-submitted-history/${query}`,
+        method: "GET",
+      }),
+    }),
     createInductions: builder.mutation({
       query: (data) => ({
         url: "inductions",
@@ -35,5 +41,6 @@ export const {
   useCreateInductionsMutation,
   useGetInductionsQuery,
   useUpdateInductionsMutation,
-  useDeleteInductionsMutation
+  useDeleteInductionsMutation,
+  useGetInductionsHistoryQuery,
 } = inductionsApi;

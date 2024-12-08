@@ -52,7 +52,10 @@ const InductionTable = ({ tableData, rowSelection, refetch }) => {
       title: "Status",
       key: "id",
       render: (row) => (
-        <span className=" text-[14px] font-normal text-info">{row.status}</span>
+        <span className=" text-[14px] font-normal text-info">
+          {row?.submit_count ? row?.submit_count : 0}/
+          {row?.admins?.length + row?.workers?.length}
+        </span>
       ),
     },
     {

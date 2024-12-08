@@ -5,6 +5,7 @@ import AdminTableAction from "./AdminTableAction";
 import AllCard from "../../Shared/modal/AllCard";
 import StrikeCard from "../../Shared/modal/StrikeCard";
 import { Tooltip } from "antd";
+import AdminInductionHistory from "./AdminInductionHistory";
 
 const AdminsTable = ({ tableData, rowSelection, refetch }) => {
   const columns = [
@@ -96,6 +97,16 @@ const AdminsTable = ({ tableData, rowSelection, refetch }) => {
       ),
     },
 
+    {
+      title: "Induction",
+      key: "id",
+      render: (row) => (
+        <div>
+          <AdminInductionHistory row={row} />
+        </div>
+      ),
+    },
+
     // {
     //   title: "Notes",
     //   key: "id",
@@ -166,7 +177,7 @@ const AdminsTable = ({ tableData, rowSelection, refetch }) => {
       title: "Actions",
       key: "id",
       render: (row) => <AdminTableAction row={row} refetch={refetch} />,
-      fixed: 'right',
+      fixed: "right",
     },
   ];
 
@@ -177,7 +188,7 @@ const AdminsTable = ({ tableData, rowSelection, refetch }) => {
         rowSelection={rowSelection}
         columns={columns}
         scroll={{
-          x: "1850px",
+          x: "2250px",
           y: "70vh",
         }}
       />

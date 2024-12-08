@@ -29,8 +29,8 @@ const CustomModal3 = ({
         className={` ${className}`}
         style={modalStyle}
       >
-        <div className="z-[50000000] rounded-[20px] bg-white pb-3">
-          <div className=" flex items-center justify-between px-6 pt-6 pb-4">
+        <div className="z-[50000000] rounded-[20px] bg-white pt-5 py-3">
+          {/* <div className=" flex items-center justify-between px-6 pt-6 pb-4">
             <h2 className=" text-[28px] font-bold text-dark-gray">
               {title}
             </h2>
@@ -40,8 +40,8 @@ const CustomModal3 = ({
             >
               <Icon icon="material-symbols:close" />
             </button>
-          </div>
-          <div className="w-full mt-[0px] max-h-[90vh] overflow-y-scroll px-6 pb-4">
+          </div> */}
+          <div className="w-full mt-[0px] px-6 pb-4">
             <div className="">{children}</div>
           </div>
         </div>

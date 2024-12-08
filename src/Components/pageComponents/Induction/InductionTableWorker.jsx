@@ -191,8 +191,8 @@ const InductionTableWorker = ({ tableData, rowSelection, refetch }) => {
         rowSelection={rowSelection}
         columns={columns}
         scroll={{
-          x: "1850px",
-          y: "70vh",
+          x: "2550px",
+          y: "45vh",
         }}
       />
     </div>

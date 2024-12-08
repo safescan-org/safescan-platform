@@ -71,8 +71,8 @@ const InductionWorker = ({
 
   return (
     <>
-      <div className=" mb-8">
-        <div className=" flex items-center justify-between mb-6">
+      <div className="">
+        <div className=" flex items-center justify-between">
           <button
             onClick={() => setAdminOpen(false)}
             className=" flex items-center px-2 border w-[86px] rounded-lg h-[40px] border-[#68769F]"
@@ -98,7 +98,7 @@ const InductionWorker = ({
             </CustomButton>
           </div>
         </div>
-        <div className=" bg-white rounded-[20px] ">
+        <div className=" bg-white rounded-[20px]">
           <div className=" flex items-center justify-between px-[22px] py-[20px] w-full">
             <SectionHeading>Admin Profiles</SectionHeading>
             <SearchInput

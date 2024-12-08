@@ -39,8 +39,6 @@ const InductionAdmin = ({
   }, [data]);
 
 
-  console.log("======admin list====== ",data)
-
   const generateQuery = (searchValue) => {
     const queryParams = [];
     if (searchValue) {
@@ -73,8 +71,8 @@ const InductionAdmin = ({
 
   return (
     <>
-      <div className=" mb-8 ">
-        <div className=" flex items-center justify-between mb-6">
+      <div className="">
+        <div className=" flex items-center justify-between">
           <button
             onClick={() => setAdminOpen(false)}
             className=" flex items-center px-2 border w-[86px] rounded-lg h-[40px] border-[#68769F]"

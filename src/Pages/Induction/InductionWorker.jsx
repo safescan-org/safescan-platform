@@ -100,11 +100,11 @@ const InductionWorker = ({
         </div>
         <div className=" bg-white rounded-[20px]">
           <div className=" flex items-center justify-between px-[22px] py-[20px] w-full">
-            <SectionHeading>Admin Profiles</SectionHeading>
+            <SectionHeading>Worker Profiles</SectionHeading>
             <SearchInput
               search={search}
               setSearch={setSearch}
-              placeholder="Search Admin Profile"
+              placeholder="Search Worker Profile"
             />
           </div>
           <div className="w-full">

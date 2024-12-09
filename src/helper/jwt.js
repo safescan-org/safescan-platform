@@ -20,6 +20,17 @@ export const formattedDate = (data) => {
 
 }
 
+export const formattedDate2 = (data) => {
+  const unixTimestamp = data;
+  const normalDate = new Date(unixTimestamp);
+  const year = normalDate.getFullYear();
+  const month = normalDate.getMonth() + 1; 
+  const date = normalDate.getDate();
+  const modifiedDate = `${month < 10 ? '0' + month : month}/${date < 10 ? '0' + date : date}/${year}`;
+  return modifiedDate;
+
+}
+
 export const dateChange = (dateString)=>{
     const parts = dateString.split('/');
     // Ensure parts contain day, month, and year

@@ -5,6 +5,9 @@ import ReactToPrint from "react-to-print";
 import ShareModal from "../../Shared/modal/ShareModal";
 import ImageDownloader from "../../Shared/DownloadQrc";
 import { toPng } from "html-to-image";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
+import { saveAs } from "file-saver";
 
 const QRCodeModal = ({ row, product = false }) => {
   const [modalOPen, setModalOpen] = useState(false);
@@ -34,21 +37,103 @@ const QRCodeModal = ({ row, product = false }) => {
 
   const captureAndDownloadImage = async () => {
     if (componentRef.current) {
-      toPng(componentRef.current, { quality: 1.0 })
-        .then(async (dataUrl) => {
-          downloadImage(dataUrl); // Trigger the download
-        })
-        .catch((err) => {
-          console.error("Error capturing image:", err);
-        });
+      try {
+        // Use toPng to capture the component as a PNG
+        const dataUrl = await toPng(componentRef.current, { quality: 1.0 });
+        const link = document.createElement("a");
+        link.href = dataUrl;
+        link.download = "captured-image.png";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } catch (error) {
+        console.error("Error capturing the component:", error);
+      }
+    } else {
+      console.error("Component ref is null.");
     }
   };
 
-  const downloadImage = (dataUrl) => {
+  // const captureAndDownloadImage = async () => {
+  //   if (componentRef.current) {
+  //     toPng(componentRef.current, { quality: 1.0 })
+  //       .then(async (dataUrl) => {
+  //         downloadImage(dataUrl); // Trigger the download
+  //       })
+  //       .catch((err) => {
+  //         console.error("Error capturing image:", err);
+  //       });
+  //   }
+  // };
+
+  // const downloadImage = (dataUrl) => {
+  //   const link = document.createElement("a");
+  //   link.download = "qr.png";
+  //   link.href = dataUrl;
+  //   link.click();
+  // };
+
+  function downloadFile(url) {
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to fetch file: ${response.statusText}`);
+        }
+        return response.blob(); // Convert response to Blob
+      })
+      .then((blob) => {
+        // Extract filename from URL or provide a fallback
+        const fileName = url.split("/").pop() || "downloaded-file";
+        saveAs(blob, fileName);
+      })
+      .catch((error) => {
+        console.error("Error downloading the file:", error);
+      });
+  }
+
+  const downloadImage = () => {
     const link = document.createElement("a");
-    link.download = "qr.png"; // File name
-    link.href = dataUrl;
+    link.href = `https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`;
+    link.setAttribute("download", "qr.png");
+    document.body.appendChild(link);
     link.click();
+    link.remove();
+  };
+
+  const captureAndDownload = async () => {
+    const component = document.getElementById("pdf-component");
+
+    if (component) {
+      try {
+        const canvas = await html2canvas(component, { useCORS: true });
+        const dataURL = canvas.toDataURL("image/jpeg");
+
+        // Download as JPEG
+        const a = document.createElement("a");
+        a.href = dataURL;
+        a.download = "certificate.jpg";
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Optionally, download as PDF
+        const pdf = new jsPDF();
+        const imgWidth = 210; // A4 width in mm
+        const imgHeight = (canvas.height * imgWidth) / canvas.width; // Maintain aspect ratio
+        pdf.addImage(dataURL, "JPEG", 0, 0, imgWidth, imgHeight);
+        pdf.save("certificate.pdf");
+
+        // Optional upload logic can go here
+        // const file = base64ToBlob(dataURL);
+        // const { imgUrl } = await handleImageUpload([file]);
+        // setCertificateImage(imgUrl);
+      } catch (error) {
+        console.error("Error capturing component:", error);
+      }
+    } else {
+      console.error("Component not found!");
+    }
   };
 
   return (
@@ -86,10 +171,7 @@ const QRCodeModal = ({ row, product = false }) => {
               <Icon icon="material-symbols:close" />
             </button>
           </div>
-          <div
-            ref={componentRef}
-            className="w-full flex items-center flex-col justify-center py-7"
-          >
+          <div className="w-full flex items-center flex-col justify-center py-7">
             <div className=" flex items-center gap-2 ">
               <img
                 src="/Images/logonewSort.png"
@@ -108,7 +190,7 @@ const QRCodeModal = ({ row, product = false }) => {
               </div>
             </div>
 
-            <div>
+            <div ref={componentRef} id="pdf-component" className="">
               <img
                 src={`https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`}
                 alt="qr-code"
@@ -138,8 +220,16 @@ const QRCodeModal = ({ row, product = false }) => {
                 fileName="qr_code.png"
               />
 
-              {/* <button onClick={captureAndDownloadImage}>ass</button>
-               */}
+              <button
+                onClick={() =>
+                  downloadFile(
+                    `https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`
+                  )
+                }
+              >
+                ass
+              </button>
+
               <button
                 onClick={() => {
                   setShare(true);

@@ -88,7 +88,7 @@ const InductionAdmin = ({
 
           <div className=" flex items-center gap-3">
             <h2 className=" text-[14px] font-medium">
-              {selectedRowKeys.length} workers selected
+              {selectedRowKeys.length} admin selected
             </h2>
             <CustomButton
               onClick={() => setAdminOpen(false)}

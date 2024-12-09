@@ -1,20 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useGetInductionsHistoryQuery } from "../../../redux/features/inductions/InductionsApi";
+import InductionProfileView from "../Induction/InductionProfileView";
 
 const AdminInductionHistory = ({ row }) => {
-  const { data, isLoading } = useGetInductionsHistoryQuery(
-    `${row?.userid}?username=${row?.username}`,
-    { refetchOnMountOrArgChange: true }
-  );
-
-  console.log("===data===", data);
+  const [show, setShow] = useState(false);
 
   return (
     <>
-      {isLoading || !data ? (
+      {/* {isLoading || !data ? (
         <span>...</span>
       ) : (
-        <div className=" flex items-center gap-[5px]">
+        <div onClick={()=>setShow(true)} className=" flex cursor-pointer items-center gap-[5px]">
           <div
             className={`w-[10px] h-[10px] rounded-full ${
               data?.inductions?.length === 0 ||
@@ -27,6 +23,22 @@ const AdminInductionHistory = ({ row }) => {
             {data?.inductions?.length}
           </span>
         </div>
+      )} */}
+
+      <button
+        onClick={() => setShow(true)}
+        className="py-1 px-3 border border-gray-400 rounded-md"
+      >
+        View
+      </button>
+
+      {show && (
+        <InductionProfileView
+          row={row}
+          modalOPen={show}
+          refetch={() => {}}
+          setModalOpen={setShow}
+        />
       )}
     </>
   );

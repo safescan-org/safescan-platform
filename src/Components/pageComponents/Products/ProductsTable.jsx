@@ -3,7 +3,7 @@ import CustomTable from "../../Shared/table/CustomTable";
 import { Icon } from "@iconify/react";
 import ProductsTableAction from "./ProductsTableAction";
 import CardModal from "../../Shared/modal/CardModal";
-import { category, formattedDate } from "../../../helper/jwt";
+import { category, formattedDate, formattedDate2 } from "../../../helper/jwt";
 import QRCodeModal from "../Admins/QRCodeModal";
 import ProductNote from "./ProductNote";
 import { Tooltip } from "antd";
@@ -159,9 +159,9 @@ const ProductsTable = ({ tableData, rowSelection, refetch }) => {
       title: "Last Test Date",
       key: "LastTestDate",
       render: (row) => (
-        <Tooltip placement="topLeft" title={formattedDate(row?.last_test_date)}>
+        <Tooltip placement="topLeft" title={formattedDate2(row?.last_test_date)}>
           <span className=" text-[14px] font-normal text-info">
-            {formattedDate(row?.last_test_date)}
+            {formattedDate2(row?.last_test_date)}
           </span>
         </Tooltip>
       ),
@@ -172,9 +172,9 @@ const ProductsTable = ({ tableData, rowSelection, refetch }) => {
       title: "Next Test Date",
       key: "NextTestDate",
       render: (row) => (
-        <Tooltip placement="topLeft" title={formattedDate(row?.next_test_date)}>
+        <Tooltip placement="topLeft" title={formattedDate2(row?.next_test_date)}>
           <span className=" text-[14px] font-normal text-info">
-            {formattedDate(Number(row?.next_test_date))}
+            {formattedDate2(Number(row?.next_test_date))}
           </span>
         </Tooltip>
       ),

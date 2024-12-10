@@ -67,7 +67,7 @@ const ProductsEdit = ({ refetch, item, setModalOpen, modalOPen }) => {
       setValue("sub_category", item?.sub_category);
       setValue("product_owner", item?.product_owner);
       setSubList(item?.category);
-      setSelectedWorker(item?.workers)
+      setSelectedWorker(item?.workers?.length ? item?.workers : []);
     }
   }, [item]);
 
@@ -85,7 +85,7 @@ const ProductsEdit = ({ refetch, item, setModalOpen, modalOPen }) => {
     formData.append("form_name", data?.form_name);
     formData.append("category", data?.category);
     formData.append("sub_category", data?.sub_category);
-    formData.append('workers', JSON.stringify(selectedWorker));
+    formData.append("workers", JSON.stringify(selectedWorker));
 
     const id = item?.productid;
 

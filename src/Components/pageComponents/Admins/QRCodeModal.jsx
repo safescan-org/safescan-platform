@@ -35,49 +35,49 @@ const QRCodeModal = ({ row, product = false }) => {
     }
   };
 
-  const captureAndDownloadImage = async () => {
-    if (componentRef.current) {
-      try {
-        // Use toPng to capture the component as a PNG
-        const dataUrl = await toPng(componentRef.current, { quality: 1.0 });
-        const link = document.createElement("a");
-        link.href = dataUrl;
-        link.download = "captured-image.png";
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      } catch (error) {
-        console.error("Error capturing the component:", error);
-      }
-    } else {
-      console.error("Component ref is null.");
-    }
-  };
+  // const captureAndDownloadImage = async () => {
+  //   if (componentRef.current) {
+  //     try {
+  //       // Use toPng to capture the component as a PNG
+  //       const dataUrl = await toPng(componentRef.current, { quality: 1.0 });
+  //       const link = document.createElement("a");
+  //       link.href = dataUrl;
+  //       link.download = "captured-image.png";
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       link.remove();
+  //     } catch (error) {
+  //       console.error("Error capturing the component:", error);
+  //     }
+  //   } else {
+  //     console.error("Component ref is null.");
+  //   }
+  // };
 
-  const qrCodeUrl = "https://scansafes3.s3.amazonaws.com/1714274569264-qr.png";
+  // const qrCodeUrl = "https://scansafes3.s3.amazonaws.com/1714274569264-qr.png";
 
 
-  const downloadQRCode = async () => {
-    try {
-      const response = await fetch(qrCodeUrl, {
-        method: "GET",
-      });
+  // const downloadQRCode = async () => {
+  //   try {
+  //     const response = await fetch(qrCodeUrl, {
+  //       method: "GET",
+  //     });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch QR code.");
-      }
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch QR code.");
+  //     }
 
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "qrcode.png"; // Specify the downloaded file name
-      a.click();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error downloading QR code:", error);
-    }
-  };
+  //     const blob = await response.blob();
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = "qrcode.png"; // Specify the downloaded file name
+  //     a.click();
+  //     window.URL.revokeObjectURL(url);
+  //   } catch (error) {
+  //     console.error("Error downloading QR code:", error);
+  //   }
+  // };
 
   // const captureAndDownloadImage = async () => {
   //   if (componentRef.current) {
@@ -98,105 +98,121 @@ const QRCodeModal = ({ row, product = false }) => {
   //   link.click();
   // };
 
-  const downloadQRCodesss = () => {
-    const qrCodeUrl = "https://scansafes3.s3.amazonaws.com/1714274569264-qr.png";
+  // const downloadQRCodesss = () => {
+  //   const qrCodeUrl = "https://scansafes3.s3.amazonaws.com/1714274569264-qr.png";
   
-    const a = document.createElement('a');
-    a.href = qrCodeUrl;
-    a.download = 'qrcode.png'; // Specify the file name
-    a.click();
-  };
+  //   const a = document.createElement('a');
+  //   a.href = qrCodeUrl;
+  //   a.download = 'qrcode.png'; // Specify the file name
+  //   a.click();
+  // };
 
-  function downloadFile(url) {
-    fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Failed to fetch file: ${response.statusText}`);
-        }
-        return response.blob(); // Convert response to Blob
-      })
-      .then((blob) => {
-        // Extract filename from URL or provide a fallback
-        const fileName = url.split("/").pop() || "downloaded-file";
-        saveAs(blob, fileName);
-      })
-      .catch((error) => {
-        console.error("Error downloading the file:", error);
-      });
-  }
+  // function downloadFile(url) {
+  //   fetch(url)
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(`Failed to fetch file: ${response.statusText}`);
+  //       }
+  //       return response.blob(); // Convert response to Blob
+  //     })
+  //     .then((blob) => {
+  //       // Extract filename from URL or provide a fallback
+  //       const fileName = url.split("/").pop() || "downloaded-file";
+  //       saveAs(blob, fileName);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error downloading the file:", error);
+  //     });
+  // }
 
-  const downloadImage = () => {
-    const link = document.createElement("a");
-    link.href = `https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`;
-    link.setAttribute("download", "qr.png");
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  };
+  // const downloadImage = () => {
+  //   const link = document.createElement("a");
+  //   link.href = `https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`;
+  //   link.setAttribute("download", "qr.png");
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   link.remove();
+  // };
 
-  const captureAndDownload = async () => {
-    const component = document.getElementById("pdf-component");
+  // const captureAndDownload = async () => {
+  //   const component = document.getElementById("pdf-component");
 
-    if (component) {
-      try {
-        const canvas = await html2canvas(component, { useCORS: true });
-        const dataURL = canvas.toDataURL("image/jpeg");
+  //   if (component) {
+  //     try {
+  //       const canvas = await html2canvas(component, { useCORS: true });
+  //       const dataURL = canvas.toDataURL("image/jpeg");
 
-        // Download as JPEG
-        const a = document.createElement("a");
-        a.href = dataURL;
-        a.download = "certificate.jpg";
-        a.style.display = "none";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+  //       // Download as JPEG
+  //       const a = document.createElement("a");
+  //       a.href = dataURL;
+  //       a.download = "certificate.jpg";
+  //       a.style.display = "none";
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       document.body.removeChild(a);
 
-        // Optionally, download as PDF
-        const pdf = new jsPDF();
-        const imgWidth = 210; // A4 width in mm
-        const imgHeight = (canvas.height * imgWidth) / canvas.width; // Maintain aspect ratio
-        pdf.addImage(dataURL, "JPEG", 0, 0, imgWidth, imgHeight);
-        pdf.save("certificate.pdf");
+  //       // Optionally, download as PDF
+  //       const pdf = new jsPDF();
+  //       const imgWidth = 210; // A4 width in mm
+  //       const imgHeight = (canvas.height * imgWidth) / canvas.width; // Maintain aspect ratio
+  //       pdf.addImage(dataURL, "JPEG", 0, 0, imgWidth, imgHeight);
+  //       pdf.save("certificate.pdf");
 
-        // Optional upload logic can go here
-        // const file = base64ToBlob(dataURL);
-        // const { imgUrl } = await handleImageUpload([file]);
-        // setCertificateImage(imgUrl);
-      } catch (error) {
-        console.error("Error capturing component:", error);
-      }
-    } else {
-      console.error("Component not found!");
-    }
-  };
+  //     } catch (error) {
+  //       console.error("Error capturing component:", error);
+  //     }
+  //   } else {
+  //     console.error("Component not found!");
+  //   }
+  // };
 
 
-  const downloadQRCodeLast = async (qrLink) => {
-
-
-    console.log(qrLink)
-
-    try {
-      const response = await fetch("https://i.ibb.co.com/jgCyLy5/gallery-1-3.jpg", {
-        method: 'GET',
-        // mode:"no-cors"
-      });
+  // const downloadQRCodeLast = async (qrLink) => {
+  //   try {
+  //     const response = await fetch("https://i.ibb.co.com/jgCyLy5/gallery-1-3.jpg", {
+  //       method: 'GET',
+  //       // mode:"no-cors"
+  //     });
   
-      if (!response.ok) {
-        throw new Error('Failed to fetch QR code.');
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch QR code.');
+  //     }
   
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'qrcode.png';
-      a.click();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Error downloading QR code:', error);
-    }
-  };
+  //     const blob = await response.blob();
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement('a');
+  //     a.href = url;
+  //     a.download = 'qrcode.png';
+  //     a.click();
+  //     window.URL.revokeObjectURL(url);
+  //   } catch (error) {
+  //     console.error('Error downloading QR code:', error);
+  //   }
+  // };
+
+
+
+//   const handleDownload = async () => {
+//     try {
+//       const response = await fetch(imageUrl);
+//       if (!response.ok) {
+//         throw new Error("Failed to fetch image.");
+//       }
+//       const blob = await response.blob();
+//       const url = URL.createObjectURL(blob);
+
+//       const a = document.createElement("a");
+//       a.href = url;
+//       a.download = "QR-Code.png";
+//       document.body.appendChild(a);
+//       a.click();
+
+//       a.remove();
+//       URL.revokeObjectURL(url);
+//     } catch (error) {
+//       console.error("Error downloading the image:", error);
+//     }
+//   };
 
   return (
     <>
@@ -279,15 +295,13 @@ const QRCodeModal = ({ row, product = false }) => {
             </div>
             <div className="flex items-center gap-3">
               <ImageDownloader
-                imageUrl={`https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`}
+                imageUrl={`https://i.ibb.co.com/jgCyLy5/gallery-1-3.jpg`}
                 fileName="qr_code.png"
               />
 
               {/* <button
                 onClick={() =>
-                  downloadQRCodeLast(
-                    `/api/${row?.qrc_image}`
-                  )
+                  handleDownload()
                 }
               >
                 ass

@@ -8,6 +8,7 @@ import { toPng } from "html-to-image";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { saveAs } from "file-saver";
+import axios from "axios";
 
 const QRCodeModal = ({ row, product = false }) => {
   const [modalOPen, setModalOpen] = useState(false);
@@ -34,6 +35,30 @@ const QRCodeModal = ({ row, product = false }) => {
       }
     }
   };
+
+
+
+  // const downloadImage = async () => {
+  //   const imageUrl = "https://scansafes3.s3.amazonaws.com/1714274569264-qr.png";
+
+  //   try {
+  //     const response = await axios.get(imageUrl, {
+  //       responseType: "blob", 
+  //     });
+
+  //     const blob = new Blob([response.data], { type: response.data.type });
+  //     const downloadUrl = URL.createObjectURL(blob);
+
+  //     const link = document.createElement("a");
+  //     link.href = downloadUrl;
+  //     link.download = "qr.png"; 
+  //     link.click();
+
+  //     URL.revokeObjectURL(downloadUrl);
+  //   } catch (error) {
+  //     console.error("Error downloading the image:", error);
+  //   }
+  // };
 
   // const captureAndDownloadImage = async () => {
   //   if (componentRef.current) {
@@ -295,13 +320,13 @@ const QRCodeModal = ({ row, product = false }) => {
             </div>
             <div className="flex items-center gap-3">
               <ImageDownloader
-                imageUrl={`https://i.ibb.co.com/jgCyLy5/gallery-1-3.jpg`}
+                imageUrl={`https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`}
                 fileName="qr_code.png"
               />
 
               {/* <button
                 onClick={() =>
-                  handleDownload()
+                  downloadImage()
                 }
               >
                 ass

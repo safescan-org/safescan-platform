@@ -53,7 +53,7 @@ const ChangePhone = ({ modalOPen, setModalOpen, refetch }) => {
   };
 
   const onSubmit = async (data) => {
-      // console.log(data)
+  
       const body={
         phone:phone,
         password:data?.password
@@ -62,7 +62,6 @@ const ChangePhone = ({ modalOPen, setModalOpen, refetch }) => {
     await phoneChange(body);
   };
 
-  console.log(data)
 
   return (
     <>

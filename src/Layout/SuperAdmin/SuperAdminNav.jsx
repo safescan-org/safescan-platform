@@ -25,8 +25,6 @@ useEffect(() => {
 
   const findData = data?.Items?.filter((item)=>item?.is_read===false)
 
-  console.log("fsfsfsfs5fs5f5sf5s5fs5fs5f",findData)
-
   const handleSeeAll = () => {
     navigate('/super-admin/notifications')
   }

@@ -3,9 +3,9 @@ import CustomTable from "../../Shared/table/CustomTable";
 import WorkersTableAction from "./WorkersTableAction";
 import QRCodeModal from "../Admins/QRCodeModal";
 import AllCard from "../../Shared/modal/AllCard";
-import Note from "../Admins/Note";
 import StrikeCard from "../../Shared/modal/StrikeCard";
 import { Tooltip } from "antd";
+import AdminInductionHistory from "../Admins/AdminInductionHistory";
 
 const WorkersTable = ({ tableData, rowSelection, refetch }) => {
   const columns = [
@@ -96,6 +96,16 @@ const WorkersTable = ({ tableData, rowSelection, refetch }) => {
         </Tooltip>
       ),
     },
+
+    {
+      title: "Induction",
+      key: "id",
+      render: (row) => (
+        <div>
+          <AdminInductionHistory row={row} />
+        </div>
+      ),
+    },
     // {
     //   title: "Notes",
     //   key: "id",
@@ -165,7 +175,12 @@ const WorkersTable = ({ tableData, rowSelection, refetch }) => {
           {row.worker_permission ? "Yes" : "No"}
         </span>
       ),
-      sorter: (a, b) => (a.worker_permission === b.worker_permission ? 0 : a.worker_permission ? 1 : -1),
+      sorter: (a, b) =>
+        a.worker_permission === b.worker_permission
+          ? 0
+          : a.worker_permission
+          ? 1
+          : -1,
     },
     {
       title: "QRC Code",
@@ -176,7 +191,7 @@ const WorkersTable = ({ tableData, rowSelection, refetch }) => {
       title: "Actions",
       key: "id",
       render: (row) => <WorkersTableAction row={row} refetch={refetch} />,
-      fixed: 'right',
+      fixed: "right",
     },
   ];
 

@@ -23,10 +23,9 @@ const ResentOtp = ({ data, setOldData }) => {
 
   const onSubmit = async () => {
     await otpVaryFy(data);
-    console.log(data);
+
   };
 
-  console.log("====otpData====", otpData);
   return (
     <div>
       <p className="text-center text-info text-sm font-medium mt-4">

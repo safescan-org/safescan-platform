@@ -26,8 +26,8 @@ const Products = () => {
   });
 
   useEffect(() => {
-    const updateData = data?.Items?.map((item) => ({
-      key: item?.userid,
+    const updateData = data?.map((item) => ({
+      key: item?.productid,
       ...item,
     }));
     const update = updateData?.sort(
@@ -52,15 +52,12 @@ const Products = () => {
 
   // ======table Select function=======
   const onSelectChange = (newSelectedRowKeys) => {
-    // console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
   };
-
-  console.log("=====product=====", sortData);
 
   return (
     <>
@@ -83,7 +80,7 @@ const Products = () => {
                 <SectionHeading>Assets List </SectionHeading>
                 <div className="flex flex-col md:flex-row md:items-center gap-3">
                   <div className="">
-                    <button className=" text-dark-gray border-[1px] border-[#E1E9F8] rounded-[10px] w-full  py-[10px] px-5 flex items-center gap-2 text-[14px] font-medium">
+                    <button onClick={()=>sestSearchQuery("")} className=" text-dark-gray border-[1px] border-[#E1E9F8] rounded-[10px] w-full  py-[10px] px-5 flex items-center gap-2 text-[14px] font-medium">
                       <Icon icon="ooui:reload" className="mt-[-1px]"/> Refresh
                     </button>
                   </div>

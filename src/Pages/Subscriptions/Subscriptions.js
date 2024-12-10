@@ -14,7 +14,6 @@ const Subscriptions = () => {
 
   const { data, isLoading } = useGetProfileQuery(queryitem);
 
-  // console.log("data is=======", data);
   return (
     <>
       <BreadCrumb

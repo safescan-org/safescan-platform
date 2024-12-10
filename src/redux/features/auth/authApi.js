@@ -60,7 +60,7 @@ export const authApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          // console.log("otp result",result)
+    
           dispatch(
             addOtp({
               otpData: result?.data,

@@ -53,6 +53,11 @@ const Sidebar = () => {
       url: "/admin/subscription",
     },
     {
+      title: "Induction",
+      icon: <Icon icon="lucide:book-check" />,
+      url: "/admin/induction",
+    },
+    {
       title: "Admins",
       icon: <Icon icon="lucide:user-round-cog" />,
       url: "/admin/admins",

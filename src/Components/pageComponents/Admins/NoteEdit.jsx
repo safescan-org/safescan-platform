@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CustomModal from "../../Shared/modal/CustomModal";
-import { useNewnoteMutation, useUpdateNoteMutation } from "../../../redux/features/admin/adminApi";
+import { useNewnoteMutation } from "../../../redux/features/admin/adminApi";
 import toast from "react-hot-toast";
 import SuccessToast from "../../Shared/Toast/SuccessToast";
 import ErrorToast from "../../Shared/Toast/ErrorToast";
@@ -23,7 +23,6 @@ const NoteEdit = ({ editModal,refetch, setEditModal, setModalOpen,row,activeNote
       setModalOpen(true);
     }
     if (error) {
-      console.log(error)
       toast.custom(<ErrorToast message={error?.data?.error || error?.data?.message} />);
     }
   }, [isSuccess, error]);
@@ -32,7 +31,6 @@ const NoteEdit = ({ editModal,refetch, setEditModal, setModalOpen,row,activeNote
     setNote(activeNote?.note)
   },[activeNote])
 
-  // console.log(activeNote)
 
   const onSubmit = async(e) => {
       const body = {

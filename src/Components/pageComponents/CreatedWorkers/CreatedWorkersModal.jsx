@@ -109,15 +109,12 @@ const CreatedWorkersModal = ({ modalOPen, refetch, setModalOpen }) => {
         }
         setLoading(false);
         setSuccess(false);
-        // console.log(response);
       } catch (error) {
-        console.log("error", error);
         toast.custom(<ErrorToast message={error?.response?.data?.error} />);
         setLoading(false);
       }
 
       // if (shareText.trim() !== '') {
-      //   console.log(shareText)
       //   const mailtoLink = `mailto:${encodeURIComponent(shareText)}?body=${encodeURIComponent(
       //     `
       //     Hello, I am from Safe Scan. Here is your username and password:

@@ -16,8 +16,6 @@ const Workers = () => {
   const  {user} = useSelector((state)=>state.auth)
   const [sortData,setSortData] = useState([])
 
-  // console.log(searchQuery);
-
   // ========data fecthing=========
   const { data, isLoading, refetch } = useGetWorkerQuery(searchQuery);
 
@@ -47,7 +45,6 @@ const Workers = () => {
   }, [searchValue, refetch,user]);
 
   const onSelectChange = (newSelectedRowKeys) => {
-    // console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
   const rowSelection = {
@@ -58,8 +55,6 @@ const Workers = () => {
   // ======add a key for selected=======
 
   const filterData = sortData?.filter((item)=>item?.is_active === true)
-
-  console.log(filterData)
 
   return (
     <>

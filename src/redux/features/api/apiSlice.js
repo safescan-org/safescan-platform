@@ -40,7 +40,7 @@ export const apiSlice = createApi({
                         sessionStorage.removeItem("user")
                         sessionStorage.removeItem("token")
                     }
-                    console.log(error?.error?.status)
+        
                 }
             }
         }),
@@ -54,7 +54,7 @@ export const apiSlice = createApi({
                     const result = await queryFulfilled;
                     dispatch(addSearch(result?.data))
                 } catch (error) {
-                    console.log(error?.error?.status)
+                   
                 }
             }
         })

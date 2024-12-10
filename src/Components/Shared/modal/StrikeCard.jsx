@@ -25,9 +25,6 @@ import { safetyIssues } from "../StrikeModal";
 const CategoryFun = ({value})=>{
   const filterData = safetyIssues?.find((item)=>item?.value === value)
 
-  console.log("=====*****=====",value)
-
-
   return(
     <span className="">{filterData?.title}</span>
   )
@@ -59,7 +56,6 @@ const StrikeCard = ({ row, refetch }) => {
       setModalOpen(true);
     }
     if (error1) {
-      console.log(error1);
       const errorMsg = error1?.data.error || error1?.data.message;
       toast.custom(<ErrorToast message={errorMsg} />);
     }
@@ -91,8 +87,6 @@ const StrikeCard = ({ row, refetch }) => {
     setImageIndex(0);
   };
 
-
-  console.log("heelow",row)
 
   return (
     <>

@@ -39,7 +39,7 @@ const Profile = ({data,refetch}) => {
       } else {
         setLoading(false);
       }
-      // console.log(response);
+
     } catch (error) {
       toast.custom(<ErrorToast message={"please try again"} />);
       setLoading(false);

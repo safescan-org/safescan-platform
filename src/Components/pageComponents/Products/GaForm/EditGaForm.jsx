@@ -43,10 +43,6 @@ const EditGaForm = ({ row,singalData, refetch, index, addModal, setAddModal }) =
   },[singalData])
 
 
-
-  console.log(formattedDate(date))
-
-
   const handleFileSelect = async (event) => {
     const files = event.target.files[0];
     setLoading(true);
@@ -69,7 +65,6 @@ const EditGaForm = ({ row,singalData, refetch, index, addModal, setAddModal }) =
         // handleUnexpectedStatus();
       }
     } catch (error) {
-      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -87,8 +82,6 @@ const EditGaForm = ({ row,singalData, refetch, index, addModal, setAddModal }) =
         expiry_date:formattedDate(date),
         index:index
       }
-
-      console.log(body)
       const id = row?.productid;
       await addGa1({id,body})
     }

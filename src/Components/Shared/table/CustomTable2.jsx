@@ -8,7 +8,7 @@ const CustomTable2 = ({ tableData, columns, scroll }) => {
 
   // ====table pagination funcation====
   const handlePaginationChange = (page, pageSize) => {
-    // console.log(`Page: ${page}, Page Size: ${pageSize}`);
+
     setStart((pre) => (page === 1 ? 1 : page * 5 - 4));
     setend((pre) =>
       page * 5 > tableData?.length ? tableData?.length : page * 5

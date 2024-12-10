@@ -10,6 +10,8 @@ import toast from "react-hot-toast";
 import SuccessToast from "../../Shared/Toast/SuccessToast";
 import ErrorToast from "../../Shared/Toast/ErrorToast";
 import { dropDown } from "./ProductsTable";
+import CustomModal3 from "../../Shared/modal/CustomModal3";
+import InductionWorker from "../../../Pages/Induction/InductionWorker";
 
 const ProductsEdit = ({ refetch, item, setModalOpen, modalOPen }) => {
   const [active, setActive] = useState(item?.status);
@@ -20,6 +22,8 @@ const ProductsEdit = ({ refetch, item, setModalOpen, modalOPen }) => {
   const formattedNextDate = formattedDate(nextDate);
   const [subList, setSubList] = useState("");
   const [subCategoryList, setSubCategory] = useState([]);
+  const [selectedWorker, setSelectedWorker] = useState([]);
+  const [workerOpen, setWorkerOpen] = useState(false);
 
   const [updateProduct, { isLoading, isSuccess, error }] =
     useUpdateProductMutation();
@@ -61,8 +65,9 @@ const ProductsEdit = ({ refetch, item, setModalOpen, modalOPen }) => {
       setValue("location", item?.location);
       setValue("category", item?.category);
       setValue("sub_category", item?.sub_category);
-      setValue("product_owner",item?.product_owner)
+      setValue("product_owner", item?.product_owner);
       setSubList(item?.category);
+      setSelectedWorker(item?.workers?.length ? item?.workers : []);
     }
   }, [item]);
 
@@ -80,6 +85,7 @@ const ProductsEdit = ({ refetch, item, setModalOpen, modalOPen }) => {
     formData.append("form_name", data?.form_name);
     formData.append("category", data?.category);
     formData.append("sub_category", data?.sub_category);
+    formData.append("workers", JSON.stringify(selectedWorker));
 
     const id = item?.productid;
 
@@ -334,6 +340,19 @@ const ProductsEdit = ({ refetch, item, setModalOpen, modalOPen }) => {
         placeholder={"Enter level 3"}
       />
 
+      <button
+        onClick={() => setWorkerOpen(true)}
+        type="button"
+        className=" w-full mt-5 flex border text-base text-[#000] items-center gap-1 justify-center h-[40px] rounded-[10px] font-medium text-[16px]"
+      >
+        Assigned Worker{" "}
+        {selectedWorker.length > 0 && (
+          <span className=" bg-[#2D396B] text-[12px] px-2 text-white rounded-md">
+            {selectedWorker.length}
+          </span>
+        )}
+      </button>
+
       <div className=" mt-5">
         <h3 className="mb-1.5 font-medium text-base text-dark-gray">
           Asset status
@@ -408,6 +427,18 @@ const ProductsEdit = ({ refetch, item, setModalOpen, modalOPen }) => {
           {...register("note")}
         ></textarea>
       </div> */}
+
+      <CustomModal3
+        modalOPen={workerOpen}
+        setModalOpen={setWorkerOpen}
+        width={1460}
+      >
+        <InductionWorker
+          setAdminOpen={setWorkerOpen}
+          selectedRowKeys={selectedWorker}
+          setSelectedRowKeys={setSelectedWorker}
+        />
+      </CustomModal3>
     </CustomModal>
   );
 };

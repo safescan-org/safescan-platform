@@ -29,9 +29,6 @@ const Note = ({ row, refetch }) => {
     const [newnote,{isLoading:isLoading1,isSuccess:isSuccess1,error:error1}]=useNewnoteMutation()
 
 
-
-    // console.log("====test api====",data)
-
     useEffect(() => {
       if (isSuccess1) {
         const message = "Note Delete success";
@@ -41,7 +38,6 @@ const Note = ({ row, refetch }) => {
         setModalOpen(true);
       }
       if (error1) {
-        console.log(error1)
         toast.custom(<ErrorToast message={error1?.data?.error || error1?.data?.message} />);
       }
     }, [isSuccess1, error1]);
@@ -49,8 +45,7 @@ const Note = ({ row, refetch }) => {
     useEffect(()=>{
       setNote(activeNote?.note)
     },[activeNote])
-  
-    // console.log(activeNote)
+
   
     const deleteNote = async(e) => {
         const body = {
@@ -79,7 +74,7 @@ const Note = ({ row, refetch }) => {
     }
   }, [isSuccess, error]);
 
-  // console.log(activeIndex);
+
 
   const handleSlideChange = (swiper) => {
     setActiveIndex(swiper.activeIndex);

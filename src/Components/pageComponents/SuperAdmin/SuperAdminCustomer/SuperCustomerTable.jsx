@@ -32,7 +32,7 @@ const SuperCustomerTable = ({
     setSortData(update);
   }, [data]);
 
-  // console.log(searchQuery);
+
 
   const generateQuery = (searchValue) => {
     const queryParams = [];
@@ -49,7 +49,7 @@ const SuperCustomerTable = ({
   }, [searchValue]);
 
 
-  // console.log(data)
+
 
   return (
     <div>

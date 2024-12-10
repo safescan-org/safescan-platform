@@ -100,12 +100,12 @@ const CreatedAdminModal = ({ modalOPen, refetch, setModalOpen }) => {
         } else {
           toast.custom(<ErrorToast message={response?.data?.error} />);
           reset();
-          // console.log(response)
+ 
         }
         setLoading(false);
         setSuccess(false);
       } catch (error) {
-        console.log("error", error);
+
 
         toast.custom(<ErrorToast message={error?.response?.data?.error} />);
         setLoading(false);

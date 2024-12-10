@@ -11,6 +11,8 @@ import ErrorToast from "../../Shared/Toast/ErrorToast";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import Unverified from "../../Shared/modal/Unverified";
+import CustomModal3 from "../../Shared/modal/CustomModal3";
+import InductionWorker from "../../../Pages/Induction/InductionWorker";
 
 const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
   const [active, setActive] = useState("passed");
@@ -23,6 +25,8 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
   const [veryfyModal, setVeryfyModal] = useState(false);
   const [subList, setSubList] = useState("");
   const [subCategoryList, setSubCategory] = useState([]);
+  const [selectedWorker, setSelectedWorker] = useState([]);
+  const [workerOpen, setWorkerOpen] = useState(false);
 
   const dropDown = [
     {
@@ -98,6 +102,7 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
       formData.append("category", data?.category);
       formData.append("sub_category", data?.sub_category);
       formData.append("form_name", data?.form_name);
+      formData.append('workers', JSON.stringify(selectedWorker));
       if (active === "passed") {
         formData.append("passed", "true");
       }
@@ -119,6 +124,7 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
             },
           }
         );
+
 
         if (response.status === 201) {
           // Handle success
@@ -383,16 +389,16 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
           />
 
           <CustomInput
-            label={"Assigned worker"}
+            label={"Asset Number"}
             type={"text"}
             register={register("product_number", {
               required: {
                 value: true,
-                message: "Please enter Mobile Number",
+                message: "Please enter Asset  Number",
               },
             })}
             error={errors.product_number}
-            placeholder={"Enter Assigned worker"}
+            placeholder={"Enter Asset Number"}
           />
         </div>
 
@@ -473,6 +479,19 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
           placeholder={"Enter Location"}
         />
 
+        <button
+          onClick={() => setWorkerOpen(true)}
+          type="button"
+          className=" w-full mt-5 flex border text-base text-[#000] items-center gap-1 justify-center h-[40px] rounded-[10px] font-medium text-[16px]"
+        >
+          Assigned Worker{" "}
+          {selectedWorker.length > 0 && (
+            <span className=" bg-[#2D396B] text-[12px] px-2 text-white rounded-md">
+              {selectedWorker.length}
+            </span>
+          )}
+        </button>
+
         <div className=" mt-5">
           <h3 className="mb-1.5 font-medium text-base text-dark-gray">
             Asset Status
@@ -548,6 +567,18 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
           ></textarea>
         </div>
       </CustomModal>
+
+      <CustomModal3
+        modalOPen={workerOpen}
+        setModalOpen={setWorkerOpen}
+        width={1460}
+      >
+        <InductionWorker
+          setAdminOpen={setWorkerOpen}
+          selectedRowKeys={selectedWorker}
+          setSelectedRowKeys={setSelectedWorker}
+        />
+      </CustomModal3>
 
       <Unverified modalOPen={veryfyModal} setModalOpen={setVeryfyModal} />
     </>

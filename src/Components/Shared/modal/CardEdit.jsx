@@ -21,7 +21,7 @@ const CardEdit = ({setModalOpen,refetch, editModal, setEditModal, imageItem, row
     setNextDate(imageItem?.expiry_date)
   },[imageItem])
 
-  // console.log("update date",dateChange(nextDate))
+
   // function convertToDateObject(dateString) {
   //   return new Date(dateString);
   // }
@@ -29,7 +29,7 @@ const CardEdit = ({setModalOpen,refetch, editModal, setEditModal, imageItem, row
   // const dateString = "2024-02-29";
   // const dateObject = convertToDateObject(dateString);
 
-   console.log("========", nextDate);
+
 
   const uploadImage = async () => {
     setLoading(true)

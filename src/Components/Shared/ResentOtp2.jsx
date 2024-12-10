@@ -21,10 +21,9 @@ const ResentOtp2 = ({data}) => {
 
   const onSubmit = async () => {
       await otpSend(data);
-      console.log(data);
+  
   };
 
-  console.log("====otpData====", otpData);
   return (
     <div>
       <p className="text-center text-info text-sm font-medium mt-4">

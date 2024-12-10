@@ -23,10 +23,9 @@ const ResentOtp3 = ({data,setOldData}) => {
 
   const onSubmit = async () => {
       await phoneChange(data);
-      console.log(data);
+   
   };
 
-  console.log("====otpData====", otpData);
   return (
     <div>
       <p className="text-center text-info text-sm font-medium mt-4">

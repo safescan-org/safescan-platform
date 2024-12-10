@@ -45,7 +45,6 @@ const CustomerCreate = ({
       setPhoneOpen(true)
     }
     if (error) {
-      console.log(error);
       toast.custom(
         <ErrorToast message={error?.data.error || error?.data.message} />
       );

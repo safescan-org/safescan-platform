@@ -26,7 +26,6 @@ const ExpiryDate = ({ row,refetch,refetch1 }) => {
       }
     },[row])
 
-  // console.log(formattedNextDate)
 
   useEffect(() => {
     if (isSuccess) {
@@ -37,7 +36,6 @@ const ExpiryDate = ({ row,refetch,refetch1 }) => {
       setModalOpen(false)
     }
     if (error) {
-      console.log( error);
       toast.custom(<ErrorToast message={error?.data.error || error?.data.message} />);
     }
   }, [isSuccess, error]);
@@ -47,7 +45,6 @@ const ExpiryDate = ({ row,refetch,refetch1 }) => {
       username: row?.username,
       expiry_date: formattedNextDate,
     };
-    // console.log(data)
     const id = row?.userid;
     await plan({ id, data });
   }

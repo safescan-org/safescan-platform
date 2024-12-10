@@ -26,7 +26,7 @@ const WorkersEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
     useApproveUserMutation();
 
     const [workerPermission,{isSuccess:isSuccess2,error:error2}] = useWorkerPermissionMutation()
-  // console.log("modal Data=======", item);
+ 
 
   useEffect(() => {
     if (isSuccess) {
@@ -107,7 +107,7 @@ const WorkersEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
     // await workerPermission({ id, body });
   }
 
-  console.log(Boolean(permison))
+
 
   const onSubmit = async (data) => {
     const body = {

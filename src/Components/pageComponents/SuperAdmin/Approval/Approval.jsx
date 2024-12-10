@@ -33,7 +33,6 @@ const Approval = ({search,setSearch,sestSearchQuery,searchQuery,data, isLoading,
   }, [searchValue]);
 
 
-  // console.log(data)
 
   return (
     <div>

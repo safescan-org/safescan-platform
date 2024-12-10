@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import InductionProfileView from "../Induction/InductionProfileView";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const AdminInductionHistory = ({ row }) => {
   const [show, setShow] = useState(false);
@@ -26,9 +27,9 @@ const AdminInductionHistory = ({ row }) => {
 
       <button
         onClick={() => setShow(true)}
-        className="py-1 px-3 border border-gray-400 rounded-md"
+        className="py-1 px-3"
       >
-        View
+        <Icon icon="lucide:view" className=" text-info" width="20" height="20" />
       </button>
 
       {show && (

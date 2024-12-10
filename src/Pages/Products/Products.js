@@ -25,9 +25,12 @@ const Products = () => {
     refetchOnMountOrArgChange: true,
   });
 
+
+  console.log(data)
+
   useEffect(() => {
-    const updateData = data?.Items?.map((item) => ({
-      key: item?.userid,
+    const updateData = data?.map((item) => ({
+      key: item?.productid,
       ...item,
     }));
     const update = updateData?.sort(

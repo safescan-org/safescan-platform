@@ -35,7 +35,6 @@ const AddGaForm = ({row, addModal, setAddModal,refetch }) => {
     }
   }, [isSuccess, error]);
 
-  console.log(imageFiles)
 
   const handleFileSelect = async (event) => {
     const files = event.target.files[0];
@@ -59,7 +58,7 @@ const AddGaForm = ({row, addModal, setAddModal,refetch }) => {
         // handleUnexpectedStatus();
       }
     } catch (error) {
-      console.log(error);
+
     } finally {
       setLoading(false);
     }
@@ -76,8 +75,6 @@ const AddGaForm = ({row, addModal, setAddModal,refetch }) => {
           image:imageFiles[0],
           expiry_date:formattedDate(date),
         }
-
-        console.log(body)
         const id = row?.productid;
         await addGa1({id,body})
       }

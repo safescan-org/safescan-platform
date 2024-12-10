@@ -5,6 +5,7 @@ import AllCard from "../../Shared/modal/AllCard";
 import QRCodeModal from "../Admins/QRCodeModal";
 import AdminTableAction from "../Admins/AdminTableAction";
 import CustomTable3 from "../../Shared/table/CustomeTable3";
+import AdminInductionHistory from "../Admins/AdminInductionHistory";
 
 const InductionTableAdmin = ({ tableData, rowSelection, refetch }) => {
   const columns = [
@@ -96,6 +97,16 @@ const InductionTableAdmin = ({ tableData, rowSelection, refetch }) => {
       ),
     },
 
+    {
+      title: "Induction",
+      key: "id",
+      render: (row) => (
+        <div>
+          <AdminInductionHistory row={row} />
+        </div>
+      ),
+    },
+
     // {
     //   title: "Notes",
     //   key: "id",
@@ -166,7 +177,7 @@ const InductionTableAdmin = ({ tableData, rowSelection, refetch }) => {
       title: "Actions",
       key: "id",
       render: (row) => <AdminTableAction row={row} refetch={refetch} />,
-      fixed: 'right',
+      fixed: "right",
     },
   ];
 

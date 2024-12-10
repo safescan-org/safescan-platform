@@ -220,7 +220,7 @@ const QRCodeModal = ({ row, product = false }) => {
                 fileName="qr_code.png"
               />
 
-              <button
+              {/* <button
                 onClick={() =>
                   downloadFile(
                     `https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`
@@ -228,7 +228,7 @@ const QRCodeModal = ({ row, product = false }) => {
                 }
               >
                 ass
-              </button>
+              </button> */}
 
               <button
                 onClick={() => {

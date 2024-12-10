@@ -28,10 +28,6 @@ const Issues = () => {
     refetchOnMountOrArgChange: true,
   });
 
-
-  console.log(sortData)
-
-
   useEffect(() => {
     const updateData = data?.Items?.map((item) => ({
         key: item?.userid,

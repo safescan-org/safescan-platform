@@ -5,6 +5,7 @@ import AllCard from "../../Shared/modal/AllCard";
 import QRCodeModal from "../Admins/QRCodeModal";
 import WorkersTableAction from "../Workers/WorkersTableAction";
 import CustomTable3 from "../../Shared/table/CustomeTable3";
+import AdminInductionHistory from "../Admins/AdminInductionHistory";
 
 const InductionTableWorker = ({ tableData, rowSelection, refetch }) => {
   const columns = [
@@ -101,6 +102,17 @@ const InductionTableWorker = ({ tableData, rowSelection, refetch }) => {
     //   render: (row) => <Note row={row} refetch={refetch} />,
     //   width: "80px",
     // },
+
+    {
+      title: "Induction",
+      key: "id",
+      render: (row) => (
+        <div>
+          <AdminInductionHistory row={row} />
+        </div>
+      ),
+    },
+
     {
       title: "Strike Image",
       key: "id",

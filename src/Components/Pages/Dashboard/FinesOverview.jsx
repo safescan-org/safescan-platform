@@ -44,7 +44,7 @@ const FinesOverview = ({finesData}) => {
   const dateOccurrences = countSameDateOccurrences(finesData?.Items);
   const arrayOfObjects = convertToObjectArray(dateOccurrences);
 
-  // console.log("finesData====", dateOccurrences);
+
 
 
   const newData = [];
@@ -66,7 +66,7 @@ const FinesOverview = ({finesData}) => {
       }
   });
   
-  // console.log(newData);
+
   const data = newData?.slice(-getSlice);
 
   return (

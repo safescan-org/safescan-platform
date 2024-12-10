@@ -58,7 +58,6 @@ const Dashboard = () => {
     }
   },[path])
   
-  // console.log( workers)
   return (
     <>
       <BreadCrumb

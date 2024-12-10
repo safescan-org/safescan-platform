@@ -53,8 +53,6 @@ const PhoneModal = ({
     }
   }, [isSuccess, error, data]);
 
-  console.log("====otpData====", data);
-
   const handleChange = (value) => {
     if (value) {
       setPhone(value);
@@ -72,7 +70,6 @@ const PhoneModal = ({
       };
       setLastData(updateData);
       await otpVaryFy(updateData);
-      console.log(updateData);
     }
   };
 

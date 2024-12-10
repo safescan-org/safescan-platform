@@ -5,8 +5,6 @@ import { Icon } from '@iconify/react';
 const TopSection = ({issue,workers,admins,counters,warning_issues}) => {
 
 
-    console.log("cuntry=====",issue)
-
     const filterAdmin = admins?.filter((item)=>item?.is_active === true)
     const filterWorker = workers?.filter((item)=>item?.is_active === true)
     return (

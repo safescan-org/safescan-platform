@@ -9,7 +9,6 @@ const SuperAdminCustomerTop = ({data,isLoading}) => {
   const notApproved = data?.filter((item)=>item?.account_status==="pending")
   const data2 = data?.filter((item)=>item?.account_status==="rejected")
 
-// console.log(data2)
 
   let currentDate = new Date();
   var sevenDaysAgo = new Date(currentDate);
@@ -51,7 +50,6 @@ const  approvedData = countSameDateOccurrences(approved);
 const approvedUser = convertToObjectArray(approvedData);
 
 
-// console.log("today data======",todayDataGet(totalData))
 
 
 

@@ -101,7 +101,7 @@ const OtpModal = ({
             otp:verifyNumberData,
         }
 
-        // console.log(data)
+  
 
          await phoneChange(data)
     }

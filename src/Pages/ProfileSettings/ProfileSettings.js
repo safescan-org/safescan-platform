@@ -55,7 +55,6 @@ const ProfileSettings = () => {
         setLoading(false);
       }
     } catch (error) {
-      console.log(error);
       setLoading(false);
       toast.custom(<ErrorToast message={"please try again"} />);
     }

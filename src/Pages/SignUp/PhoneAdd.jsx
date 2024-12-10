@@ -35,8 +35,6 @@ const PhoneAdd = ({ username }) => {
     }
   }, [isSuccess, error, data]);
 
-  console.log("====otpData====", data);
-
   const handleChange = (value) => {
     if (value) {
       setPhone(value);
@@ -54,7 +52,6 @@ const PhoneAdd = ({ username }) => {
       };
       setLastData(updateData);
       await otpVaryFy(updateData);
-      console.log(updateData);
     }
   };
 

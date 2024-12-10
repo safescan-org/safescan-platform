@@ -1,11 +1,9 @@
 import React from "react";
 import CustomTable from "../../Shared/table/CustomTable";
-import { Icon } from "@iconify/react";
 import ProductsTableAction from "./ProductsTableAction";
 import CardModal from "../../Shared/modal/CardModal";
-import { category, formattedDate, formattedDate2 } from "../../../helper/jwt";
+import { category, formattedDate2 } from "../../../helper/jwt";
 import QRCodeModal from "../Admins/QRCodeModal";
-import ProductNote from "./ProductNote";
 import { Tooltip } from "antd";
 import GaForm from "./GaForm/GaForm";
 import Ga2Form from "./Ga2Form/Ga2Form";
@@ -70,9 +68,6 @@ const GA2 = (value)=>{
 
 const CategoryFun = ({value})=>{
   const filterData = category?.find((item)=>item?.value === value)
-
-  console.log("categoyry======",value)
-
   return(
     <span className=" text-[14px] font-normal text-info">{filterData?.category}</span>
   )

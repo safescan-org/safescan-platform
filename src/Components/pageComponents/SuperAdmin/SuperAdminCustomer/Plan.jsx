@@ -23,7 +23,7 @@ const Plan = ({ row,refetch,refetch1 }) => {
       setModal(false)
     }
     if (error) {
-      console.log( error);
+
       toast.custom(<ErrorToast message={error?.data.error || error?.data.message} />);
     }
   }, [isSuccess, error]);
@@ -33,7 +33,7 @@ const Plan = ({ row,refetch,refetch1 }) => {
       username: row?.username,
       plan: value,
     };
-    // console.log(data)
+
     const id = row?.userid;
     await plan({ id, data });
   };

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useGetInductionsHistoryQuery } from "../../../redux/features/inductions/InductionsApi";
 import InductionProfileView from "../Induction/InductionProfileView";
 
 const AdminInductionHistory = ({ row }) => {

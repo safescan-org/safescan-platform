@@ -15,8 +15,9 @@ const InductionProfileView = ({ row, setModalOpen, modalOPen }) => {
     `${row?.userid}?username=${row?.username}`,
     { refetchOnMountOrArgChange: true }
   );
-
-  console.log(data);
+  const checkInductionId = (incuid) => {
+    return data?.submitted_ids?.includes(incuid);
+  };
 
   return (
     <>
@@ -46,13 +47,17 @@ const InductionProfileView = ({ row, setModalOpen, modalOPen }) => {
           </div>
 
           <div className=" flex items-center justify-between px-5 pb-3">
-            <h2 className=" text-base font-semibold text-info">Total Inductions : {data?.inductions?.length}</h2>
-            <h2 className=" text-base font-semibold text-info">Submitted Inductions : {data?.submitted_ids?.length}</h2>
+            <h2 className=" text-base font-semibold text-info">
+              Total Inductions : {data?.inductions?.length ? data?.inductions?.length : 0}
+            </h2>
+            <h2 className=" text-base font-semibold text-info">
+              Submitted Inductions : {data?.submitted_ids?.length ? data?.submitted_ids?.length : 0}
+            </h2>
           </div>
 
           {isLoading ? (
             <div className=" w-full h-[200px] flex items-center justify-center">
-               <Loader2 />
+              <Loader2 />
             </div>
           ) : (
             <div className=" max-h-[65vh] overflow-y-scroll px-[20px]">
@@ -89,7 +94,11 @@ const InductionProfileView = ({ row, setModalOpen, modalOPen }) => {
                         </p>
                       </td>
                       <td className="p-3">
-                        {}
+                        {checkInductionId(item?.inductionid) ? (
+                          <span className=" bg-[#0AC53C] py-1 px-2 rounded-md text-white">Submitted</span>
+                        ) : (
+                          <span className=" bg-[#FF0000] py-1 px-2 rounded-md text-white">Unsubmitted</span>
+                        )}
                       </td>
                     </tr>
                   ))}

@@ -48,8 +48,6 @@ const ProductsEdit = ({ refetch, item, setModalOpen, modalOPen }) => {
     }
   }, [isSuccess, error]);
 
-  console.log(item)
-
   const {
     register,
     handleSubmit,

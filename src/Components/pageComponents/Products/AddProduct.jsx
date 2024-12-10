@@ -125,7 +125,6 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
           }
         );
 
-        console.log(response)
 
         if (response.status === 201) {
           // Handle success

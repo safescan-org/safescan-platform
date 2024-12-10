@@ -23,7 +23,6 @@ const RejectsTableAction = ({ row,refetch,refetch1,allrefecth }) => {
       allrefecth()
     }
     if (error) {
-      console.log( error);
       toast.custom(<ErrorToast message={error?.data.error || error?.data.message} />);
     }
   }, [isSuccess, error]);

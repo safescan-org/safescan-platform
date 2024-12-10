@@ -1,7 +1,7 @@
 {
   "name": "eldereue",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@ant-design/plots": "^1.2.5",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",

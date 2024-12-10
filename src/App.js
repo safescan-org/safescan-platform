@@ -20,8 +20,7 @@ import Customer from "./Pages/SuperAdmin/Customer/Customer";
 import "react-datepicker/dist/react-datepicker.css";
 import Issues from "./Pages/Issues/Issues";
 import InductionPage from "./Pages/Induction/InductionPage";
-import InductionAdmin from "./Pages/Induction/InductionAdmin";
-import InductionWorker from "./Pages/Induction/InductionWorker";
+
 
 function App() {
   return (

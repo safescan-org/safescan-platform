@@ -54,6 +54,31 @@ const QRCodeModal = ({ row, product = false }) => {
     }
   };
 
+  const qrCodeUrl = "https://scansafes3.s3.amazonaws.com/1714274569264-qr.png";
+
+
+  const downloadQRCode = async () => {
+    try {
+      const response = await fetch(qrCodeUrl, {
+        method: "GET",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch QR code.");
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "qrcode.png"; // Specify the downloaded file name
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading QR code:", error);
+    }
+  };
+
   // const captureAndDownloadImage = async () => {
   //   if (componentRef.current) {
   //     toPng(componentRef.current, { quality: 1.0 })
@@ -72,6 +97,15 @@ const QRCodeModal = ({ row, product = false }) => {
   //   link.href = dataUrl;
   //   link.click();
   // };
+
+  const downloadQRCodesss = () => {
+    const qrCodeUrl = "https://scansafes3.s3.amazonaws.com/1714274569264-qr.png";
+  
+    const a = document.createElement('a');
+    a.href = qrCodeUrl;
+    a.download = 'qrcode.png'; // Specify the file name
+    a.click();
+  };
 
   function downloadFile(url) {
     fetch(url)
@@ -134,6 +168,34 @@ const QRCodeModal = ({ row, product = false }) => {
     } else {
       console.error("Component not found!");
     }
+  };
+
+
+  const downloadQRCodeLast = async (qrLink) => {
+
+
+    console.log(qrLink)
+
+    try {
+      const response = await fetch("https://i.ibb.co.com/jgCyLy5/gallery-1-3.jpg", {
+        method: 'GET',
+        // mode:"no-cors"
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch QR code.');
+      }
+  
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'qrcode.png';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading QR code:', error);
+    }
   };
 
   return (
@@ -210,6 +272,7 @@ const QRCodeModal = ({ row, product = false }) => {
                 content={() => componentRef.current}
               />
 
+
               {/* <button className=" bg-[#FF4D4D]/20 flex items-center justify-center hover:bg-[#FF4D4D]/80 duration-300 w-[38px] h-[38px] rounded-[4px] font-medium text-[#FF4D4D] hover:text-white">
                 <Icon icon="lucide:trash-2" className=" text-[20px]" />
               </button> */}
@@ -222,8 +285,8 @@ const QRCodeModal = ({ row, product = false }) => {
 
               {/* <button
                 onClick={() =>
-                  downloadFile(
-                    `https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`
+                  downloadQRCodeLast(
+                    `/api/${row?.qrc_image}`
                   )
                 }
               >

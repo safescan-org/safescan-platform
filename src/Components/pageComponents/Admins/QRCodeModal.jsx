@@ -3,12 +3,12 @@ import { Modal, Tooltip } from "antd";
 import React, { useRef, useState } from "react";
 import ReactToPrint from "react-to-print";
 import ShareModal from "../../Shared/modal/ShareModal";
-import ImageDownloader from "../../Shared/DownloadQrc";
+// import ImageDownloader from "../../Shared/DownloadQrc";
 import { toPng } from "html-to-image";
-import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf";
-import { saveAs } from "file-saver";
-import axios from "axios";
+// import html2canvas from "html2canvas";
+// import { jsPDF } from "jspdf";
+// import { saveAs } from "file-saver";
+// import axios from "axios";
 
 const QRCodeModal = ({ row, product = false }) => {
   const [modalOPen, setModalOpen] = useState(false);
@@ -269,10 +269,11 @@ const QRCodeModal = ({ row, product = false }) => {
             </button>
           </div>
           <div
+            id="pdf-component"
             ref={componentRef}
-            className="w-full flex items-center bg-white flex-col justify-center py-7"
+            className="w-full  max-w-[300px] mx-auto flex-col justify-center py-7"
           >
-            <div className=" flex items-center gap-2 ">
+            <div className=" flex px-3 items-center gap-2 ">
               <img
                 src="/Images/logonewSort.png"
                 alt="logo"
@@ -290,7 +291,7 @@ const QRCodeModal = ({ row, product = false }) => {
               </div>
             </div>
 
-            <div id="pdf-component" className="">
+            <div className=" w-full flex items-center justify-center">
               <img
                 src={`https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`}
                 alt="qr-code"
@@ -321,7 +322,7 @@ const QRCodeModal = ({ row, product = false }) => {
               /> */}
 
               <button
-                onClick={()=>captureAndDownloadImage()}
+                onClick={() => captureAndDownloadImage()}
                 className=" bg-primary hover:bg-primary/80 flex items-center justify-center duration-300 w-[38px] h-[38px] rounded-[4px] text-[14px] font-medium text-white"
               >
                 <Icon

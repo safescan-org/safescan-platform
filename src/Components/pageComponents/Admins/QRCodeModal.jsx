@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Modal, Tooltip } from "antd";
+import { Modal, QRCode, Tooltip } from "antd";
 import React, { useRef, useState } from "react";
 import ReactToPrint from "react-to-print";
 import ShareModal from "../../Shared/modal/ShareModal";
@@ -58,14 +58,14 @@ const QRCodeModal = ({ row, product = false }) => {
   //   }
   // };
 
-  const captureAndDownloadImage = async () => {
+  const captureAndDownloadImage = async (name) => {
     if (componentRef.current) {
       try {
         // Use toPng to capture the component as a PNG
         const dataUrl = await toPng(componentRef.current, { quality: 1.0 });
         const link = document.createElement("a");
         link.href = dataUrl;
-        link.download = "qr-code.png";
+        link.download = `${name}.png`;
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -233,6 +233,15 @@ const QRCodeModal = ({ row, product = false }) => {
   //     }
   //   };
 
+  const qrData = {
+    admin_serial: row?.admin_serial,
+    company_serial: row?.company_serial,
+    userid: row?.userid,
+    productid: row?.productid,
+    usertype: row?.usertype,
+    username: row?.username,
+  };
+
   return (
     <>
       <Tooltip placement="topLeft" title="View QRC Code">
@@ -271,9 +280,9 @@ const QRCodeModal = ({ row, product = false }) => {
           <div
             id="pdf-component"
             ref={componentRef}
-            className="w-full  max-w-[300px] mx-auto flex-col justify-center py-7"
+            className="w-full mx-auto bg-white flex-col justify-center py-2"
           >
-            <div className=" flex px-3 items-center gap-2 ">
+            <div className=" flex max-w-[300px] mx-auto mb-2 items-center gap-2 ">
               <img
                 src="/Images/logonewSort.png"
                 alt="logo"
@@ -292,10 +301,17 @@ const QRCodeModal = ({ row, product = false }) => {
             </div>
 
             <div className=" w-full flex items-center justify-center">
-              <img
+              {/* <img
                 src={`https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`}
                 alt="qr-code"
                 className="w-[300px] h-[300px]"
+              /> */}
+
+              <QRCode
+                style={{ marginBottom: 10 }}
+                errorLevel={"H"}
+                size={300}
+                value={JSON.stringify(qrData)}
               />
             </div>
           </div>
@@ -322,7 +338,13 @@ const QRCodeModal = ({ row, product = false }) => {
               /> */}
 
               <button
-                onClick={() => captureAndDownloadImage()}
+                onClick={() =>
+                  captureAndDownloadImage(
+                    product
+                      ? `${row.product_name}`
+                      : `${row?.frist_name} ${row?.last_name}`
+                  )
+                }
                 className=" bg-primary hover:bg-primary/80 flex items-center justify-center duration-300 w-[38px] h-[38px] rounded-[4px] text-[14px] font-medium text-white"
               >
                 <Icon

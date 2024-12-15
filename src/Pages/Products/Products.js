@@ -18,12 +18,21 @@ const Products = () => {
   const [searchValue] = useDebounce(search, 1000);
   const [create, setCreate] = useState(false);
   const [sortData, setSortData] = useState([]);
+  const [manualLoading, setManualLoading] = useState(false);
 
   // -----------get all products-----------
 
   const { data, isLoading, refetch } = useGetProductsQuery(searchQuery, {
     refetchOnMountOrArgChange: true,
   });
+
+  const handleRefetch =  () => {
+    setManualLoading(true); // Start manual loading
+    refetch(); // Trigger the query refetch
+    setTimeout(() => {
+      setManualLoading(false); // Stop manual loading after 500ms
+    }, 500);
+  };
 
   useEffect(() => {
     const updateData = data?.map((item) => ({
@@ -80,8 +89,14 @@ const Products = () => {
                 <SectionHeading>Assets List </SectionHeading>
                 <div className="flex flex-col md:flex-row md:items-center gap-3">
                   <div className="">
-                    <button onClick={()=>sestSearchQuery("")} className=" text-dark-gray border-[1px] border-[#E1E9F8] rounded-[10px] w-full  py-[10px] px-5 flex items-center gap-2 text-[14px] font-medium">
-                      <Icon icon="ooui:reload" className="mt-[-1px]"/> Refresh
+                    <button
+                      onClick={() => {
+                        sestSearchQuery("");
+                        handleRefetch();
+                      }}
+                      className=" text-dark-gray border-[1px] border-[#E1E9F8] rounded-[10px] w-full  py-[10px] px-5 flex items-center gap-2 text-[14px] font-medium"
+                    >
+                      <Icon icon="ooui:reload" className="mt-[-1px]" /> Refresh
                     </button>
                   </div>
                   <SearchInput
@@ -96,11 +111,19 @@ const Products = () => {
                 </div>
               </div>
               <div>
-                <ProductsTable
-                  tableData={sortData}
-                  rowSelection={rowSelection}
-                  refetch={refetch}
-                />
+                {manualLoading ? (
+                  <>
+                    <Loader />
+                  </>
+                ) : (
+                  <>
+                    <ProductsTable
+                      tableData={sortData}
+                      rowSelection={rowSelection}
+                      refetch={refetch}
+                    />
+                  </>
+                )}
               </div>
             </div>
           </div>

@@ -182,7 +182,7 @@ body {
 
 .ant-table-tbody .ant-table-cell:first-child {
   padding-left: 16px !important;
-} 
+}
 
 #elderlyDatePicker .ant-picker-input > input {
   color: white !important;
@@ -905,4 +905,8 @@ body {
 .error-message {
   font-size: 14px;
   color: #ff5252; /* Red color */
+}
+
+.ant-qrcode {
+  padding: 0px !important;
 }

@@ -1,14 +1,14 @@
 import { Icon } from "@iconify/react";
-import { Modal, Tooltip } from "antd";
+import { Modal, QRCode, Tooltip } from "antd";
 import React, { useRef, useState } from "react";
 import ReactToPrint from "react-to-print";
 import ShareModal from "../../Shared/modal/ShareModal";
-import ImageDownloader from "../../Shared/DownloadQrc";
+// import ImageDownloader from "../../Shared/DownloadQrc";
 import { toPng } from "html-to-image";
-import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf";
-import { saveAs } from "file-saver";
-import axios from "axios";
+// import html2canvas from "html2canvas";
+// import { jsPDF } from "jspdf";
+// import { saveAs } from "file-saver";
+// import axios from "axios";
 
 const QRCodeModal = ({ row, product = false }) => {
   const [modalOPen, setModalOpen] = useState(false);
@@ -36,14 +36,12 @@ const QRCodeModal = ({ row, product = false }) => {
     }
   };
 
-
-
   // const downloadImage = async () => {
   //   const imageUrl = "https://scansafes3.s3.amazonaws.com/1714274569264-qr.png";
 
   //   try {
   //     const response = await axios.get(imageUrl, {
-  //       responseType: "blob", 
+  //       responseType: "blob",
   //     });
 
   //     const blob = new Blob([response.data], { type: response.data.type });
@@ -51,7 +49,7 @@ const QRCodeModal = ({ row, product = false }) => {
 
   //     const link = document.createElement("a");
   //     link.href = downloadUrl;
-  //     link.download = "qr.png"; 
+  //     link.download = "qr.png";
   //     link.click();
 
   //     URL.revokeObjectURL(downloadUrl);
@@ -60,27 +58,26 @@ const QRCodeModal = ({ row, product = false }) => {
   //   }
   // };
 
-  // const captureAndDownloadImage = async () => {
-  //   if (componentRef.current) {
-  //     try {
-  //       // Use toPng to capture the component as a PNG
-  //       const dataUrl = await toPng(componentRef.current, { quality: 1.0 });
-  //       const link = document.createElement("a");
-  //       link.href = dataUrl;
-  //       link.download = "captured-image.png";
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       link.remove();
-  //     } catch (error) {
-  //       console.error("Error capturing the component:", error);
-  //     }
-  //   } else {
-  //     console.error("Component ref is null.");
-  //   }
-  // };
+  const captureAndDownloadImage = async (name) => {
+    if (componentRef.current) {
+      try {
+        // Use toPng to capture the component as a PNG
+        const dataUrl = await toPng(componentRef.current, { quality: 1.0 });
+        const link = document.createElement("a");
+        link.href = dataUrl;
+        link.download = `${name}.png`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } catch (error) {
+        console.error("Error capturing the component:", error);
+      }
+    } else {
+      console.error("Component ref is null.");
+    }
+  };
 
   // const qrCodeUrl = "https://scansafes3.s3.amazonaws.com/1714274569264-qr.png";
-
 
   // const downloadQRCode = async () => {
   //   try {
@@ -125,7 +122,7 @@ const QRCodeModal = ({ row, product = false }) => {
 
   // const downloadQRCodesss = () => {
   //   const qrCodeUrl = "https://scansafes3.s3.amazonaws.com/1714274569264-qr.png";
-  
+
   //   const a = document.createElement('a');
   //   a.href = qrCodeUrl;
   //   a.download = 'qrcode.png'; // Specify the file name
@@ -191,53 +188,59 @@ const QRCodeModal = ({ row, product = false }) => {
   //   }
   // };
 
+  const downloadQRCodeLast = async (qrLink) => {
+    try {
+      const response = await fetch(qrLink, {
+        method: "GET",
+        // mode: "cors",
+      });
 
-  // const downloadQRCodeLast = async (qrLink) => {
-  //   try {
-  //     const response = await fetch("https://i.ibb.co.com/jgCyLy5/gallery-1-3.jpg", {
-  //       method: 'GET',
-  //       // mode:"no-cors"
-  //     });
-  
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch QR code.');
-  //     }
-  
-  //     const blob = await response.blob();
-  //     const url = window.URL.createObjectURL(blob);
-  //     const a = document.createElement('a');
-  //     a.href = url;
-  //     a.download = 'qrcode.png';
-  //     a.click();
-  //     window.URL.revokeObjectURL(url);
-  //   } catch (error) {
-  //     console.error('Error downloading QR code:', error);
-  //   }
-  // };
+      if (!response.ok) {
+        throw new Error("Failed to fetch QR code.");
+      }
 
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "qrcode.png";
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading QR code:", error);
+    }
+  };
 
+  //   const handleDownload = async () => {
+  //     try {
+  //       const response = await fetch(imageUrl);
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch image.");
+  //       }
+  //       const blob = await response.blob();
+  //       const url = URL.createObjectURL(blob);
 
-//   const handleDownload = async () => {
-//     try {
-//       const response = await fetch(imageUrl);
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch image.");
-//       }
-//       const blob = await response.blob();
-//       const url = URL.createObjectURL(blob);
+  //       const a = document.createElement("a");
+  //       a.href = url;
+  //       a.download = "QR-Code.png";
+  //       document.body.appendChild(a);
+  //       a.click();
 
-//       const a = document.createElement("a");
-//       a.href = url;
-//       a.download = "QR-Code.png";
-//       document.body.appendChild(a);
-//       a.click();
+  //       a.remove();
+  //       URL.revokeObjectURL(url);
+  //     } catch (error) {
+  //       console.error("Error downloading the image:", error);
+  //     }
+  //   };
 
-//       a.remove();
-//       URL.revokeObjectURL(url);
-//     } catch (error) {
-//       console.error("Error downloading the image:", error);
-//     }
-//   };
+  const qrData = {
+    admin_serial: row?.admin_serial,
+    company_serial: row?.company_serial,
+    userid: row?.userid,
+    productid: row?.productid,
+    usertype: row?.usertype,
+    username: row?.username,
+  };
 
   return (
     <>
@@ -274,8 +277,12 @@ const QRCodeModal = ({ row, product = false }) => {
               <Icon icon="material-symbols:close" />
             </button>
           </div>
-          <div className="w-full flex items-center flex-col justify-center py-7">
-            <div className=" flex items-center gap-2 ">
+          <div
+            id="pdf-component"
+            ref={componentRef}
+            className="w-full mx-auto bg-white flex-col justify-center py-2"
+          >
+            <div className=" flex max-w-[300px] mx-auto mb-2 items-center gap-2 ">
               <img
                 src="/Images/logonewSort.png"
                 alt="logo"
@@ -283,7 +290,7 @@ const QRCodeModal = ({ row, product = false }) => {
               />
               <div>
                 <h3 className=" text-[18px] font-bold text-[rk-grey-900#1B2559] mb-[-6px]">
-                  Safe Scan
+                  Scan Safe
                 </h3>
                 <h4 className=" text-[#68769F] font-medium text-base">
                   {product
@@ -293,11 +300,18 @@ const QRCodeModal = ({ row, product = false }) => {
               </div>
             </div>
 
-            <div ref={componentRef} id="pdf-component" className="">
-              <img
+            <div className=" w-full flex items-center justify-center">
+              {/* <img
                 src={`https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`}
                 alt="qr-code"
                 className="w-[300px] h-[300px]"
+              /> */}
+
+              <QRCode
+                style={{ marginBottom: 10 }}
+                errorLevel={"H"}
+                size={300}
+                value={JSON.stringify(qrData)}
               />
             </div>
           </div>
@@ -313,20 +327,37 @@ const QRCodeModal = ({ row, product = false }) => {
                 content={() => componentRef.current}
               />
 
-
               {/* <button className=" bg-[#FF4D4D]/20 flex items-center justify-center hover:bg-[#FF4D4D]/80 duration-300 w-[38px] h-[38px] rounded-[4px] font-medium text-[#FF4D4D] hover:text-white">
                 <Icon icon="lucide:trash-2" className=" text-[20px]" />
               </button> */}
             </div>
             <div className="flex items-center gap-3">
-              <ImageDownloader
+              {/* <ImageDownloader
                 imageUrl={`https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`}
                 fileName="qr_code.png"
-              />
+              /> */}
+
+              <button
+                onClick={() =>
+                  captureAndDownloadImage(
+                    product
+                      ? `${row.product_name}`
+                      : `${row?.frist_name} ${row?.last_name}`
+                  )
+                }
+                className=" bg-primary hover:bg-primary/80 flex items-center justify-center duration-300 w-[38px] h-[38px] rounded-[4px] text-[14px] font-medium text-white"
+              >
+                <Icon
+                  icon="lucide:arrow-down-to-line"
+                  className=" text-[25px]"
+                />
+              </button>
 
               {/* <button
                 onClick={() =>
-                  downloadImage()
+                  captureAndDownloadImage(
+                    `https://scansafes3.s3.amazonaws.com/${row?.qrc_image}`
+                  )
                 }
               >
                 ass

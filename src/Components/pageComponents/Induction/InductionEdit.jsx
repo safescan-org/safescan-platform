@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import SuccessToast from "../../Shared/Toast/SuccessToast";
 import ErrorToast from "../../Shared/Toast/ErrorToast";
 import axios from "axios";
+import { Progress } from "antd";
 
 const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
   const [nextDate, setNextDate] = useState(new Date());
@@ -24,6 +25,7 @@ const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
   const [workerOpen, setWorkerOpen] = useState(false);
   const [selectedWorker, setSelectedWorker] = useState([]);
   const { token } = useSelector((state) => state.auth);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const [updateInductions, { isLoading, isSuccess, error }] =
     useUpdateInductionsMutation();
@@ -86,7 +88,11 @@ const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
 
     // Validation: Check if a file is selected
     if (!getImage) {
-      alert("No file selected. Please choose a file to upload.");
+      toast.custom(
+        <ErrorToast
+          message={"No file selected. Please choose a file to upload."}
+        />
+      );
       return;
     }
 
@@ -94,18 +100,24 @@ const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
     const allowedExtensions = ["xlsx", "pdf", "txt", "ppt", "docx"];
     const fileExtension = getImage.name.split(".").pop().toLowerCase();
     if (!allowedExtensions.includes(fileExtension)) {
-      alert(
-        "Invalid file type. Please upload a valid file (xlsx, pdf, txt, ppt, docx)."
+      toast.custom(
+        <ErrorToast
+          message={
+            "Invalid file type. Please upload a valid file (xlsx, pdf, txt, ppt, docx)."
+          }
+        />
       );
       return;
     }
 
-    // Validation: Restrict file size (e.g., 5MB)
-    const maxSizeInMB = 5;
+    // Validation: Restrict file size (e.g., 10MB)
+    const maxSizeInMB = 10;
     const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
     if (getImage.size > maxSizeInBytes) {
-      alert(
-        `File size exceeds the limit of ${maxSizeInMB}MB. Please upload a smaller file.`
+      toast.custom(
+        <ErrorToast
+          message={`File size exceeds the limit of ${maxSizeInMB}MB. Please upload a smaller file.`}
+        />
       );
       return;
     }
@@ -122,6 +134,12 @@ const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
+          onUploadProgress: (progressEvent) => {
+            const percentage = Math.round(
+              (progressEvent.loaded / progressEvent.total) * 100
+            );
+            setUploadProgress(percentage);
+          },
         }
       );
 
@@ -134,15 +152,23 @@ const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
         };
 
         setFileData((pre) => [...pre, data]);
-
         setFileTitle("");
+        setUploadProgress(0); // Reset progress
       } else {
-        alert("File upload failed. Please try again.");
+        toast.custom(
+          <ErrorToast message={"File upload failed. Please try again."} />
+        );
       }
     } catch (error) {
       console.error("Error during file upload:", error);
-      alert("An error occurred while uploading the file.");
+      toast.custom(
+        <ErrorToast message={"An error occurred while uploading the file."} />
+      );
     }
+  };
+
+  const emptyFile = () => {
+    toast.custom(<ErrorToast message={"First add the file title"} />);
   };
 
   const deleteFile = (title) => {
@@ -219,29 +245,59 @@ const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
                   value={fileTitle}
                   onChange={(e) => setFileTitle(e.target.value)}
                 />
-                <label
-                  type="button"
-                  htmlFor="otp222"
-                  className=" bg-[#CCDBFF] flex items-center justify-center rounded-r-lg h-[40px] px-3"
-                >
-                  <Icon
-                    icon="icon-park-outline:file-addition-one"
-                    className=" text-[#2D396B] font-bold text-[20px]"
-                  />
-                  <input
-                    id="otp222"
-                    type="file"
-                    accept=".xlsx,.pdf,.txt,.ppt,.docx"
-                    onChange={uploadeCover}
-                    className=" hidden"
-                  />
-                </label>
+                {fileTitle === "" ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={emptyFile}
+                      className=" bg-[#CCDBFF] flex items-center justify-center rounded-r-lg h-[40px] px-3"
+                    >
+                      <Icon
+                        icon="icon-park-outline:file-addition-one"
+                        className=" text-[#2D396B] font-bold text-[20px]"
+                      />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <label
+                      type="button"
+                      htmlFor="otp222"
+                      className=" bg-[#CCDBFF] flex items-center justify-center rounded-r-lg h-[40px] px-3"
+                    >
+                      <Icon
+                        icon="icon-park-outline:file-addition-one"
+                        className=" text-[#2D396B] font-bold text-[20px]"
+                      />
+                      <input
+                        id="otp222"
+                        type="file"
+                        accept=".xlsx,.pdf,.txt,.ppt,.docx"
+                        onChange={uploadeCover}
+                        className=" hidden"
+                      />
+                    </label>
+                  </>
+                )}
               </div>
+            </div>
+
+            <div>
+              {uploadProgress > 0 && (
+                <div style={{ marginTop: "10px" }}>
+                  <Progress
+                    percent={uploadProgress}
+                    status="active"
+                    strokeColor={{ from: "#108ee9", to: "#87d068" }}
+                    strokeWidth={17}
+                  ></Progress>
+                </div>
+              )}
             </div>
 
             <div className=" flex flex-col gap-3 mt-2">
               {fileData.map((item, index) => (
-                <div>
+                <div key={index}>
                   <h2 className=" text-base text-dark-gray">{item.title}</h2>
                   <div className=" w-full bg-[#CCDBFF52] flex items-center justify-between h-[40px] rounded-[10px] px-4">
                     <h3 className=" text-sm font-normal">{item?.file}</h3>
@@ -266,7 +322,7 @@ const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
             type={"url"}
             register={register("video", {
               required: {
-                value: true,
+                value: false,
                 message: "Please enter Video link",
               },
             })}

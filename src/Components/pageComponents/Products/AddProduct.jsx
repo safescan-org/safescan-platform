@@ -102,7 +102,7 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
       formData.append("category", data?.category);
       formData.append("sub_category", data?.sub_category);
       formData.append("form_name", data?.form_name);
-      formData.append('workers', JSON.stringify(selectedWorker));
+      formData.append("workers", JSON.stringify(selectedWorker));
       if (active === "passed") {
         formData.append("passed", "true");
       }
@@ -124,7 +124,6 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
             },
           }
         );
-
 
         if (response.status === 201) {
           // Handle success
@@ -390,7 +389,7 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
 
           <CustomInput
             label={"Asset Number"}
-            type={"text"}
+            type={"number"}
             register={register("product_number", {
               required: {
                 value: true,

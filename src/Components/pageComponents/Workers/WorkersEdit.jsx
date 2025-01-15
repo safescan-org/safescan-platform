@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import CustomModal from "../../Shared/modal/CustomModal";
 import CustomInput from "../../Shared/input/CustomInput";
-import { useApproveUserMutation, useWorkerPermissionMutation } from "../../../redux/features/admin/adminApi";
+import {
+  useApproveUserMutation,
+  useWorkerPermissionMutation,
+} from "../../../redux/features/admin/adminApi";
 import toast from "react-hot-toast";
 import SuccessToast from "../../Shared/Toast/SuccessToast";
 import ErrorToast from "../../Shared/Toast/ErrorToast";
@@ -12,7 +15,7 @@ const WorkersEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
   const [active, setActive] = useState("due");
   const [getFine, setGetFine] = useState();
   const [fineError, setFineError] = useState(false);
-  const [permison,setPermision]=useState()
+  const [permison, setPermision] = useState();
 
   const {
     register,
@@ -25,8 +28,8 @@ const WorkersEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
   const [approveUser, { isLoading, isSuccess, error }] =
     useApproveUserMutation();
 
-    const [workerPermission,{isSuccess:isSuccess2,error:error2}] = useWorkerPermissionMutation()
- 
+  const [workerPermission, { isSuccess: isSuccess2, error: error2 }] =
+    useWorkerPermissionMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -43,9 +46,8 @@ const WorkersEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
     }
   }, [isSuccess, error]);
 
-
-  useEffect(()=>{
-    if(isSuccess2){
+  useEffect(() => {
+    if (isSuccess2) {
       refetch();
       const message = "Worker Assets Testing Permission update";
       toast.custom(<SuccessToast message={message} />);
@@ -57,8 +59,7 @@ const WorkersEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
       );
       refetch();
     }
-
-  },[isSuccess2,error2])
+  }, [isSuccess2, error2]);
 
   const handelFine = (e) => {
     const value = e.target.value;
@@ -87,17 +88,16 @@ const WorkersEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
       setValue("ice_name", item?.ice_name);
       setValue("ice_number", item?.ice_number);
       setValue("medical_condition", item?.medical_condition);
-      setPermision(item?.worker_permission)
+      setPermision(item?.worker_permission);
       // setValue('minor', item?.minor);
       // setValue('major', item?.major);
       // setValue('dismissal', item?.dismissal);
     }
-  }, [item,isSuccess]);
+  }, [item, isSuccess]);
 
-
-  const handelChange = async(e)=>{
+  const handelChange = async (e) => {
     const value = e.target.value;
-    setPermision(value)
+    setPermision(value);
 
     // const body={
     //   username:item?.username,
@@ -105,11 +105,20 @@ const WorkersEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
     // }
     // const id = item?.userid;
     // await workerPermission({ id, body });
-  }
-
-
+  };
 
   const onSubmit = async (data) => {
+    const minor = Number(data.minor);
+    const major = Number(data.major);
+    const dismissal = Number(data.dismissal);
+
+    // Validate L1, L2, L3 to ensure non-negative numbers
+    if (minor < 0 || major < 0 || dismissal < 0) {
+      toast.custom(
+        <ErrorToast message={"L1, L2, and L3 values cannot be negative."} />
+      );
+      return;
+    }
     const body = {
       username: item?.username,
       frist_name: data.first_name,
@@ -126,7 +135,7 @@ const WorkersEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
       major: Number(data.major),
       dismissal: Number(data.dismissal),
       is_active: true,
-      worker_permission:permison==="true" ? true : false
+      worker_permission: permison === "true" ? true : false,
     };
     const id = item?.userid;
     await approveUser({ id, body });
@@ -293,7 +302,6 @@ const WorkersEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
           >
             <option value={true}>Yes</option>
             <option value={false}>No</option>
-
           </select>
           <span className=" text-[25px] absolute text-[#47548C] top-[10px] right-[8px]">
             <Icon icon="mingcute:down-line" />

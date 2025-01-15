@@ -119,8 +119,8 @@ const StrikeModal = ({ modalOPen, setModalOpen, item, refetch, title }) => {
       username: item?.username,
       note: data?.note,
       strike_name: active,
-      company_name:data?.company_name,
-      strike_resson:data?.strike_resson,
+      company_name: data?.company_name,
+      strike_resson: data?.strike_resson,
       images: imageFiles,
     };
 
@@ -301,38 +301,39 @@ const StrikeModal = ({ modalOPen, setModalOpen, item, refetch, title }) => {
               </label>
             </div>
 
-            <div className="select-container">
-              <label for="last" className="label-text">
+            <div className="select-container mt-5">
+              <label
+                htmlFor="strike_reason"
+                className="mb-1.5 font-medium text-base text-dark-gray"
+              >
                 Reason for Warning
               </label>
               <div className="w-full relative">
                 <select
-                  className="custom-select"
-                  name=""
-                  id=""
+                  id="strike_reason"
+                  className={`py-[15px] px-[14px] rounded-[10px] w-full text-sm font-medium outline-none border-[1px] focus:border-primary ${
+                    errors.strike_resson ? "border-red-500" : "border-[#A3AED0]"
+                  }`}
                   {...register("strike_resson", {
-                    required: true,
-                    message: "Please Select strike_resson",
+                    required: "Please select a reason for the warning.",
                   })}
                 >
-                  <option defaultChecked>Select Reason</option>
+                  <option value="">Select Reason</option>
                   {safetyIssues.map((item, index) => (
                     <option key={index} value={item?.value}>
                       {item?.title}
                     </option>
                   ))}
                 </select>
-                <span className=" text-[25px] absolute text-[#47548C] top-[10px] right-[8px]">
+                <span className="text-[25px] absolute text-[#47548C] top-[10px] right-[8px]">
                   <Icon icon="mingcute:down-line" />
                 </span>
               </div>
-              <label className="error-label">
-                {errors?.strike_resson?.type === "required" && (
-                  <span className="error-message">
-                    {errors?.strike_resson?.message}
-                  </span>
-                )}
-              </label>
+              {errors?.strike_resson && (
+                <span className="text-sm mt-1 text-red-500">
+                  {errors.strike_resson.message}
+                </span>
+              )}
             </div>
 
             <CustomInput

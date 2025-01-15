@@ -295,7 +295,7 @@ const QRCodeModal = ({ row, product = false }) => {
                 <h4 className=" text-[#68769F] font-medium text-base">
                   {product
                     ? `${row.product_name}`
-                    : `Employee : ${row?.frist_name} ${row?.last_name}`}
+                    : `Admin : ${row?.frist_name} ${row?.last_name}`}
                 </h4>
               </div>
             </div>

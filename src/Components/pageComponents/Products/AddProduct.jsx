@@ -261,35 +261,38 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
 
         <div className="select-container">
           <label
-            htmlFor="last"
+            htmlFor="form_name"
             className="mb-1.5 font-medium text-base text-dark-gray"
           >
             Select GA Form
           </label>
-          <div className=" w-full relative">
+          <div className="w-full relative">
             <select
+              id="form_name"
               className="custom-select"
-              name=""
-              id=""
               {...register("form_name", {
-                required: true,
-                message: "Please Select GA Form",
+                required: {
+                  value: true,
+                  message: "Please select a GA Form",
+                },
               })}
             >
-              <option defaultChecked>Select Product GA Form</option>
+              <option value="" defaultValue>
+                Select Product GA Form
+              </option>
               {dropDown.map((item, index) => (
                 <option key={index} value={item?.value}>
                   {item?.title}
                 </option>
               ))}
             </select>
-            <span className=" text-[25px] absolute text-[#47548C] top-[10px] right-[8px]">
+            <span className="text-[25px] absolute text-[#47548C] top-[10px] right-[8px]">
               <Icon icon="mingcute:down-line" />
             </span>
           </div>
           <label className="label">
             {errors?.form_name?.type === "required" && (
-              <span className=" text-sm mt-1 text-red-500">
+              <span className="text-sm mt-1 text-red-500">
                 {errors?.form_name?.message}
               </span>
             )}
@@ -297,36 +300,40 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
         </div>
 
         <div className="select-container">
-          <label for="last" className="label-text">
+          <label htmlFor="category" className="label-text">
             Select Main-Category
           </label>
           <div className="w-full relative">
             <select
+              id="category"
               className="custom-select"
-              name=""
-              id=""
               {...register("category", {
-                required: true,
-                message: "Please Select Main-Category",
+                required: {
+                  value: true,
+                  message: "Please Select Main-Category", // Validation error message
+                },
               })}
               onChange={(e) => setSubList(e.target.value)}
             >
-              <option defaultChecked>Select Category</option>
+              <option value="" defaultChecked>
+                Select Category
+              </option>
               {category.map((item, index) => (
                 <option key={index} value={item?.value}>
                   {item?.category}
                 </option>
               ))}
             </select>
-            <span className=" text-[25px] absolute text-[#47548C] top-[10px] right-[8px]">
+            <span className="text-[25px] absolute text-[#47548C] top-[10px] right-[8px]">
               <Icon icon="mingcute:down-line" />
             </span>
           </div>
-          <label className="error-label">
-            {errors?.category?.type === "required" && (
-              <span className="error-message">{errors?.category?.message}</span>
-            )}
-          </label>
+          {/* Validation Error Display */}
+          {errors?.category && (
+            <span className="text-red-500 text-sm mt-1">
+              {errors.category.message}
+            </span>
+          )}
         </div>
 
         <div className="flex flex-col items-start  mt-3">

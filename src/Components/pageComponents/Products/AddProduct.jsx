@@ -71,7 +71,7 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
     },
     {
       title: "GA2 Netting",
-      value: "netting",
+      value: "ga3_netting",
     },
   ];
 

@@ -185,7 +185,7 @@ const WorkersTable = ({ tableData, rowSelection, refetch }) => {
     {
       title: "QRC Code",
       key: "id",
-      render: (row) => <QRCodeModal row={row} />,
+      render: (row) => <QRCodeModal row={row} Name={"Employee"} />,
     },
     {
       title: "Actions",

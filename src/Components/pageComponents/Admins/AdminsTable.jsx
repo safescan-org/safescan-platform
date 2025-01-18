@@ -176,7 +176,7 @@ const AdminsTable = ({ tableData, rowSelection, refetch }) => {
     {
       title: "QRC Code",
       key: "id",
-      render: (row) => <QRCode row={row} />,
+      render: (row) => <QRCode row={row} Name={"Admin"} />,
     },
     {
       title: "Actions",

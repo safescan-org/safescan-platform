@@ -10,7 +10,7 @@ import { toPng } from "html-to-image";
 // import { saveAs } from "file-saver";
 // import axios from "axios";
 
-const QRCodeModal = ({ row, product = false }) => {
+const QRCodeModal = ({ Name, row, product = false }) => {
   const [modalOPen, setModalOpen] = useState(false);
   const componentRef = useRef();
   const [share, setShare] = useState(false);
@@ -295,7 +295,7 @@ const QRCodeModal = ({ row, product = false }) => {
                 <h4 className=" text-[#68769F] font-medium text-base">
                   {product
                     ? `${row.product_name}`
-                    : `Admin : ${row?.frist_name} ${row?.last_name}`}
+                    : `${Name} : ${row?.frist_name} ${row?.last_name}`}
                 </h4>
               </div>
             </div>

@@ -26,6 +26,7 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
   const [selectedWorker, setSelectedWorker] = useState([]);
   const { token } = useSelector((state) => state.auth);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [assignError, setAssignError] = useState(false);
 
   const [createInductions, { isLoading, error, isSuccess }] =
     useCreateInductionsMutation();
@@ -63,6 +64,14 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
   }, [modalOPen, reset]);
 
   const onSubmit = async (values) => {
+    // Validation: Ensure at least one admin or worker is assigned
+    if (selectedAdmin.length === 0 && selectedWorker.length === 0) {
+      setAssignError(true); // Show error message
+      return;
+    } else {
+      setAssignError(false); // Clear error if valid
+    }
+
     const data = {
       title: values?.title,
       deadline: formattedNextDate,
@@ -207,13 +216,13 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
               htmlFor="otp"
               className="mb-1.5 font-medium text-base text-dark-gray"
             >
-              Daedline
+              Deadline
             </label>
             <div id="pppp" className=" w-full ">
               <DatePicker
                 selected={nextDate}
                 onChange={(date) => setNextDate(date)}
-                placeholderText="Calender"
+                placeholderText="Calendar"
                 className="w-full border border-gray-300 rounded-[10px] pl-2 pr-8 py-2.5 "
               />
             </div>
@@ -334,7 +343,6 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
 
             <div className=" flex items-center gap-5 w-full mt-2">
               <button
-                // to={`/admin/induction-admin/${123}`}
                 type="button"
                 onClick={() => setAdminOpen(true)}
                 className=" w-full flex border  items-center gap-1 justify-center h-[40px] rounded-[10px] font-medium text-[16px]"
@@ -361,6 +369,11 @@ const AddInduction = ({ refetch, setModalOpen, modalOPen }) => {
             </div>
           </div>
         </div>
+        {assignError && (
+          <span className="text-sm text-red-500 mt-1">
+            Please assign at least one Admin or Worker.
+          </span>
+        )}
       </CustomModal2>
 
       <CustomModal3

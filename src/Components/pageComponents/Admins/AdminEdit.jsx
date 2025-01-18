@@ -70,9 +70,20 @@ const AdminEdit = ({ item, setModalOpen, refetch, modalOPen }) => {
       // setValue("dismissal", item?.dismissal);
       setGetFine();
     }
-  }, [item,isSuccess]);
+  }, [item, isSuccess]);
 
   const onSubmit = async (data) => {
+    const minor = Number(data.minor);
+    const major = Number(data.major);
+    const dismissal = Number(data.dismissal);
+
+    // Validate L1, L2, L3 to ensure non-negative numbers
+    if (minor < 0 || major < 0 || dismissal < 0) {
+      toast.custom(
+        <ErrorToast message={"L1, L2, and L3 values cannot be negative."} />
+      );
+      return;
+    }
     const body = {
       username: item?.username,
       frist_name: data.frist_name,
@@ -94,7 +105,11 @@ const AdminEdit = ({ item, setModalOpen, refetch, modalOPen }) => {
     const id = item?.userid;
     if (item.fine_status - item?.outstanding_fines < getFine) {
       toast.custom(
-        <ErrorToast message={"Your amount is more than fine due! Please enter valid amount"} />
+        <ErrorToast
+          message={
+            "Your amount is more than fine due! Please enter valid amount"
+          }
+        />
       );
     } else {
       await approveUser({ id, body });
@@ -227,21 +242,21 @@ const AdminEdit = ({ item, setModalOpen, refetch, modalOPen }) => {
 
       <div className=" flex items-center gap-4 justify-between">
         <CustomInput
-          label={"Minor"}
+          label={"L1"}
           type={"number"}
           register={register("minor")}
           placeholder={item?.minor}
           required={false}
         />
         <CustomInput
-          label={"Major"}
+          label={"L2"}
           type={"number"}
           register={register("major")}
           placeholder={item?.major}
           required={false}
         />
         <CustomInput
-          label={"Dismissal"}
+          label={"L3"}
           type={"number"}
           register={register("dismissal")}
           placeholder={item?.dismissal}

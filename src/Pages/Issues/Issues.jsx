@@ -15,13 +15,10 @@ import IssuesTable from "../../Components/pageComponents/Issues/IssuesTable";
 const Issues = () => {
   const [search, setSearch] = React.useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const  {user} = useSelector((state)=>state.auth)
+  const { user } = useSelector((state) => state.auth);
   const [searchQuery, sestSearchQuery] = useState("");
   const [searchValue] = useDebounce(search, 1000);
-  const [sortData,setSortData] = useState([])
-
-
-
+  const [sortData, setSortData] = useState([]);
 
   // ========data fecthing=========
   const { data, isLoading, refetch } = useGetReportsQuery(searchQuery, {
@@ -30,14 +27,14 @@ const Issues = () => {
 
   useEffect(() => {
     const updateData = data?.Items?.map((item) => ({
-        key: item?.userid,
-        ...item,
-      }));
-    const update = updateData?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      key: item?.userid,
+      ...item,
+    }));
+    const update = updateData?.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
     setSortData(update);
   }, [data]);
-
-
 
   const generateQuery = (searchValue) => {
     const queryParams = [];
@@ -48,11 +45,10 @@ const Issues = () => {
     return queryParams.join("&");
   };
 
-
   useEffect(() => {
     const query = generateQuery(searchValue);
     sestSearchQuery(`company_serial=${user?.company_serial}${query}`);
-  }, [searchValue,user]);
+  }, [searchValue, user]);
 
   // ======table Select function=======
   const onSelectChange = (newSelectedRowKeys) => {
@@ -64,7 +60,6 @@ const Issues = () => {
   };
 
   // ======add a key for selected=======
-
 
   return (
     <>
@@ -82,14 +77,14 @@ const Issues = () => {
             <SearchInput
               search={search}
               setSearch={setSearch}
-              placeholder="Search Admin Profile"
+              placeholder="Search Reported Issues"
             />
           </div>
           <div className="w-full">
             {isLoading ? (
               <div className=" w-full h-[450px] flex items-center justify-center">
                 {" "}
-                  <Loader />
+                <Loader />
               </div>
             ) : (
               <>

@@ -124,31 +124,36 @@ const AdminsTable = ({ tableData, rowSelection, refetch }) => {
       render: (row) => <AllCard row={row} refetch={refetch} />,
     },
     {
-      title: "Minor",
+      title: "L1",
       key: "minor",
       render: (row) => (
-        <span className=" text-[14px] font-normal text-info">{row?.minor}</span>
+        <span className="text-[14px] font-normal text-info">
+          {row?.minor >= 0 ? row?.minor : 0}
+        </span>
       ),
       sorter: (a, b) => a?.minor - b?.minor,
     },
     {
-      title: "Major",
+      title: "L2",
       key: "major",
       render: (row) => (
-        <span className=" text-[14px] font-normal text-info">{row?.major}</span>
+        <span className="text-[14px] font-normal text-info">
+          {row?.major >= 0 ? row?.major : 0}
+        </span>
       ),
       sorter: (a, b) => a.major - b.major,
     },
     {
-      title: "Dismissal",
+      title: "L3",
       key: "dismissal",
       render: (row) => (
-        <span className=" text-[14px] font-normal text-info">
-          {row.dismissal}
+        <span className="text-[14px] font-normal text-info">
+          {row?.dismissal >= 0 ? row?.dismissal : 0}
         </span>
       ),
       sorter: (a, b) => a?.dismissal - b?.dismissal,
     },
+
     {
       title: "Fine Status",
       key: "fine",
@@ -171,7 +176,7 @@ const AdminsTable = ({ tableData, rowSelection, refetch }) => {
     {
       title: "QRC Code",
       key: "id",
-      render: (row) => <QRCode row={row} />,
+      render: (row) => <QRCode row={row} Name={"Admin"} />,
     },
     {
       title: "Actions",

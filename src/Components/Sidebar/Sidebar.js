@@ -99,12 +99,11 @@ const Sidebar = () => {
     },
   ];
 
-
-  const logout=()=>{
-    sessionStorage.removeItem("user")
-    sessionStorage.removeItem("token")
+  const logout = () => {
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("token");
     window.location.reload();
-  }
+  };
 
   const activeStyle = {
     color: "#1B2559",
@@ -118,7 +117,7 @@ const Sidebar = () => {
         className="flex flex-col justify-between  bg-white  h-[100vh] sticky top-0"
       >
         <div className=" flex items-center px-5 py-2 justify-between">
-          <Link to={'/admin/dashboard'}  className="h-[80px] flex  items-center">
+          <Link to={"/admin/dashboard"} className="h-[80px] flex  items-center">
             {" "}
             <img
               style={{

@@ -9,18 +9,26 @@ import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import SuccessToast from "../Toast/SuccessToast";
 import ErrorToast from "../Toast/ErrorToast";
+import server_url from "../../../config";
 
-const CardEdit = ({setModalOpen,refetch, editModal, setEditModal, imageItem, row, imgIndex }) => {
+const CardEdit = ({
+  setModalOpen,
+  refetch,
+  editModal,
+  setEditModal,
+  imageItem,
+  row,
+  imgIndex,
+}) => {
   const { token } = useSelector((state) => state.auth);
   // const getNextDate = formattedDate(imageItem?.expiry_date);
   const [file, setFile] = useState();
   const [nextDate, setNextDate] = useState();
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-  useEffect(()=>{
-    setNextDate(imageItem?.expiry_date)
-  },[imageItem])
-
+  useEffect(() => {
+    setNextDate(imageItem?.expiry_date);
+  }, [imageItem]);
 
   // function convertToDateObject(dateString) {
   //   return new Date(dateString);
@@ -29,27 +37,27 @@ const CardEdit = ({setModalOpen,refetch, editModal, setEditModal, imageItem, row
   // const dateString = "2024-02-29";
   // const dateObject = convertToDateObject(dateString);
 
-
-
   const uploadImage = async () => {
-    setLoading(true)
+    setLoading(true);
     const data = {
       image: file,
       type: "cards",
       index: imgIndex,
-      expiry_date: nextDate ? nextDate :imageItem?.expiry_date,
+      expiry_date: nextDate ? nextDate : imageItem?.expiry_date,
       username: row?.username,
     };
     try {
       const formData = new FormData();
       // formData.append("files", data.image);
-      if(file){formData.append("files", data.image);}
+      if (file) {
+        formData.append("files", data.image);
+      }
       formData.append("index", data.index);
       formData.append("expiry_date", data.expiry_date);
       formData.append("username", data.username);
 
       const response = await axios.patch(
-        `https://q3vvxu6li2.execute-api.us-east-1.amazonaws.com/api/v1/users/edit-cards/${row?.userid}`,
+        `${server_url}/api/v1/users/edit-cards/${row?.userid}`,
         formData,
         {
           headers: {
@@ -59,16 +67,18 @@ const CardEdit = ({setModalOpen,refetch, editModal, setEditModal, imageItem, row
         }
       );
 
-      if(response?.status===200){
-        refetch()
-        setModalOpen(true)
-        setEditModal(false)
+      if (response?.status === 200) {
+        refetch();
+        setModalOpen(true);
+        setEditModal(false);
         toast.custom(<SuccessToast message={"card update"} />);
-        setLoading(false)
+        setLoading(false);
       }
     } catch (error) {
-      toast.custom(<ErrorToast message={error?.data.error || error?.data.message} />)
-      setLoading(false)
+      toast.custom(
+        <ErrorToast message={error?.data.error || error?.data.message} />
+      );
+      setLoading(false);
     }
   };
 
@@ -148,7 +158,11 @@ const CardEdit = ({setModalOpen,refetch, editModal, setEditModal, imageItem, row
             <div className="flex items-center gap-3">
               <CustomButton onClick={() => uploadImage()}>
                 <span className="flex items-center text-white gap-2">
-                {loading? <span>Loading...</span> : <span>Save Changes</span>}
+                  {loading ? (
+                    <span>Loading...</span>
+                  ) : (
+                    <span>Save Changes</span>
+                  )}
                 </span>
               </CustomButton>
               <button

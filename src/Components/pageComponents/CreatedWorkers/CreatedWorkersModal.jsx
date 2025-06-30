@@ -14,9 +14,10 @@ import PasswordInput from "../../Shared/input/PasswordInput";
 import Unverified from "../../Shared/modal/Unverified";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";
+import server_url from "../../../config";
 
 const CreatedWorkersModal = ({ modalOPen, refetch, setModalOpen }) => {
-  const { token,search } = useSelector((state) => state.auth);
+  const { token, search } = useSelector((state) => state.auth);
   const [success, setSuccess] = useState(false);
   const [type, setType] = useState("email");
   const [shareText, setShareText] = useState("");
@@ -34,6 +35,7 @@ const CreatedWorkersModal = ({ modalOPen, refetch, setModalOpen }) => {
   const [phone, setPhone] = useState("");
   const [error1, setError] = useState(false);
   const [createUser, { isLoading, error, isSuccess }] = useCreateUserMutation();
+  const [phoneNumber, setPhoneNumber] = useState(null);
 
   useEffect(() => {
     if (isSuccess) {
@@ -46,9 +48,9 @@ const CreatedWorkersModal = ({ modalOPen, refetch, setModalOpen }) => {
       setShareText("");
     }
     if (error) {
-        toast.custom(
-          <ErrorToast message={error?.data.error || error?.data.message} />
-        );
+      toast.custom(
+        <ErrorToast message={error?.data.error || error?.data.message} />
+      );
     }
   }, [isSuccess, error]);
 
@@ -60,8 +62,6 @@ const CreatedWorkersModal = ({ modalOPen, refetch, setModalOpen }) => {
   };
 
   const onSubmit = (data) => {
-
-
     if (search?.is_verified) {
       const bodyData = {
         username: data?.username,
@@ -71,7 +71,7 @@ const CreatedWorkersModal = ({ modalOPen, refetch, setModalOpen }) => {
       };
       createUser(bodyData);
       setShareMsg(bodyData);
-    }else{
+    } else {
       setVeryfyModal(true);
       setModalOpen(false);
     }
@@ -91,7 +91,7 @@ const CreatedWorkersModal = ({ modalOPen, refetch, setModalOpen }) => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://q3vvxu6li2.execute-api.us-east-1.amazonaws.com/api/v1/users/shared?email=${shareText}&username=${shareMsg?.username}&password=${shareMsg?.password}`,
+          `${server_url}/users/shared?email=${shareText}&username=${shareMsg?.username}&password=${shareMsg?.password}`,
           {
             // mode: 'no-cors',
             headers: {
@@ -150,7 +150,9 @@ const CreatedWorkersModal = ({ modalOPen, refetch, setModalOpen }) => {
       }
     }
   };
-
+  function handlePhoneNumberChange(e) {
+    setPhoneNumber(e);
+  }
   return (
     <div>
       {/* ---------create worker modal----------------- */}
@@ -197,6 +199,7 @@ const CreatedWorkersModal = ({ modalOPen, refetch, setModalOpen }) => {
                   error={errors.username}
                   placeholder={"Create username"}
                 />
+
                 <PasswordInput
                   label={"Password"}
                   type={"password"}

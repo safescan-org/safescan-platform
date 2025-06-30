@@ -21,7 +21,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import Issues from "./Pages/Issues/Issues";
 import InductionPage from "./Pages/Induction/InductionPage";
 
-
 function App() {
   return (
     <>

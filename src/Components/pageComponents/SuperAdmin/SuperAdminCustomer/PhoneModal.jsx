@@ -6,9 +6,7 @@ import CustomButton from "../../../Shared/CustomButton";
 import toast from "react-hot-toast";
 import SuccessToast from "../../../Shared/Toast/SuccessToast";
 import ErrorToast from "../../../Shared/Toast/ErrorToast";
-import {
-  useOtpVaryFyMutation,
-} from "../../../../redux/features/admin/adminApi";
+import { useOtpVaryFyMutation } from "../../../../redux/features/admin/adminApi";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";
 import OtpModal from "./OtpModal";
@@ -21,7 +19,7 @@ const PhoneModal = ({
   allrefecth,
   username,
   phoneNumber,
-  logout=false
+  logout = false,
 }) => {
   const [phone, setPhone] = useState("");
   const [sentOpt, setSentOtp] = useState(false);
@@ -30,25 +28,24 @@ const PhoneModal = ({
   const [error1, setError] = useState(false);
   const { handleSubmit } = useForm();
 
-
-  useEffect(()=>{
-    if(phoneNumber){
-      setPhone(phoneNumber)
+  useEffect(() => {
+    if (phoneNumber) {
+      setPhone(phoneNumber);
     }
-  },[phoneNumber])
+  }, [phoneNumber]);
 
   const [otpVaryFy, { isLoading, isSuccess, error, data }] =
     useOtpVaryFyMutation();
   useEffect(() => {
     if (isSuccess) {
-      const message = `Send otp your phone! OTP=${data?.user?.otp}`;
+      const message = `OTP Sent Successfully!`;
       toast.custom(<SuccessToast message={message} />);
       setSentOtp(true);
       setOldData(data);
     }
     if (error) {
       toast.custom(
-        <ErrorToast message={error?.data.error || error?.data.message} />
+        <ErrorToast message={error?.data?.error || error?.data?.message} />
       );
     }
   }, [isSuccess, error, data]);
@@ -65,7 +62,7 @@ const PhoneModal = ({
       setError(true);
     } else {
       const updateData = {
-        username: username,
+        otp_for: "login",
         phone: phone,
       };
       setLastData(updateData);

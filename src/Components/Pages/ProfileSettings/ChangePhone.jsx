@@ -18,7 +18,7 @@ const ChangePhone = ({ modalOPen, setModalOpen, refetch }) => {
   const [lastData, setLastData] = useState();
   const [phone, setPhone] = useState("");
   const [error1, setError] = useState(false);
-  const [oldData,setOldData] = useState()
+  const [oldData, setOldData] = useState();
   const [phoneChange, { isLoading, isSuccess, error, data }] =
     usePhoneChangeMutation();
 
@@ -31,19 +31,19 @@ const ChangePhone = ({ modalOPen, setModalOpen, refetch }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      const message = `Send OTP your Phone! OTP=${data?.user?.otp}`;
+      const message = `Sent OTP to your Phone!`;
       toast.custom(<SuccessToast message={message} />);
       setModalOpen(false);
       setOtp(true);
       reset();
-      setOldData(data)
+      setOldData(data);
     }
     if (error) {
       toast.custom(
         <ErrorToast message={error?.data.error || error?.data.message} />
       );
     }
-  }, [isSuccess, error,data]);
+  }, [isSuccess, error, data]);
 
   const handleChange = (value) => {
     if (value) {
@@ -53,15 +53,13 @@ const ChangePhone = ({ modalOPen, setModalOpen, refetch }) => {
   };
 
   const onSubmit = async (data) => {
-  
-      const body={
-        phone:phone,
-        password:data?.password
-      }
+    const body = {
+      phone: phone,
+      password: data?.password,
+    };
     setLastData(body);
     await phoneChange(body);
   };
-
 
   return (
     <>

@@ -53,14 +53,13 @@ export const authApi = apiSlice.injectEndpoints({
     }),
     otpSend: builder.mutation({
       query: (data) => ({
-        url: "user/forgot-password",
-        method: "PATCH",
+        url: "user/send-otp",
+        method: "POST",
         body: data,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-    
           dispatch(
             addOtp({
               otpData: result?.data,
@@ -78,8 +77,20 @@ export const authApi = apiSlice.injectEndpoints({
         body: body,
       }),
     }),
+    setNewPassword: builder.mutation({
+      query: (body) => ({
+        url: "user/set-password",
+        method: "PATCH",
+        body: body,
+      }),
+    }),
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useOtpSendMutation,useUpdatePasswordMutation } =
-  authApi;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useOtpSendMutation,
+  useSetNewPasswordMutation,
+  useUpdatePasswordMutation,
+} = authApi;

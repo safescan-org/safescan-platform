@@ -10,14 +10,15 @@ import toast from "react-hot-toast";
 import { useAddGa1Mutation } from "../../../../redux/features/admin/adminApi";
 import SuccessToast from "../../../Shared/Toast/SuccessToast";
 import { formattedDate } from "../../../../helper/jwt";
+import server_url from "../../../../config";
 
-const AddGaForm = ({row, addModal, setAddModal,refetch }) => {
+const AddGaForm = ({ row, addModal, setAddModal, refetch }) => {
   const [date, setDate] = useState();
   const [imageFiles, setImageFiles] = useState();
   const { token } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
 
-  const [addGa1,{isLoading,error,isSuccess}] = useAddGa1Mutation()
+  const [addGa1, { isLoading, error, isSuccess }] = useAddGa1Mutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -25,8 +26,8 @@ const AddGaForm = ({row, addModal, setAddModal,refetch }) => {
       toast.custom(<SuccessToast message={message} />);
       refetch();
       setAddModal(false);
-      setImageFiles()
-      setDate()
+      setImageFiles();
+      setDate();
     }
     if (error) {
       toast.custom(
@@ -35,7 +36,6 @@ const AddGaForm = ({row, addModal, setAddModal,refetch }) => {
     }
   }, [isSuccess, error]);
 
-
   const handleFileSelect = async (event) => {
     const files = event.target.files[0];
     setLoading(true);
@@ -43,7 +43,7 @@ const AddGaForm = ({row, addModal, setAddModal,refetch }) => {
     formData.append(`files`, files);
     try {
       const response = await axios.post(
-        `https://q3vvxu6li2.execute-api.us-east-1.amazonaws.com/api/v1/uploads`,
+        `${server_url}/api/v1/uploads`,
         formData,
         {
           headers: {
@@ -58,29 +58,23 @@ const AddGaForm = ({row, addModal, setAddModal,refetch }) => {
         // handleUnexpectedStatus();
       }
     } catch (error) {
-
     } finally {
       setLoading(false);
     }
   };
 
-
-  const handelSubmit = async()=>{
-      if(!imageFiles || !date){
-        toast.custom(
-          <ErrorToast message={"Please add date and image"} />
-        );
-      }else{
-        const body = {
-          image:imageFiles[0],
-          expiry_date:formattedDate(date),
-        }
-        const id = row?.productid;
-        await addGa1({id,body})
-      }
-  }
-
-
+  const handelSubmit = async () => {
+    if (!imageFiles || !date) {
+      toast.custom(<ErrorToast message={"Please add date and image"} />);
+    } else {
+      const body = {
+        image: imageFiles[0],
+        expiry_date: formattedDate(date),
+      };
+      const id = row?.productid;
+      await addGa1({ id, body });
+    }
+  };
 
   return (
     <div>
@@ -134,7 +128,7 @@ const AddGaForm = ({row, addModal, setAddModal,refetch }) => {
                     id="id"
                     type="file"
                     accept="image/*"
-                    onChange={(e)=>handleFileSelect(e)}
+                    onChange={(e) => handleFileSelect(e)}
                     className=" hidden"
                   />
                 </label>
@@ -151,13 +145,13 @@ const AddGaForm = ({row, addModal, setAddModal,refetch }) => {
                 type={"date"}
                 defaultValue={date}
                 className="w-full border-none outline-none py-2 px-4"
-                onChange={(e)=>setDate(e.target.value)}
+                onChange={(e) => setDate(e.target.value)}
               />
             </div>
             <div className="flex items-center gap-3">
               <CustomButton onClick={() => handelSubmit()}>
                 <span className="flex items-center text-white gap-2">
-                  {isLoading ? "Loading..." :"Add Card"}
+                  {isLoading ? "Loading..." : "Add Card"}
                 </span>
               </CustomButton>
               <button

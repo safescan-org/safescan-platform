@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react'
-import ErrorToast from './Toast/ErrorToast';
-import SuccessToast from './Toast/SuccessToast';
-import toast from 'react-hot-toast';
-import { useOtpSendMutation } from '../../redux/features/auth/authApi';
+import React, { useEffect } from "react";
+import ErrorToast from "./Toast/ErrorToast";
+import SuccessToast from "./Toast/SuccessToast";
+import toast from "react-hot-toast";
+import { useOtpSendMutation } from "../../redux/features/auth/authApi";
 
-const ResentOtp2 = ({data}) => {
-    const [otpSend, { isLoading, isSuccess, error, data:otpData }] =useOtpSendMutation();
+const ResentOtp2 = ({ data }) => {
+  const [otpSend, { isLoading, isSuccess, error, data: otpData }] =
+    useOtpSendMutation();
 
   useEffect(() => {
     if (isSuccess) {
-      const message = `Send otp your phone! OTP=${otpData?.otp}`;
+      const message = `OTP Resend Successfully!`;
       toast.custom(<SuccessToast message={message} />);
     }
     if (error) {
@@ -17,11 +18,10 @@ const ResentOtp2 = ({data}) => {
         <ErrorToast message={error?.data.error || error?.data.message} />
       );
     }
-  }, [isSuccess, error,otpData]);
+  }, [isSuccess, error, otpData]);
 
   const onSubmit = async () => {
-      await otpSend(data);
-  
+    await otpSend(data);
   };
 
   return (
@@ -32,13 +32,15 @@ const ResentOtp2 = ({data}) => {
           type="button"
           disabled={isLoading}
           onClick={() => onSubmit()}
-          className={`font-bold underline ${isLoading ? " text-gray-500" : "text-primary "}`}
+          className={`font-bold underline ${
+            isLoading ? " text-gray-500" : "text-primary "
+          }`}
         >
           Click to resend
         </button>
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default ResentOtp2
+export default ResentOtp2;

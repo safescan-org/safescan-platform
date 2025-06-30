@@ -1,16 +1,16 @@
-
 import React from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { format } from 'timeago.js';
+import { format } from "timeago.js";
+import server_url from "../../config";
 
 const Notification = ({ data, handleSeeAll, refetch }) => {
-  const {  token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
 
   const updateNotifaction = async (id) => {
     try {
       const response = await axios.get(
-        `https://q3vvxu6li2.execute-api.us-east-1.amazonaws.com/api/v1/notifications/${id}`,
+        `${server_url}/api/v1/notifications/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

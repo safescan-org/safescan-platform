@@ -6,8 +6,9 @@ import toast from "react-hot-toast";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import Loader2 from "../../Shared/Loader2";
+import server_url from "../../../config";
 
-const Profile = ({data,refetch}) => {
+const Profile = ({ data, refetch }) => {
   const { token } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +24,7 @@ const Profile = ({data,refetch}) => {
       formData.append("username", data?.username);
 
       const response = await axios.post(
-        `https://q3vvxu6li2.execute-api.us-east-1.amazonaws.com/api/v1/users/image-upload/${data?.userid}`,
+        `${server_url}/users/image-upload/${data?.userid}`,
         formData,
         {
           headers: {
@@ -39,7 +40,6 @@ const Profile = ({data,refetch}) => {
       } else {
         setLoading(false);
       }
-
     } catch (error) {
       toast.custom(<ErrorToast message={"please try again"} />);
       setLoading(false);
@@ -49,7 +49,7 @@ const Profile = ({data,refetch}) => {
     <div className="-mt-10 relative">
       {loading ? (
         <div className="w-[100px] h-[100px] pt-6 bg-white shadow-lg rounded-full ">
-            <Loader2 />
+          <Loader2 />
         </div>
       ) : (
         <>

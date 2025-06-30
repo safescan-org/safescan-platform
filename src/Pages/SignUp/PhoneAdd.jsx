@@ -11,14 +11,16 @@ import "react-phone-input-2/lib/bootstrap.css";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 
-const PhoneAdd = ({ username }) => {
+const PhoneAdd = ({ number = "", userName = "" }) => {
   const [phone, setPhone] = useState("");
   const [sentOpt, setSentOtp] = useState(false);
   const [lastData, setLastData] = useState();
   const [oldData, setOldData] = useState();
   const [error1, setError] = useState(false);
   const { handleSubmit } = useForm();
-
+  useEffect(() => {
+    setPhone(number);
+  }, []);
   const [otpVaryFy, { isLoading, isSuccess, error, data }] =
     useOtpVaryFyMutation();
   useEffect(() => {
@@ -47,10 +49,10 @@ const PhoneAdd = ({ username }) => {
       setError(true);
     } else {
       const updateData = {
-        username: username,
-        phone: phone,
+        // username: username,
+        phone: number,
+        otp_for: "login",
       };
-      setLastData(updateData);
       await otpVaryFy(updateData);
     }
   };
@@ -69,8 +71,8 @@ const PhoneAdd = ({ username }) => {
             </button>
           </div>
           <OtpForm
-            oldData={oldData}
-            lastData={lastData}
+            oldData={number}
+            lastData={{ username: userName }}
             setOldData={setOldData}
           />
         </>
@@ -79,10 +81,10 @@ const PhoneAdd = ({ username }) => {
           <div className="w-full px-[50px] my-16">
             <div className="mb-[50px]">
               <h1 className="text-dark-gray text-[28px] font-bold">
-                Add Phone
+                Verify Phone Number
               </h1>
               <p className="text-normal text-base text-info">
-                Please Fill Those Information Bellow To Create an Account.
+                Please Verify Your Phone Number To Create an Account.
               </p>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -97,13 +99,13 @@ const PhoneAdd = ({ username }) => {
                   country="gb"
                   onlyCountries={["gb", "ie"]}
                   enableSearch={false}
-                  value={phone}
+                  value={number}
                   inputProps={{
                     name: "phone",
                     required: true,
                     autoFocus: false,
                   }}
-                  onChange={handleChange}
+                  // onChange={handleChange}
                   containerStyle={{
                     borderRadius: "5px",
                     padding: "5px",
@@ -127,7 +129,7 @@ const PhoneAdd = ({ username }) => {
               </div>
               <div className="mt-6 w-full">
                 <CustomButton className={"w-full"}>
-                  {isLoading ? <p>Loading...</p> : <p>Submit</p>}
+                  {isLoading ? <p>Loading...</p> : <p>Send OTP</p>}
                 </CustomButton>
               </div>
               <p className="text-center text-info text-sm font-medium mt-4">

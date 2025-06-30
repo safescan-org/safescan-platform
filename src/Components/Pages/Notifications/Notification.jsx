@@ -1,32 +1,25 @@
-
 import React from "react";
 import { useSelector } from "react-redux";
-import { format } from 'timeago.js';
-
+import { format } from "timeago.js";
+import server_url from "../../../config";
 import axios from "axios";
 
-const Notification = ({ data,refetch }) => {
-  const {  token } = useSelector((state) => state.auth);
+const Notification = ({ data, refetch }) => {
+  const { token } = useSelector((state) => state.auth);
 
-  const updateNotifaction = async(id)=>{
+  const updateNotifaction = async (id) => {
     try {
-      const response = await axios.get(
-        `https://q3vvxu6li2.execute-api.us-east-1.amazonaws.com/api/v1/notifications/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${server_url}/notifications/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response?.status === 200) {
         refetch();
       } else {
-
       }
-    } catch (error) {
-      
-    }
-  }
+    } catch (error) {}
+  };
 
   return (
     <div className="h-[80vh]  overflow-y-auto">
@@ -35,7 +28,7 @@ const Notification = ({ data,refetch }) => {
           {data.map((notifi, index) => (
             <div
               key={index}
-              onClick={()=>updateNotifaction(notifi?.notificationid)}
+              onClick={() => updateNotifaction(notifi?.notificationid)}
               className="flex  gap-2 items-center cursor-pointer border-b border-gray-100 py-[18px] w-full "
             >
               {/* <div
@@ -71,7 +64,9 @@ const Notification = ({ data,refetch }) => {
                   <p className="text-xs font-medium text-info/80">
                     {format(notifi?.created_at)}
                   </p>
-                  {notifi.is_read===false&& <span className='w-2 mb-1 h-2 mt-1 rounded-full bg-primary'></span>}
+                  {notifi.is_read === false && (
+                    <span className="w-2 mb-1 h-2 mt-1 rounded-full bg-primary"></span>
+                  )}
                 </div>
               </div>
             </div>

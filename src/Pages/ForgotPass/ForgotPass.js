@@ -13,6 +13,7 @@ import { Icon } from "@iconify/react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";
 import ResentOtp2 from "../../Components/Shared/ResentOtp2";
+import { useVerifyOtpMutation } from "../../redux/features/admin/adminApi";
 
 const ForgotPass = ({ length = 4, onOtpSubmit = () => {} }) => {
   const [test, setTest] = useState(false);
@@ -20,6 +21,7 @@ const ForgotPass = ({ length = 4, onOtpSubmit = () => {} }) => {
   const { otpData } = useSelector((state) => state.auth);
   const [otpphone, setOtpPhone] = useState();
   const [phone, setPhone] = useState("");
+  const [OTPToken, setOTPToken] = useState("");
   const [error2, setError] = useState(false);
   const navigate = useNavigate();
   // ------------otp------------
@@ -37,10 +39,10 @@ const ForgotPass = ({ length = 4, onOtpSubmit = () => {} }) => {
     otpSend,
     { isLoading: isLoading1, isSuccess: isSuccess1, error: error1 },
   ] = useOtpSendMutation();
-
+  const [verifyOtp, { isLoading, isSuccess, error }] = useVerifyOtpMutation();
   useEffect(() => {
     if (isSuccess1) {
-      const message = `send otp this phone number! OTP=${otpData?.otp}`;
+      const message = `OTP Sent Successfully!`;
       toast.custom(<SuccessToast message={message} />);
       setGetUserPass(true);
     }
@@ -50,13 +52,32 @@ const ForgotPass = ({ length = 4, onOtpSubmit = () => {} }) => {
       );
     }
   }, [isSuccess1, error1]);
+  useEffect(() => {
+    if (isSuccess) {
+      console.log(isSuccess);
+
+      const message = `OTP Verified Successfully!`;
+      toast.custom(<SuccessToast message={message} />);
+      setTest(true);
+    }
+    if (error) {
+      toast.custom(
+        <ErrorToast
+          message={
+            error?.data?.error ||
+            error?.data?.message ||
+            "Failed to verify OTP, Please Try Again!"
+          }
+        />
+      );
+    }
+  }, [isSuccess, error]);
 
   useEffect(() => {
     if (inputRefs.current[0]) {
       inputRefs.current[0].focus();
     }
   }, []);
-
 
   const handleChange2 = (value) => {
     if (value) {
@@ -106,25 +127,33 @@ const ForgotPass = ({ length = 4, onOtpSubmit = () => {} }) => {
   };
   // --------end otp-------------
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const verifyNumberData = Object.values(otp).join("");
-    if (verifyNumberData !== otpData?.otp) {
-      toast.custom(<ErrorToast message={"otp not match"} />);
-    } else {
-      setTest(true);
-    }
+    // if (verifyNumberData !== otpData?.otp) {
+    //   toast.custom(<ErrorToast message={"otp not match"} />);
+    // } else {
+    //   setTest(true);
+    // }
+    const data = {
+      phone: phone,
+      otp: verifyNumberData,
+    };
+    const res = await verifyOtp(data);
+    setOTPToken(res?.data?.token);
   };
 
   const handleUserPass = async (data) => {
+    console.log(data);
+
     if (!phone) {
       setError(true);
     } else {
-        const body = {
-          username:data?.username,
-          phone:phone
-        }
-        setOtpPhone(body);
-        await otpSend(body);
+      const body = {
+        phone: phone,
+        otp_for: "forgot_password",
+      };
+      setOtpPhone(body);
+      await otpSend(body);
     }
   };
 
@@ -155,7 +184,7 @@ const ForgotPass = ({ length = 4, onOtpSubmit = () => {} }) => {
                 </div>
                 <form onSubmit={handleSubmit(handleUserPass)}>
                   <div className="mb-2">
-                    <CustomInput
+                    {/* <CustomInput
                       label={"Username"}
                       type={"text"}
                       register={register("username", {
@@ -166,7 +195,7 @@ const ForgotPass = ({ length = 4, onOtpSubmit = () => {} }) => {
                       })}
                       error={errors.lastName}
                       placeholder={"Enter Username"}
-                    />
+                    /> */}
                     <div className=" flex items-start flex-col justify-between py-3">
                       <label
                         htmlFor=""
@@ -195,7 +224,7 @@ const ForgotPass = ({ length = 4, onOtpSubmit = () => {} }) => {
                           fontSize: "16px",
                           paddingLeft: "50px",
                           outline: "none",
-                          border:"1px solid rgb(231, 228, 228)",
+                          border: "1px solid rgb(231, 228, 228)",
                           borderRadius: "10px",
                         }}
                       />
@@ -280,7 +309,7 @@ const ForgotPass = ({ length = 4, onOtpSubmit = () => {} }) => {
                           );
                         })}
                       </div>
-                      <ResentOtp2 data={otpphone}/>
+                      <ResentOtp2 data={otpphone} />
                       <div className="mt-6 w-full">
                         <CustomButton className={"w-full"}>
                           <p>Verify OTP</p>
@@ -315,7 +344,7 @@ const ForgotPass = ({ length = 4, onOtpSubmit = () => {} }) => {
           ) : (
             <>
               {/* ------------create new pass------------------ */}
-              <CreateNewPass />
+              <CreateNewPass token={OTPToken} />
             </>
           )}
         </>

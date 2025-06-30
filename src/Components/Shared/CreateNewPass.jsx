@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import CustomButton from "../../Components/Shared/CustomButton";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { useSelector } from "react-redux";
-import { useUpdatePasswordMutation } from "../../redux/features/auth/authApi";
+import {
+  useSetNewPasswordMutation,
+  useUpdatePasswordMutation,
+} from "../../redux/features/auth/authApi";
 import toast from "react-hot-toast";
 import SuccessToast from "./Toast/SuccessToast";
 import ErrorToast from "./Toast/ErrorToast";
 
-const CreateNewPass = () => {
+const CreateNewPass = ({ token }) => {
   const { otpData } = useSelector((state) => state.auth);
   const [showpass, setShowpass] = useState(false);
   const [showrepass, setShowrepass] = useState(false);
@@ -21,14 +24,14 @@ const CreateNewPass = () => {
     formState: { errors },
   } = useForm();
 
-  const [updatePassword, { isSuccess, isLoading, error }] =
-    useUpdatePasswordMutation();
+  const [setNewPassword, { isSuccess, isLoading, error }] =
+    useSetNewPasswordMutation();
 
   useEffect(() => {
     if (isSuccess) {
       const message = "password update success";
       toast.custom(<SuccessToast message={message} />);
-      navigate("/")
+      navigate("/");
     }
     if (error) {
       toast.custom(
@@ -36,16 +39,18 @@ const CreateNewPass = () => {
       );
     }
   }, [isSuccess, error]);
+  console.log(otpData);
 
-  const onSubmit = async(data) => {
+  const onSubmit = async (data) => {
     const body = {
-      username: otpData?.username,
-      phone: otpData?.phone,
-      otp: otpData?.otp,
+      // username: otpData?.username,
+      // phone: otpData?.phone,
+      // otp: otpData?.otp,
+      token: token,
       password: data.password,
       confirm_password: data.confirm_password,
     };
-    await updatePassword(body)
+    await setNewPassword(body);
   };
   return (
     <>
@@ -101,12 +106,12 @@ const CreateNewPass = () => {
                     </div>
                   </div>
                   <label className="label">
-                  {error?.password?.type === "required" && (
-                    <span className=" text-sm mt-1 text-red-500">
-                      {error?.password?.message}
-                    </span>
-                  )}
-                </label>
+                    {error?.password?.type === "required" && (
+                      <span className=" text-sm mt-1 text-red-500">
+                        {error?.password?.message}
+                      </span>
+                    )}
+                  </label>
                 </div>
                 <div className="mb-2">
                   <div className="flex flex-col items-start w-full mt-5 relative">
@@ -149,20 +154,22 @@ const CreateNewPass = () => {
                     </div>
                   </div>
                   <label className="label">
+                    {errors?.confirm_password?.message && (
+                      <p className="text-error mt-1">
+                        Your passwords does not match!
+                      </p>
+                    )}
+                  </label>
+                </div>
                 {errors?.confirm_password?.message && (
                   <p className="text-error mt-1">
                     Your passwords does not match!
                   </p>
                 )}
-                </label>
-                </div>
-                {errors?.confirm_password?.message && (
-              <p className="text-error mt-1">Your passwords does not match!</p>
-            )}
               </div>
               <div className="mt-6 w-full">
                 <CustomButton className={"w-full"}>
-                 {isLoading ? <p>Loading...</p> : <p>Create Password</p>}
+                  {isLoading ? <p>Loading...</p> : <p>Create Password</p>}
                 </CustomButton>
               </div>
             </form>

@@ -72,7 +72,7 @@ export const adminApi = apiSlice.injectEndpoints({
       }),
     }),
     deleteProductCardImage: builder.mutation({
-      query: ({id,body}) => ({
+      query: ({ id, body }) => ({
         url: `products/delete-product-image/${id}`,
         method: "PATCH",
         body: body,
@@ -119,7 +119,7 @@ export const adminApi = apiSlice.injectEndpoints({
       }),
     }),
     imageDelete: builder.mutation({
-      query: ( body ) => ({
+      query: (body) => ({
         url: `users/delete-cards`,
         method: "PATCH",
         body: body,
@@ -131,19 +131,19 @@ export const adminApi = apiSlice.injectEndpoints({
         method: "POST",
         body: body,
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       }),
     }),
     updateNote: builder.mutation({
-      query: ({id,body}) => ({
+      query: ({ id, body }) => ({
         url: `users/update-notes-2/${id}`,
         method: "PATCH",
         body: body,
       }),
     }),
     newnote: builder.mutation({
-      query: ({id,body}) => ({
+      query: ({ id, body }) => ({
         url: `note/${id}`,
         method: "PATCH",
         body: body,
@@ -163,6 +163,34 @@ export const adminApi = apiSlice.injectEndpoints({
       }),
     }),
     otpVaryFy: builder.mutation({
+      query: (body) => ({
+        url: `user/send-otp`,
+        method: "POST",
+        body: body,
+      }),
+    }),
+    getPaymentMethods: builder.mutation({
+      query: (body) => ({
+        url: `payment-method`,
+        method: "POST",
+        body: body,
+      }),
+    }),
+    setPassword: builder.mutation({
+      query: (body) => ({
+        url: `user/set-password`,
+        method: "PATCH",
+        body: body,
+      }),
+    }),
+    verifyOtp: builder.mutation({
+      query: (body) => ({
+        url: `fp-otp-verify`,
+        method: "PATCH",
+        body: body,
+      }),
+    }),
+    verifyOtpLogin: builder.mutation({
       query: (body) => ({
         url: `otp-verify`,
         method: "PATCH",
@@ -202,8 +230,14 @@ export const adminApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getStripeProducts: builder.query({
+      query: (query) => ({
+        url: `stripe-products?username=${query}`,
+        method: "GET",
+      }),
+    }),
     workerPermission: builder.mutation({
-      query: ({id,body}) => ({
+      query: ({ id, body }) => ({
         url: `users/${id}/permission`,
         method: "PATCH",
         body: body,
@@ -217,24 +251,29 @@ export const {
   useGetAdminQuery,
   useGetWorkerQuery,
   useCreateUserMutation,
+  useGetStripeProductsQuery,
   useApproveUserMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,
   useGetProfileQuery,
   useGetProductsQuery,
   useDeleteProductMutation,
+  useSetPasswordMutation,
   useUpdateProductMutation,
   useGetCountersQuery,
   useGetNotificationsQuery,
   useUpdateNotificationsQuery,
   useImageDeleteMutation,
   useDeleteProductCardImageMutation,
+  useGetPaymentMethodsMutation,
   useAddProductMutation,
-  useGetFinesQuery, 
+  useGetFinesQuery,
   useUpdateNoteMutation,
   useNewnoteMutation,
   usePhoneChangeMutation,
+  useVerifyOtpLoginMutation,
   useOtpVaryFyMutation,
+  useVerifyOtpMutation,
   useStrikesUserMutation,
   useAddGa1Mutation,
   useDeleteGa1Mutation,

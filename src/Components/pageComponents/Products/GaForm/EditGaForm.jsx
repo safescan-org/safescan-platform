@@ -10,14 +10,22 @@ import toast from "react-hot-toast";
 import { useAddGa1Mutation } from "../../../../redux/features/admin/adminApi";
 import SuccessToast from "../../../Shared/Toast/SuccessToast";
 import ErrorToast from "../../../Shared/Toast/ErrorToast";
+import server_url from "../../../../config";
 
-const EditGaForm = ({ row,singalData, refetch, index, addModal, setAddModal }) => {
+const EditGaForm = ({
+  row,
+  singalData,
+  refetch,
+  index,
+  addModal,
+  setAddModal,
+}) => {
   const [date, setDate] = useState();
   const [imageFiles, setImageFiles] = useState();
   const { token } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
 
-  const [addGa1,{isLoading,error,isSuccess}] = useAddGa1Mutation()
+  const [addGa1, { isLoading, error, isSuccess }] = useAddGa1Mutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -25,8 +33,8 @@ const EditGaForm = ({ row,singalData, refetch, index, addModal, setAddModal }) =
       toast.custom(<SuccessToast message={message} />);
       refetch();
       setAddModal(false);
-      setImageFiles()
-      setDate()
+      setImageFiles();
+      setDate();
     }
     if (error) {
       toast.custom(
@@ -35,13 +43,10 @@ const EditGaForm = ({ row,singalData, refetch, index, addModal, setAddModal }) =
     }
   }, [isSuccess, error]);
 
-
-
-  useEffect(()=>{
-    setImageFiles(singalData?.image)
-    setDate(formattedDate(singalData?.expiry_date))
-  },[singalData])
-
+  useEffect(() => {
+    setImageFiles(singalData?.image);
+    setDate(formattedDate(singalData?.expiry_date));
+  }, [singalData]);
 
   const handleFileSelect = async (event) => {
     const files = event.target.files[0];
@@ -50,7 +55,7 @@ const EditGaForm = ({ row,singalData, refetch, index, addModal, setAddModal }) =
     formData.append(`files`, files);
     try {
       const response = await axios.post(
-        `https://q3vvxu6li2.execute-api.us-east-1.amazonaws.com/api/v1/uploads`,
+        `${server_url}/api/v1/uploads`,
         formData,
         {
           headers: {
@@ -70,22 +75,19 @@ const EditGaForm = ({ row,singalData, refetch, index, addModal, setAddModal }) =
     }
   };
 
-
-  const handelSubmit = async()=>{
-    if(!imageFiles || !date){
-      toast.custom(
-        <ErrorToast message={"Please add date and image"} />
-      );
-    }else{
+  const handelSubmit = async () => {
+    if (!imageFiles || !date) {
+      toast.custom(<ErrorToast message={"Please add date and image"} />);
+    } else {
       const body = {
-        image:imageFiles,
-        expiry_date:formattedDate(date),
-        index:index
-      }
+        image: imageFiles,
+        expiry_date: formattedDate(date),
+        index: index,
+      };
       const id = row?.productid;
-      await addGa1({id,body})
+      await addGa1({ id, body });
     }
-}
+  };
 
   return (
     <div>
@@ -156,7 +158,7 @@ const EditGaForm = ({ row,singalData, refetch, index, addModal, setAddModal }) =
                 type={"date"}
                 defaultValue={formattedDate(singalData?.expiry_date)}
                 value={date}
-                onChange={(e)=>setDate(e.target.value)}
+                onChange={(e) => setDate(e.target.value)}
                 className="w-full border-none outline-none py-2 px-4"
               />
             </div>

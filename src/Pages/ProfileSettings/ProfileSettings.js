@@ -15,6 +15,7 @@ import axios from "axios";
 import Loader2 from "../../Components/Shared/Loader2";
 import ChangePhone from "../../Components/Pages/ProfileSettings/ChangePhone";
 import PhoneModal from "../../Components/pageComponents/SuperAdmin/SuperAdminCustomer/PhoneModal";
+import server_url from "../../config";
 
 const ProfileSettings = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -25,7 +26,6 @@ const ProfileSettings = () => {
   const [verifyPhone, setVerifyPhone] = useState(false);
 
   const { data, isLoading, refetch } = useGetProfileQuery(queryitem);
-
 
   const uploadeCover = async (e) => {
     setLoading(true);
@@ -38,7 +38,7 @@ const ProfileSettings = () => {
       formData.append("username", data?.username);
 
       const response = await axios.post(
-        `https://q3vvxu6li2.execute-api.us-east-1.amazonaws.com/api/v1/users/image-upload/${data?.userid}`,
+        `${server_url}/users/image-upload/${data?.userid}`,
         formData,
         {
           headers: {
@@ -194,7 +194,10 @@ const ProfileSettings = () => {
                         Verified
                       </h1>
                     ) : (
-                      <button onClick={()=>setVerifyPhone(true)} className="text-[14px] font-medium text-primary">
+                      <button
+                        onClick={() => setVerifyPhone(true)}
+                        className="text-[14px] font-medium text-primary"
+                      >
                         Verify Number
                       </button>
                     )}
@@ -275,9 +278,9 @@ const ProfileSettings = () => {
           <PhoneModal
             modalOPen={verifyPhone}
             setModalOpen={setVerifyPhone}
-            refetch1={()=>{}}
+            refetch1={() => {}}
             refetch2={refetch}
-            allrefecth={()=>{}}
+            allrefecth={() => {}}
             username={data?.username}
             phoneNumber={data?.phone}
             logout={true}

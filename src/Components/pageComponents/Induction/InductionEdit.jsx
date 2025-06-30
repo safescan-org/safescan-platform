@@ -15,6 +15,7 @@ import SuccessToast from "../../Shared/Toast/SuccessToast";
 import ErrorToast from "../../Shared/Toast/ErrorToast";
 import axios from "axios";
 import { Progress } from "antd";
+import server_url from "../../../config";
 
 const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
   const [nextDate, setNextDate] = useState(new Date());
@@ -127,7 +128,7 @@ const InductionEdit = ({ item, setModalOpen, modalOPen, refetch }) => {
       formData.append("files", getImage);
 
       const response = await axios.post(
-        `https://q3vvxu6li2.execute-api.us-east-1.amazonaws.com/api/v1/uploads`,
+        `${server_url}/api/v1/uploads`,
         formData,
         {
           headers: {

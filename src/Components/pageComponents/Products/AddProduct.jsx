@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import Unverified from "../../Shared/modal/Unverified";
 import CustomModal3 from "../../Shared/modal/CustomModal3";
 import InductionWorker from "../../../Pages/Induction/InductionWorker";
+import server_url from "../../../config";
 
 const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
   const [active, setActive] = useState("passed");
@@ -102,7 +103,7 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
       formData.append("category", data?.category);
       formData.append("sub_category", data?.sub_category);
       formData.append("form_name", data?.form_name);
-      formData.append('workers', JSON.stringify(selectedWorker));
+      formData.append("workers", JSON.stringify(selectedWorker));
       if (active === "passed") {
         formData.append("passed", "true");
       }
@@ -114,17 +115,12 @@ const AddProduct = ({ refetch, setModalOpen, modalOPen }) => {
       }
       formData.append(`files`, imageFiles);
       try {
-        const response = await axios.post(
-          `https://q3vvxu6li2.execute-api.us-east-1.amazonaws.com/api/v1/products`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+        const response = await axios.post(`${server_url}/products`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (response.status === 201) {
           // Handle success

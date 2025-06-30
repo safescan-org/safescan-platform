@@ -14,6 +14,7 @@ import PasswordInput from "../../Shared/input/PasswordInput";
 import Unverified from "../../Shared/modal/Unverified";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";
+import server_url from "../../../config";
 
 const CreatedAdminModal = ({ modalOPen, refetch, setModalOpen }) => {
   const { token, search } = useSelector((state) => state.auth);
@@ -34,6 +35,7 @@ const CreatedAdminModal = ({ modalOPen, refetch, setModalOpen }) => {
   } = useForm();
 
   const [createUser, { isLoading, error, isSuccess }] = useCreateUserMutation();
+  const [phoneNumber, setPhoneNumber] = useState(null);
 
   const handleChange = (value) => {
     if (value) {
@@ -53,9 +55,9 @@ const CreatedAdminModal = ({ modalOPen, refetch, setModalOpen }) => {
       setShareText("");
     }
     if (error) {
-        toast.custom(
-          <ErrorToast message={error?.data.error || error?.data.message} />
-        );
+      toast.custom(
+        <ErrorToast message={error?.data.error || error?.data.message} />
+      );
     }
   }, [isSuccess, error]);
 
@@ -66,14 +68,13 @@ const CreatedAdminModal = ({ modalOPen, refetch, setModalOpen }) => {
         password: data?.Password,
         confirm_password: data?.Password,
         usertype: "admin",
-      }
+      };
       createUser(bodyData);
-      setShareMsg(bodyData)
-    }else{
+      setShareMsg(bodyData);
+    } else {
       setVeryfyModal(true);
       setModalOpen(false);
     }
-
   };
 
   const handleShare = async () => {
@@ -86,7 +87,7 @@ const CreatedAdminModal = ({ modalOPen, refetch, setModalOpen }) => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://q3vvxu6li2.execute-api.us-east-1.amazonaws.com/api/v1/users/shared?email=${shareText}&username=${shareMsg?.username}&password=${shareMsg?.password}`,
+          `${server_url}/users/shared?email=${shareText}&username=${shareMsg?.username}&password=${shareMsg?.password}&role=admin`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -100,13 +101,10 @@ const CreatedAdminModal = ({ modalOPen, refetch, setModalOpen }) => {
         } else {
           toast.custom(<ErrorToast message={response?.data?.error} />);
           reset();
- 
         }
         setLoading(false);
         setSuccess(false);
       } catch (error) {
-
-
         toast.custom(<ErrorToast message={error?.response?.data?.error} />);
         setLoading(false);
       }
@@ -114,18 +112,40 @@ const CreatedAdminModal = ({ modalOPen, refetch, setModalOpen }) => {
 
     if (type === "Whatsapp") {
       if (phone.trim() !== "") {
-        const whatsappMessage = `
-        Hi, I am from Safe Scan. Here is your username and password:
+        // const whatsappMessage = `
+        // Hi, I am from Safe Scan. Here is your username and password:
 
-        Username : ${shareMsg?.username}
-        Password : ${shareMsg?.password}
-         `;
-        const whatsappLink = `https://wa.me/${phone}/?text=${encodeURIComponent(
-          whatsappMessage
-        )}`;
-        window.open(whatsappLink, "_blank");
-        setSuccess(false);
-        reset();
+        // Username : ${shareMsg?.username}
+        // Password : ${shareMsg?.password}
+        //  `;
+        // const whatsappLink = `https://wa.me/${phone}/?text=${encodeURIComponent(
+        //   whatsappMessage
+        // )}`;
+        // window.open(whatsappLink, "_blank");
+        try {
+          const response = await axios.get(
+            `${server_url}/users/shared?phone=${phone}&username=${shareMsg?.username}&password=${shareMsg?.password}&role=admin`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (response?.status === 200) {
+            toast.custom(<SuccessToast message={response?.data?.message} />);
+            reset();
+          } else {
+            toast.custom(<ErrorToast message={response?.data?.error} />);
+            reset();
+          }
+          setLoading(false);
+          setSuccess(false);
+          reset();
+        } catch (error) {
+          toast.custom(<ErrorToast message={error?.response?.data?.error} />);
+          setLoading(false);
+        }
       }
     }
   };
@@ -133,7 +153,9 @@ const CreatedAdminModal = ({ modalOPen, refetch, setModalOpen }) => {
   const modalStyle = {
     padding: 0, // Set padding to 0 for the Modal component
   };
-
+  function handlePhoneNumberChange(e) {
+    setPhoneNumber(e);
+  }
   return (
     <div>
       {/* -----create admin------------- */}
@@ -180,6 +202,7 @@ const CreatedAdminModal = ({ modalOPen, refetch, setModalOpen }) => {
                   error={errors.username}
                   placeholder={"Create username"}
                 />
+
                 <PasswordInput
                   label={"Password"}
                   type={"password"}

@@ -19,21 +19,20 @@ const OtpModal = ({
   length = 4,
   onOtpSubmit = () => {},
 }) => {
-  const [phoneChange,{isLoading,isSuccess,error,data}] = usePhoneChangeMutation()
+  const [phoneChange, { isLoading, isSuccess, error, data }] =
+    usePhoneChangeMutation();
   const [otp, setOtp] = useState(new Array(length).fill(""));
   const inputRefs = useRef([]);
 
-  const {
-    handleSubmit,
-  } = useForm();
+  const { handleSubmit } = useForm();
 
   useEffect(() => {
     if (isSuccess) {
       const message = "Phone Number Update Success";
       toast.custom(<SuccessToast message={message} />);
       setModalOpen(false);
-      refetch()
-      setOtp(new Array(length).fill(""))
+      refetch();
+      setOtp(new Array(length).fill(""));
     }
     if (error) {
       toast.custom(
@@ -89,22 +88,16 @@ const OtpModal = ({
   };
   // --------end otp-------------
 
-  const onSubmit = async() => {
+  const onSubmit = async () => {
     const verifyNumberData = Object.values(otp).join("");
-    if (verifyNumberData !== oldData?.user?.otp) {
-      toast.custom(<ErrorToast message={"otp not match"} />);
-    } else {
-        
-        const data = {
-            password:lastData.password,
-            phone:lastData?.phone,
-            otp:verifyNumberData,
-        }
 
-  
+    const data = {
+      password: lastData.password,
+      phone: lastData?.phone,
+      otp: verifyNumberData,
+    };
 
-         await phoneChange(data)
-    }
+    await phoneChange(data);
   };
 
   return (
@@ -137,7 +130,8 @@ const OtpModal = ({
         >
           <div>
             <p className="text-normal text-base text-info">
-              Please Enter OTP That Sent To {lastData?.phone?.slice(0,3)}******{lastData?.phone?.slice(-2,lastData?.phone?.length)}
+              Please Enter OTP That Sent To {lastData?.phone?.slice(0, 3)}******
+              {lastData?.phone?.slice(-2, lastData?.phone?.length)}
             </p>
             <div className=" flex items-center justify-center w-full mt-5">
               <h1 className="text-lg font-medium text-dark-gray mb-4">
@@ -160,7 +154,7 @@ const OtpModal = ({
                 );
               })}
             </div>
-            <ResentOtp3 data={lastData} setOldData={setOldData}/>
+            <ResentOtp3 data={lastData} setOldData={setOldData} />
           </div>
 
           <div className="mt-[30px] flex items-center gap-5">

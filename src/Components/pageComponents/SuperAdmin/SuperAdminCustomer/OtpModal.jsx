@@ -6,9 +6,8 @@ import CustomButton from "../../../Shared/CustomButton";
 import toast from "react-hot-toast";
 import SuccessToast from "../../../Shared/Toast/SuccessToast";
 import ErrorToast from "../../../Shared/Toast/ErrorToast";
-import { useOtpVaryFyMutation } from "../../../../redux/features/admin/adminApi";
+import { useVerifyOtpMutation } from "../../../../redux/features/admin/adminApi";
 import ResentOtp from "../../../Shared/ResentOtp";
-
 
 const OtpModal = ({
   modalOPen,
@@ -25,36 +24,34 @@ const OtpModal = ({
   length = 4,
   onOtpSubmit = () => {},
 }) => {
-  const [otpVaryFy,{isLoading,isSuccess,error}] = useOtpVaryFyMutation()
+  const [verifyOtp, { isLoading, isSuccess, error }] = useVerifyOtpMutation();
   const [otp, setOtp] = useState(new Array(length).fill(""));
   const inputRefs = useRef([]);
 
-  const {
-    handleSubmit,
-  } = useForm();
+  const { handleSubmit } = useForm();
 
   useEffect(() => {
     if (isSuccess) {
       const message = "Phone Number Verify Success";
       toast.custom(<SuccessToast message={message} />);
 
-      if(logout){
-        sessionStorage.removeItem("user")
-        sessionStorage.removeItem("token")
+      if (logout) {
+        sessionStorage.removeItem("user");
+        sessionStorage.removeItem("token");
         window.location.reload();
-      }else{
-        setOtp(new Array(length).fill(""))
-        allrefecth()
-        refetch1()
-        refetch2()
-        phoneModal(false)
-        setModalOpen(false)
-        setPhone("")
+      } else {
+        setOtp(new Array(length).fill(""));
+        allrefecth();
+        refetch1();
+        refetch2();
+        phoneModal(false);
+        setModalOpen(false);
+        setPhone("");
       }
     }
     if (error) {
       toast.custom(
-        <ErrorToast message={error?.data.error || error?.data.message} />
+        <ErrorToast message={error?.data?.error || error?.data?.message} />
       );
     }
   }, [isSuccess, error]);
@@ -106,22 +103,21 @@ const OtpModal = ({
   };
   // --------end otp-------------
 
-  const onSubmit = async() => {
+  const onSubmit = async () => {
     const verifyNumberData = Object.values(otp).join("");
-    if (verifyNumberData !== oldData?.user?.otp) {
-      toast.custom(<ErrorToast message={"otp not match"} />);
-    } else {
-        const data = {
-            username:lastData.username,
-            phone:lastData?.phone,
-            otp:verifyNumberData,
-        }
-         await otpVaryFy(data)
-    }
+    // if (verifyNumberData !== oldData?.user?.otp) {
+    //   toast.custom(<ErrorToast message={"otp not match"} />);
+    // } else {
+    // }
+    const data = {
+      phone: lastData?.phone,
+      otp: verifyNumberData,
+    };
+    await verifyOtp(data);
   };
 
   const modalStyle = {
-    padding: 0, // Set padding to 0 for the Modal component
+    padding: 0,
   };
   return (
     <>
@@ -180,7 +176,7 @@ const OtpModal = ({
                     );
                   })}
                 </div>
-                <ResentOtp data={lastData} setOldData={setOldData}/>
+                <ResentOtp data={lastData} setOldData={setOldData} />
               </div>
               <div className="mt-[20px] flex items-center gap-5">
                 <button

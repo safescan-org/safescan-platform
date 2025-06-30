@@ -2,18 +2,25 @@ import React, { useEffect, useState } from "react";
 import CustomInput from "../../Components/Shared/input/CustomInput";
 import { useForm } from "react-hook-form";
 import CustomButton from "../../Components/Shared/CustomButton";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import toast from "react-hot-toast";
-import { useCreateCustomerMutation } from "../../redux/features/superAdmin/superApi";
+import {
+  useCreateCustomerMutation,
+  useCreateStripeCustomerMutation,
+  useGetProductsQuery,
+} from "../../redux/features/superAdmin/superApi";
 import SuccessToast from "../../Components/Shared/Toast/SuccessToast";
 import PhoneAdd from "./PhoneAdd";
+import PhoneInput from "react-phone-input-2";
+import OtpForm from "./OtpForm";
 
 const SignUp = () => {
   const [showpass, setShowpass] = useState(false);
   const [showrepass, setShowrepass] = useState(false);
   const [phoneActive, setPhoneActive] = useState(false);
-  const [password,setPassword]=useState("")
+  const [formData, setFormData] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const {
     register,
@@ -24,40 +31,65 @@ const SignUp = () => {
 
   const [createCustomer, { isSuccess, isLoading, error }] =
     useCreateCustomerMutation();
+  const {
+    data,
+    isLoading: isLoading1,
+    refetch,
+  } = useGetProductsQuery(formData.username, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  const [
+    createStripeCustomer,
+    { isSuccess: isSuccess2, isLoading: isLoading2, error: error2 },
+  ] = useCreateStripeCustomerMutation();
 
   useEffect(() => {
     if (isSuccess) {
-      const message = "Create Customer success";
+      const message = "Customer Created Successfully!";
       toast.custom(<SuccessToast message={message} />);
-      setPhoneActive(true)
+      setPhoneActive(true);
     }
     if (error) {
       toast.error(error?.data.error);
     }
   }, [isSuccess, error]);
 
-
   const onSubmit = (data) => {
     const updateData = {
       ...data,
+      phone: phoneNumber,
       usertype: "super_admin",
     };
-    setPassword(data.username)
-    createCustomer(updateData);
+    setFormData(data);
+    handleCreateStripeCustomer();
+    // createCustomer(updateData);
   };
-
+  const handleCreateStripeCustomer = () => {
+    const stripeCusPayload = {
+      username: "widafivu",
+      // username: formData?.username,
+    };
+    createStripeCustomer(stripeCusPayload);
+  };
+  function handleChange(e) {
+    setPhoneNumber(e);
+  }
+  useEffect(() => {
+    console.log(data);
+  }, []);
   return (
     <div className="flex  ">
       {/* ---------------input fields---------------- */}
       <div className=" bg-white lg:w-5/12 w-full flex  items-center justify-center ">
         {phoneActive ? (
-          <PhoneAdd username={password}/>
+          <PhoneAdd number={phoneNumber} userName={formData?.username} />
         ) : (
           <>
             <div className="w-full px-[50px] my-16 overflow-y-scroll ">
               <div className="mb-[50px]">
                 <h1 className="text-dark-gray text-[28px] font-bold">
-                  Sign Up 
+                  Sign Up
                 </h1>
                 <p className="text-normal text-base text-info">
                   Please Fill Those Information Bellow To Create an Account.
@@ -132,6 +164,35 @@ const SignUp = () => {
                     placeholder={"Enter Phone Number"}
                   />
                 </div> */}
+                <div className="flex items-start flex-col justify-between">
+                  <label
+                    htmlFor=""
+                    className="mb-2 font-medium text-base text-dark-gray"
+                  >
+                    Phone Number
+                  </label>
+                  <PhoneInput
+                    country="gb"
+                    onlyCountries={["gb", "ie"]}
+                    enableSearch={false}
+                    inputProps={{
+                      name: "phone",
+                      required: true,
+                      autoFocus: false,
+                    }}
+                    onChange={handleChange}
+                    containerStyle={{
+                      borderRadius: "5px",
+                    }}
+                    inputStyle={{
+                      width: "100%",
+                      height: "45px",
+                      fontSize: "16px",
+                      paddingLeft: "50px",
+                      outline: "none",
+                    }}
+                  />
+                </div>
                 <div className="mb-2">
                   <CustomInput
                     label={"Site Address"}

@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import SuccessToast from "../../../Shared/Toast/SuccessToast";
 import ErrorToast from "../../../Shared/Toast/ErrorToast";
 import PhoneModal from "./PhoneModal";
+import PhoneInput from "react-phone-input-2";
 
 const CustomerCreate = ({
   modalOPen,
@@ -19,8 +20,9 @@ const CustomerCreate = ({
 }) => {
   const [showrepass, setShowrepass] = useState(false);
   const [showpass, setShowpass] = useState(false);
-  const [phoneOpen,setPhoneOpen] = useState(false)
-  const [password,setPassword] = useState("")
+  const [phoneOpen, setPhoneOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(null);
 
   const {
     register,
@@ -42,7 +44,7 @@ const CustomerCreate = ({
       refetch2();
       allrefecth();
       reset();
-      setPhoneOpen(true)
+      setPhoneOpen(true);
     }
     if (error) {
       toast.custom(
@@ -54,15 +56,20 @@ const CustomerCreate = ({
   const onSubmit = (data) => {
     const updateData = {
       ...data,
+      phone: phoneNumber,
       usertype: "super_admin",
     };
-    setPassword(data.username)
+    setPassword(data.username);
     createCustomer(updateData);
   };
 
   const modalStyle = {
     padding: 0, // Set padding to 0 for the Modal component
   };
+
+  function handlePhoneNumberChange(e) {
+    setPhoneNumber(e);
+  }
   return (
     <>
       <Modal
@@ -133,6 +140,40 @@ const CustomerCreate = ({
                 error={errors.username}
                 placeholder={"Enter Username"}
               />
+              <div className="flex flex-col items-start w-full mt-3">
+                <label
+                  htmlFor="otp"
+                  className="mb-1.5 font-medium text-base text-dark-gray"
+                >
+                  Phone Number
+                </label>
+
+                <PhoneInput
+                  country="gb"
+                  onlyCountries={["gb", "ie"]}
+                  enableSearch={false}
+                  // value={phone}
+                  inputProps={{
+                    name: "phone",
+                    required: true,
+                    autoFocus: false,
+                  }}
+                  onChange={handlePhoneNumberChange}
+                  containerStyle={{
+                    borderRadius: "5px", // Example border radius
+                  }}
+                  inputStyle={{
+                    width: "100%",
+                    height: "45px",
+                    fontSize: "16px",
+                    paddingLeft: "50px",
+                    outline: "none",
+                    border: "1px solid rgb(231, 228, 228)",
+                    borderRadius: "10px",
+                  }}
+                />
+              </div>
+
               {/* <CustomInput
                 label={"Mobile Number"}
                 type={"number"}

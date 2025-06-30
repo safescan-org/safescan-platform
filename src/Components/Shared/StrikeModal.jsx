@@ -11,6 +11,7 @@ import ErrorToast from "./Toast/ErrorToast";
 import { useStrikesUserMutation } from "../../redux/features/admin/adminApi";
 import Loader2 from "./Loader2";
 import CustomInput from "./input/CustomInput";
+import server_url from "../../config";
 
 export const safetyIssues = [
   {
@@ -119,8 +120,8 @@ const StrikeModal = ({ modalOPen, setModalOpen, item, refetch, title }) => {
       username: item?.username,
       note: data?.note,
       strike_name: active,
-      company_name:data?.company_name,
-      strike_resson:data?.strike_resson,
+      company_name: data?.company_name,
+      strike_resson: data?.strike_resson,
       images: imageFiles,
     };
 
@@ -151,7 +152,7 @@ const StrikeModal = ({ modalOPen, setModalOpen, item, refetch, title }) => {
 
     try {
       const response = await axios.post(
-        `https://q3vvxu6li2.execute-api.us-east-1.amazonaws.com/api/v1/uploads`,
+        `${server_url}/api/v1/uploads`,
         formData,
         {
           headers: {

@@ -23,11 +23,10 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import PaymentMethodCard from "../../Components/pageComponents/PaymentMethodCard/PaymentMethodCard";
 import { useCreateStripeCustomerMutation } from "../../redux/features/superAdmin/superApi";
+import toast from "react-hot-toast";
 const stripePromise = loadStripe(
-  "pk_test_51QASgrG2eKiLhL9BNwOGXIQOoke6EAZbm28ysR5hZeBf1IF7bnfEi0BFah2DlBwgXDml4kHXQSm4ffq6CN8ZK7cZ00uqC8MaKH"
-  // "pk_live_51QASgrG2eKiLhL9BrtG35rD3qh640iV7sclihskPlbQx3QAPHBkHZ8Hgx9pnh4IDJyf7o7QuU9T1DwhHGcuPJ4tC00dGB55dO"
+  "pk_test_51KDq0OAnr9h8Jix3A1gYu2auROK3UlD6CDgIVkiGloDSJLVMr1lrfKgObXzfxpbYAL6QDEUfCAyIX7kUxLpTfHkK009xzfvhAQ"
 );
-
 const Subscriptions = () => {
   const { user } = useSelector((state) => state.auth);
   const [modalOPen, setModalOpen] = useState(false);
@@ -336,14 +335,18 @@ const Subscriptions = () => {
                       </div>
 
                       <div className="mt-4">
-                        <span className="flex items-center gap-2.5 text-sm text-info/80 mb-1">
-                          <span className="bg-dark-gray w-1 h-1 rounded-full"></span>
-                          <span>Unlimited Profiles</span>
-                        </span>
-                        <span className="flex items-center gap-2.5 text-sm text-info/80 mb-1">
-                          <span className="bg-dark-gray w-1 h-1 rounded-full"></span>
-                          <span>Unlimited Products</span>
-                        </span>
+                        {item?.methadata?.maxAssets && (
+                          <span className="flex items-center gap-2.5 text-sm text-info/80 mb-1">
+                            <span className="bg-dark-gray w-1 h-1 rounded-full"></span>
+                            <span>{item?.methadata?.maxAssets} Assets</span>
+                          </span>
+                        )}
+                        {item?.methadata?.maxUsers && (
+                          <span className="flex items-center gap-2.5 text-sm text-info/80 mb-1">
+                            <span className="bg-dark-gray w-1 h-1 rounded-full"></span>
+                            <span>{item?.methadata?.maxUsers} Users</span>
+                          </span>
+                        )}
                       </div>
                     </div>
                     {data?.plan === "platinum" ? (
@@ -502,29 +505,38 @@ const Subscriptions = () => {
 
             <div className="flex flex-col gap-[0.75rem] px-2">
               <Suspense fallback={<div>Loading...</div>}>
-                {[1, 2, 3].length > 0 ? (
-                  [1, 2, 3]
-                    .sort((a, b) => b.isDefault - a.isDefault) // Sort by isDefault (true first)
-                    .map((method) => (
-                      <PaymentMethodCard
-                        key={method.id}
-                        id={method.id}
-                        card={method.card}
-                        billing_details={method.billing_details}
-                        isDefault={method.isDefault}
-                        customerId={method.customer}
-                        onDelete={() => {}}
-                        className="bg-gray-100"
-                      />
-                    ))
+                {data2?.length > 0 ? (
+                  data2.map((method) => (
+                    <PaymentMethodCard
+                      key={method.id}
+                      id={method.id}
+                      card={method.card}
+                      billing_details={method.billing_details}
+                      // isDefault={method.isDefault}
+                      customerId={method.customer}
+                      onDelete={() => {}}
+                      className="bg-gray-100"
+                    />
+                  ))
                 ) : (
                   <div>No payment methods found.</div>
                 )}
               </Suspense>
+              {data2?.length > 0 && (
+                <CustomButton
+                  className={"w-full"}
+                  onClick={hnadleAddPaymentMethod}
+                >
+                  <p>Add New Card</p>
+                </CustomButton>
+              )}
             </div>
             <AddPaymentMethod modalOPen={modalOPen} setModalOpen={setModalOpen}>
               <Elements stripe={stripePromise}>
-                <AddPaymentMethodUI />
+                <AddPaymentMethodUI
+                  key={stripeCusID}
+                  stripeCusId={stripeCusID}
+                />
               </Elements>
             </AddPaymentMethod>
           </div>
@@ -536,12 +548,13 @@ const Subscriptions = () => {
 
 export default Subscriptions;
 
-const AddPaymentMethodUI = () => {
+const AddPaymentMethodUI = ({ stripeCusId }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  // const customerId = "cus_R3JjtlL7vYXFhe"; // Replace with actual customer ID
+
+  // const customerId = "cus_R3JjtlL7vYXFhe";
   // const { customerMail } = useAuth();
   // const { getCustomerId } = useUserService();
 
@@ -564,7 +577,6 @@ const AddPaymentMethodUI = () => {
       setError(error.message);
       setIsLoading(false);
     } else {
-      let stripeCustomerId;
       try {
         // console.log("i am customer mail", customerMail);
         // const customerData = await getCustomerId(customerMail);
@@ -577,7 +589,7 @@ const AddPaymentMethodUI = () => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              customerId: stripeCustomerId,
+              customerId: stripeCusId,
               paymentMethodId: paymentMethod.id,
             }),
           }
@@ -585,7 +597,7 @@ const AddPaymentMethodUI = () => {
 
         const result = await response.json();
         if (response.ok) {
-          // toast.success("Payment method added successfully");
+          toast.success("Payment method added successfully");
           window.location.reload();
         } else {
           setError("Failed to add payment method: " + result.message);
@@ -616,7 +628,7 @@ const AddPaymentMethodUI = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form className="space-y-4">
       <div className="space-y-4">
         <label
           htmlFor="card-number"
@@ -680,14 +692,13 @@ const AddPaymentMethodUI = () => {
         </div>
       </div>
       {error && <div className="text-red-500 text-sm">{error}</div>}
-      <CustomButton
-        color="red"
-        type="submit"
+      <button
+        onClick={handleSubmit}
         disabled={!stripe || isLoading}
-        className="w-full text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 my-bg"
+        className="bg-primary w-full text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 my-bg"
       >
         {isLoading ? "Processing..." : "Add Method"}
-      </CustomButton>
+      </button>
     </form>
   );
 };

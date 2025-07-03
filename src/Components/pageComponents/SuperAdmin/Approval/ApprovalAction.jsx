@@ -7,10 +7,10 @@ import toast from "react-hot-toast";
 import SuccessToast from "../../../Shared/Toast/SuccessToast";
 import ErrorToast from "../../../Shared/Toast/ErrorToast";
 
-const ApprovalAction = ({ row,refetch,refetch1,refetch2,allrefecth }) => {
+const ApprovalAction = ({ row, refetch, refetch1, refetch2, allrefecth }) => {
   const [approval, setApproval] = useState(false);
   const [reject, setReject] = useState(false);
-  const [type,settype] = useState("Customer Approve success")
+  const [type, settype] = useState("Customer Approve success");
 
   const [approve, { isLoading, error, isSuccess }] = useApproveMutation();
 
@@ -18,36 +18,40 @@ const ApprovalAction = ({ row,refetch,refetch1,refetch2,allrefecth }) => {
     if (isSuccess) {
       toast.custom(<SuccessToast message={type} />);
       setReject(false);
-      setApproval(false)
-      refetch()
-      refetch1()
-      refetch2()
-      allrefecth()
+      setApproval(false);
+      refetch();
+      refetch1();
+      refetch2();
+      allrefecth();
     }
     if (error) {
-      toast.custom(<ErrorToast message={error?.data.error || error?.data.message} />);
+      console.log(error);
+
+      toast.custom(
+        <ErrorToast message={error?.data.error || error?.data.message} />
+      );
     }
   }, [isSuccess, error]);
 
-  const handleREject = async()=>{
-    settype("Customer Rejects success")
-      const data={
-        username:row?.username,
-        account_status: "rejected",
-      }
-      const id=row?.userid;
-     await approve({id,data})
-  }
+  const handleREject = async () => {
+    settype("Customer Rejects success");
+    const data = {
+      username: row?.username,
+      account_status: "rejected",
+    };
+    const id = row?.userid;
+    await approve({ id, data });
+  };
 
-  const handleApprove = async()=>{
-    settype("Customer Approve success")
-    const data={
-      username:row?.username,
+  const handleApprove = async () => {
+    settype("Customer Approve success");
+    const data = {
+      username: row?.username,
       account_status: "approved",
-    }
-    const id=row?.userid;
-    await approve({id,data})
-}
+    };
+    const id = row?.userid;
+    await approve({ id, data });
+  };
 
   return (
     <>
@@ -63,7 +67,7 @@ const ApprovalAction = ({ row,refetch,refetch1,refetch2,allrefecth }) => {
         <Tooltip placement="topLeft" title="Approve">
           <button onClick={() => setApproval(true)}>
             <Icon
-              icon="material-symbols:done" 
+              icon="material-symbols:done"
               className="text-[22px] hover:text-green-500 text-[#46B900]"
             />
           </button>
@@ -80,7 +84,7 @@ const ApprovalAction = ({ row,refetch,refetch1,refetch2,allrefecth }) => {
           "Are you sure you want to approve this customer? This action cannot be undone."
         }
         approval={true}
-        buttonText={isLoading ? "Loading...": "Yes, Approve"}
+        buttonText={isLoading ? "Loading..." : "Yes, Approve"}
       />
       {/* Reject modal */}
       <ApprovalModal
@@ -92,7 +96,7 @@ const ApprovalAction = ({ row,refetch,refetch1,refetch2,allrefecth }) => {
           "Are you sure you want to reject this approval? This action cannot be undone."
         }
         approval={false}
-        buttonText={isLoading ? "Loading...": "Reject"}
+        buttonText={isLoading ? "Loading..." : "Reject"}
       />
     </>
   );

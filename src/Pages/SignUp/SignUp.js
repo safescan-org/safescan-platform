@@ -21,7 +21,8 @@ const SignUp = () => {
   const [phoneActive, setPhoneActive] = useState(false);
   const [formData, setFormData] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-
+  const [stripeCusID, setStripeCusID] = useState(null);
+  const [userId, setUserId] = useState(null);
   const {
     register,
     handleSubmit,
@@ -31,13 +32,13 @@ const SignUp = () => {
 
   const [createCustomer, { isSuccess, isLoading, error }] =
     useCreateCustomerMutation();
-  const {
-    data,
-    isLoading: isLoading1,
-    refetch,
-  } = useGetProductsQuery(formData.username, {
-    refetchOnMountOrArgChange: true,
-  });
+  // const {
+  //   data,
+  //   isLoading: isLoading1,
+  //   refetch,
+  // } = useGetProductsQuery("", {
+  //   refetchOnMountOrArgChange: true,
+  // });
 
   const [
     createStripeCustomer,
@@ -47,6 +48,8 @@ const SignUp = () => {
   useEffect(() => {
     if (isSuccess) {
       const message = "Customer Created Successfully!";
+      handleCreateStripeCustomer();
+
       toast.custom(<SuccessToast message={message} />);
       setPhoneActive(true);
     }
@@ -55,35 +58,40 @@ const SignUp = () => {
     }
   }, [isSuccess, error]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const updateData = {
       ...data,
       phone: phoneNumber,
       usertype: "super_admin",
     };
     setFormData(data);
-    handleCreateStripeCustomer();
-    // createCustomer(updateData);
+    const res = await createCustomer(updateData);
+    setUserId(res?.data?.userid);
+    console.log(res?.data?.userid);
   };
-  const handleCreateStripeCustomer = () => {
+  const handleCreateStripeCustomer = async () => {
     const stripeCusPayload = {
-      username: "widafivu",
-      // username: formData?.username,
+      // username: "widafivu",
+      username: formData?.username,
     };
-    createStripeCustomer(stripeCusPayload);
+    const res = await createStripeCustomer(stripeCusPayload);
+    setStripeCusID(res?.data?.id);
   };
   function handleChange(e) {
     setPhoneNumber(e);
   }
-  useEffect(() => {
-    console.log(data);
-  }, []);
+  useEffect(() => {}, []);
   return (
     <div className="flex  ">
       {/* ---------------input fields---------------- */}
       <div className=" bg-white lg:w-5/12 w-full flex  items-center justify-center ">
         {phoneActive ? (
-          <PhoneAdd number={phoneNumber} userName={formData?.username} />
+          <PhoneAdd
+            number={phoneNumber}
+            userName={formData?.username}
+            stripeCusID={stripeCusID}
+            userId={userId}
+          />
         ) : (
           <>
             <div className="w-full px-[50px] my-16 overflow-y-scroll ">

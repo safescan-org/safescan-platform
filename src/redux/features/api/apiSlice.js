@@ -50,7 +50,22 @@ export const apiSlice = createApi({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
+          sessionStorage.setItem("user_details", JSON.stringify(result?.data));
           dispatch(addSearch(result?.data));
+        } catch (error) {}
+      },
+    }),
+    loadSubscription: builder.query({
+      query: (query) => ({
+        url: `subscription-details?subscription_id=${query}`,
+        method: "GET",
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          console.log(result);
+
+          // sessionStorage.setItem("user_details", JSON.stringify(result?.data));
         } catch (error) {}
       },
     }),
@@ -59,5 +74,9 @@ export const apiSlice = createApi({
     getDefaultMiddleware().concat(authMiddleware),
 });
 
-export const { useRefreshTokenQuery, useLoadUserQuery, useLoadMeQuery } =
-  apiSlice;
+export const {
+  useRefreshTokenQuery,
+  useLoadUserQuery,
+  useLoadMeQuery,
+  useLoadSubscriptionQuery,
+} = apiSlice;

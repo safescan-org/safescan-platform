@@ -25,7 +25,7 @@ export default function PaymentMethodCard({
       {/* Card brand icon */}
       <div className="flex rounded-md border border-solid border-gray-100_01 bg-[#ffffff] px-[0.38rem] py-[0.63rem]">
         <img
-          src={`${card.brand}.svg`}
+          src={`./${card.brand}.svg`}
           alt={`${card.brand} icon`}
           width={20}
           height={20}

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import ErrorToast from "../../Components/Shared/Toast/ErrorToast";
 import {
+  useCreateCustomerSubscriptionMutation,
+  useGetStripeProductsQuery,
   useOtpVaryFyMutation,
   useVerifyOtpLoginMutation,
   useVerifyOtpMutation,
@@ -17,12 +19,15 @@ const OtpForm = ({
   lastData,
   setOldData,
   length = 4,
+  stripeCusID = "",
+  userId = "",
   onOtpSubmit = () => {},
 }) => {
   const navigate = useNavigate();
   const [verifyOtpLogin, { isLoading, isSuccess, error }] =
     useVerifyOtpLoginMutation();
   const [otp, setOtp] = useState(new Array(length).fill(""));
+  const [accountSuc, setAccountSuc] = useState(false);
   const inputRefs = useRef([]);
 
   const { handleSubmit } = useForm();
@@ -32,7 +37,8 @@ const OtpForm = ({
       const message = "Phone Number Verify Success";
       toast.custom(<SuccessToast message={message} />);
       setOtp(new Array(length).fill(""));
-      navigate("/");
+      setAccountSuc(true);
+      // navigate("/");
     }
     if (error) {
       toast.custom(
@@ -94,7 +100,7 @@ const OtpForm = ({
   };
   // --------end otp-------------
 
-  const onSubmit = async () => {
+  const onSubmit = async (e) => {
     const verifyNumberData = Object.values(otp).join("");
     // if (verifyNumberData !== oldData?.user?.otp) {
     //   toast.custom(<ErrorToast message={"otp not match"} />);
@@ -116,51 +122,100 @@ const OtpForm = ({
 
   return (
     <div className="z-[50000000] rounded-[20px] w-full bg-white">
-      <div className=" flex items-center justify-between px-9 pt-6 pb-4">
-        <h2 className=" text-[28px] font-bold text-dark-gray">
-          {"Verify OTP"}
-        </h2>
-      </div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full mt-[0px] max-h-[75vh] overflow-y-scroll px-9 pb-9"
-      >
+      {accountSuc ? (
+        <AccountSuccess
+          username={lastData.username}
+          stripeCusID={stripeCusID}
+          userId={userId}
+        />
+      ) : (
         <div>
-          <p className="text-normal text-base text-info">
-            Please Enter OTP That Sent To {lastData?.phone}
-          </p>
-          <div className=" flex items-center justify-center w-full mt-5">
-            <h1 className="text-lg font-medium text-dark-gray mb-4">
-              Enter OTP
-            </h1>
+          <div className=" flex items-center justify-between px-9 pt-6 pb-4">
+            <h2 className=" text-[28px] font-bold text-dark-gray">
+              {"Verify OTP"}
+            </h2>
           </div>
-          <div className="flex items-center py-2 gap-9  mx-auto w-[280px]">
-            {otp.map((value, index) => {
-              return (
-                <input
-                  key={index}
-                  type="text"
-                  ref={(input) => (inputRefs.current[index] = input)}
-                  value={value}
-                  onChange={(e) => handleChange(index, e)}
-                  onClick={() => handleClick(index)}
-                  onKeyDown={(e) => handleKeyDown(index, e)}
-                  className="border border-dark-gray/20 text-center outline-none focus:border-primary w-10 h-11 rounded-[10px]"
-                />
-              );
-            })}
-          </div>
-          <ResentOtp data={lastData} setOldData={setOldData} />
-        </div>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="w-full mt-[0px] max-h-[75vh] overflow-y-scroll px-9 pb-9"
+          >
+            <div>
+              <p className="text-normal text-base text-info">
+                Please Enter OTP That Sent To {lastData?.phone}
+              </p>
+              <div className=" flex items-center justify-center w-full mt-5">
+                <h1 className="text-lg font-medium text-dark-gray mb-4">
+                  Enter OTP
+                </h1>
+              </div>
+              <div className="flex items-center py-2 gap-9  mx-auto w-[280px]">
+                {otp.map((value, index) => {
+                  return (
+                    <input
+                      key={index}
+                      type="text"
+                      ref={(input) => (inputRefs.current[index] = input)}
+                      value={value}
+                      onChange={(e) => handleChange(index, e)}
+                      onClick={() => handleClick(index)}
+                      onKeyDown={(e) => handleKeyDown(index, e)}
+                      className="border border-dark-gray/20 text-center outline-none focus:border-primary w-10 h-11 rounded-[10px]"
+                    />
+                  );
+                })}
+              </div>
+              <ResentOtp
+                data={{
+                  phone: oldData,
+                  otp_for: "login",
+                }}
+                setOldData={setOldData}
+              />
+            </div>
 
-        <div className="mt-[30px] flex items-center gap-5">
-          <CustomButton className={" w-full"}>
-            {isLoading ? "Loading..." : "Continue"}
-          </CustomButton>
+            <div className="mt-[30px] flex items-center gap-5">
+              <CustomButton className={" w-full"}>
+                {isLoading ? "Loading..." : "Continue"}
+              </CustomButton>
+            </div>
+          </form>
         </div>
-      </form>
+      )}
     </div>
   );
 };
 
 export default OtpForm;
+const AccountSuccess = ({ username, stripeCusID = "", userId = "" }) => {
+  const navigate = useNavigate();
+  const [createSubscription, { isLoading, isSuccess, error }] =
+    useCreateCustomerSubscriptionMutation();
+  const { data: data1, isLoading: isLoading1 } =
+    useGetStripeProductsQuery(username);
+  console.log(stripeCusID);
+
+  const handleTrailing = async () => {
+    const payload = {
+      userid: userId,
+      username: username,
+      customerId: stripeCusID,
+      packageName: data1[0]?.name,
+      priceId: data1[0]?.priceId,
+    };
+
+    await createSubscription(payload);
+    navigate("/");
+  };
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center bg-white rounded-[20px] p-10 text-center">
+      <img src="/images/acc_succes.svg" alt="" width={500} />
+      <h2 className="text-[28px] font-bold  mb-4">
+        Your Account Creation is Completed!
+      </h2>
+      <p className="text-base text-dark-gray mb-6">You're all set to begin!</p>
+      <CustomButton onClick={handleTrailing}>
+        Continu With Trialing
+      </CustomButton>
+    </div>
+  );
+};

@@ -10,9 +10,8 @@ const ResentOtp = ({ data, setOldData }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      const message = `Send otp your phone! OTP=${otpData?.user?.otp}`;
+      const message = `OTP Sent Successfully!`;
       toast.custom(<SuccessToast message={message} />);
-      setOldData(otpData);
     }
     if (error) {
       toast.custom(
@@ -22,8 +21,9 @@ const ResentOtp = ({ data, setOldData }) => {
   }, [isSuccess, error, otpData]);
 
   const onSubmit = async () => {
-    await otpVaryFy(data);
+    console.log(data);
 
+    await otpVaryFy(data);
   };
 
   return (
@@ -34,7 +34,9 @@ const ResentOtp = ({ data, setOldData }) => {
           type="button"
           disabled={isLoading}
           onClick={() => onSubmit()}
-          className={`font-bold underline ${isLoading ? " text-gray-500" : "text-primary "}`}
+          className={`font-bold underline ${
+            isLoading ? " text-gray-500" : "text-primary "
+          }`}
         >
           Click to resend
         </button>

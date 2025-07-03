@@ -176,6 +176,13 @@ export const adminApi = apiSlice.injectEndpoints({
         body: body,
       }),
     }),
+    createCustomerSubscription: builder.mutation({
+      query: (body) => ({
+        url: `user-subscriptions`,
+        method: "POST",
+        body: body,
+      }),
+    }),
     setPassword: builder.mutation({
       query: (body) => ({
         url: `user/set-password`,
@@ -267,6 +274,7 @@ export const {
   useDeleteProductCardImageMutation,
   useGetPaymentMethodsMutation,
   useAddProductMutation,
+  useCreateCustomerSubscriptionMutation,
   useGetFinesQuery,
   useUpdateNoteMutation,
   useNewnoteMutation,

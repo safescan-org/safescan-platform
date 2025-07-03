@@ -11,7 +11,12 @@ import "react-phone-input-2/lib/bootstrap.css";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 
-const PhoneAdd = ({ number = "", userName = "" }) => {
+const PhoneAdd = ({
+  number = "",
+  userName = "",
+  stripeCusID = "",
+  userId = "",
+}) => {
   const [phone, setPhone] = useState("");
   const [sentOpt, setSentOtp] = useState(false);
   const [lastData, setLastData] = useState();
@@ -25,7 +30,7 @@ const PhoneAdd = ({ number = "", userName = "" }) => {
     useOtpVaryFyMutation();
   useEffect(() => {
     if (isSuccess) {
-      const message = `Send otp your phone! Otp=${data?.user?.otp}`;
+      const message = `OTP Sent Successfully!`;
       toast.custom(<SuccessToast message={message} />);
       setSentOtp(true);
       setOldData(data);
@@ -74,6 +79,8 @@ const PhoneAdd = ({ number = "", userName = "" }) => {
             oldData={number}
             lastData={{ username: userName }}
             setOldData={setOldData}
+            stripeCusID={stripeCusID}
+            userId={userId}
           />
         </>
       ) : (

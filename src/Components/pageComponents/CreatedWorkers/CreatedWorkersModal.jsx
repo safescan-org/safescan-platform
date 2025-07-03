@@ -91,7 +91,7 @@ const CreatedWorkersModal = ({ modalOPen, refetch, setModalOpen }) => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `${server_url}/users/shared?email=${shareText}&username=${shareMsg?.username}&password=${shareMsg?.password}`,
+          `${server_url}/users/shared?email=${shareText}&username=${shareMsg?.username}&password=${shareMsg?.password}&role=worker`,
           {
             // mode: 'no-cors',
             headers: {
@@ -135,18 +135,30 @@ const CreatedWorkersModal = ({ modalOPen, refetch, setModalOpen }) => {
 
     if (type === "Whatsapp") {
       if (phone.trim() !== "") {
-        const whatsappMessage = `
-        Hi, I am from Safe Scan. Here is your username and password:
-
-        Username : ${shareMsg?.username}
-        Password : ${shareMsg?.password}
-         `;
-        const whatsappLink = `https://wa.me/${phone}/?text=${encodeURIComponent(
-          whatsappMessage
-        )}`;
-        window.open(whatsappLink, "_blank");
-        setSuccess(false);
-        reset();
+        try {
+          const response = await axios.get(
+            `${server_url}/users/shared?phone=${phone}&username=${shareMsg?.username}&password=${shareMsg?.password}&role=worker`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (response?.status === 200) {
+            toast.custom(<SuccessToast message={response?.data?.message} />);
+            reset();
+          } else {
+            toast.custom(<ErrorToast message={response?.data?.error} />);
+            reset();
+          }
+          setLoading(false);
+          setSuccess(false);
+          reset();
+        } catch (error) {
+          toast.custom(<ErrorToast message={error?.response?.data?.error} />);
+          setLoading(false);
+        }
       }
     }
   };
@@ -252,8 +264,8 @@ const CreatedWorkersModal = ({ modalOPen, refetch, setModalOpen }) => {
                 Worker Created Successfully!
               </h2>
               <p className="text-[16px] font-[400] text-info">
-                Now, You Can Share With Worker Access Details Via Email Or
-                Whatsapp.
+                Now, You Can Share With Worker Access Details Via Email Or Phone
+                Number.
               </p>
             </div>
 
@@ -273,7 +285,7 @@ const CreatedWorkersModal = ({ modalOPen, refetch, setModalOpen }) => {
                     type === "Whatsapp" ? "text-dark-gray" : "text-primary"
                   }`}
                 >
-                  Share Via Whatsapp
+                  Share Via Number
                 </button>
               </div>
               {type === "email" ? (
@@ -293,7 +305,7 @@ const CreatedWorkersModal = ({ modalOPen, refetch, setModalOpen }) => {
                 <>
                   <PhoneInput
                     country="gb"
-                    onlyCountries={["gb", "ie"]}
+                    onlyCountries={["gb", "ie", "bd"]}
                     enableSearch={false}
                     value={phone}
                     inputProps={{

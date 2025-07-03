@@ -32,10 +32,17 @@ const Subscriptions = () => {
   const [modalOPen, setModalOpen] = useState(false);
   const queryitem = `${user?.userid}?username=${user?.username}`;
   const [stripeCusID, setStripeCusID] = useState(null);
-  const { data, isLoading } = useGetProfileQuery(queryitem);
-  const { data: data1, isLoading: isLoading1 } = useGetStripeProductsQuery(
-    user?.username
+  const subscription_details = JSON.parse(
+    sessionStorage.getItem("subs_details")
   );
+  const [subs_product, setSubs_product] = useState();
+  const [products, setProducts] = useState([]);
+  const { data, isLoading } = useGetProfileQuery(queryitem);
+  const {
+    data: data1,
+    isLoading: isLoading1,
+    isSuccess,
+  } = useGetStripeProductsQuery(user?.username);
   const [
     createStripeCustomer,
     { isSuccess: isCusCreated, isLoading: isCusCreating, error: error2 },
@@ -58,10 +65,31 @@ const Subscriptions = () => {
   const currencyMapping = {
     usd: "$",
   };
+  useEffect(() => {
+    if (data1) {
+      const subs_prodct = data1?.filter(
+        (item) => item?.priceId == subscription_details?.plan?.id
+      );
+      const products = data1?.filter(
+        (item) => item?.priceId != subscription_details?.plan?.id
+      );
+      setSubs_product(subs_prodct[0]);
+      setProducts(products);
+    }
+  }, [isSuccess]);
   function hnadleAddPaymentMethod() {
     console.log("asd");
     setModalOpen(true);
   }
+  function formatUnixToDate(unixTimestamp) {
+    const date = new Date(unixTimestamp * 1000); // Convert to milliseconds
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  }
+
   return (
     <>
       <BreadCrumb
@@ -76,117 +104,69 @@ const Subscriptions = () => {
           <Loader />
         </>
       ) : (
-        <div className="flex gap-8 w-full">
-          <div className="w-[70%] grid lg2:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-5">
+        <div className="block gap-8 w-full lg:flex">
+          <div className="lg:w-[70%] w-[100%] grid lg2:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-5">
             <div
-              className={`rounded-[20px]  overflow-hidden ${
-                data?.plan === "basic" ? "bg-primary " : "bg-white"
+              className={`rounded-[20px]  overflow-hidden bg-primary "
               }`}
             >
               <div className=" w-full p-[25px] ">
                 <div>
-                  {data?.plan === "basic" ? (
-                    <>
-                      <div className="flex text-white items-center justify-between mb-2.5">
-                        <div className="bg-black/20 h-[44px] w-[44px] rounded-[10px] flex items-center justify-center">
-                          <Icon className="text-2xl" icon="humbleicons:box" />
-                        </div>
-                        <div className="bg-black/20 text-xs font-medium py-1.5 px-3 rounded-full">
-                          <p>Current Plan</p>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex items-center gap-2.5 mb-2.5">
-                        <div className="bg-primary text-white h-[44px] w-[44px] rounded-[10px] flex items-center justify-center">
-                          <Icon className="text-2xl" icon="humbleicons:box" />
-                        </div>
-                        <p className="font-bold text-dark-gray text-[20px]">
-                          Basic
-                        </p>
-                      </div>
-                    </>
-                  )}
+                  <div className="flex text-white items-center justify-between mb-2.5">
+                    <div className="bg-black/20 h-[44px] w-[44px] rounded-[10px] flex items-center justify-center">
+                      <Icon className="text-2xl" icon="humbleicons:box" />
+                    </div>
+                    <div className="bg-black/20 text-xs font-medium py-1.5 px-3 rounded-full capitalize">
+                      <p>Current Plan: {subscription_details?.status}</p>
+                    </div>
+                  </div>
 
-                  {data?.plan === "basic" ? (
-                    <>
-                      <div>
-                        <h1 className="text-[20px] text-white font-bold">
-                          Basic Plan
+                  <>
+                    <div>
+                      <h1 className="text-[20px] text-white font-bold capitalize">
+                        {subs_product?.name}
+                      </h1>
+                      <div className="flex items-center">
+                        <h1 className="text-[20px] text-white font-bold capitalize">
+                          {currencyMapping[subs_product?.currency]}
+                          {subs_product?.price}
                         </h1>
-                        <div className="flex items-center">
-                          <h1 className="text-[20px] text-white font-bold">
-                            €100
-                          </h1>
-                          <span className="font-medium text-xs text-white/60 mt-1">
-                            /Per Month
-                          </span>
-                        </div>
+                        <span className="font-medium text-xs text-white/60 mt-1">
+                          /Per {subs_product?.recurringInterval}
+                        </span>
                       </div>
-                    </>
-                  ) : (
-                    <>
-                      <div>
-                        <div className="flex items-center">
-                          <h1 className="text-[28px] font-bold text-dark-gray">
-                            €100
-                          </h1>
-                          <span className="font-medium text-xs text-info/80 mt-1">
-                            /Per Month
-                          </span>
-                        </div>
-                      </div>
-                    </>
-                  )}
+                    </div>
+                  </>
 
-                  {data?.plan === "basic" ? (
-                    <>
-                      <div className="mt-4">
-                        <span className="flex items-center gap-2.5 text-sm text-white/60 mb-1">
-                          <span className="bg-white w-1 h-1 rounded-full"></span>
-                          <span>100 Profiles</span>
+                  <>
+                    <div className="mt-4">
+                      <span className="flex items-center gap-2.5 text-sm text-white/60 mb-1">
+                        <span className="bg-white w-1 h-1 rounded-full"></span>
+                        <span>
+                          {subs_product?.methadata?.maxAssets} Profiles
                         </span>
-                        <span className="flex items-center gap-2.5 text-sm text-white/60 mb-1">
-                          <span className="bg-white w-1 h-1 rounded-full"></span>
-                          <span>500 Products</span>
+                      </span>
+                      <span className="flex items-center gap-2.5 text-sm text-white/60 mb-1">
+                        <span className="bg-white w-1 h-1 rounded-full"></span>
+                        <span>
+                          {subs_product?.methadata?.maxUsers} Products
                         </span>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="mt-4">
-                        <span className="flex items-center gap-2.5 text-sm text-info/80 mb-1">
-                          <span className="bg-dark-gray w-1 h-1 rounded-full"></span>
-                          <span>100 Profiles</span>
-                        </span>
-                        <span className="flex items-center gap-2.5 text-sm text-info/80 mb-1">
-                          <span className="bg-dark-gray w-1 h-1 rounded-full"></span>
-                          <span>500 Products</span>
-                        </span>
-                      </div>
-                    </>
-                  )}
+                      </span>
+                    </div>
+                  </>
                 </div>
-                {data?.plan === "basic" ? (
-                  <>
-                    <div className="flex items-center gap-3 text-white/80 mt-20">
-                      <img src="/images/calender.svg" alt="" />
-                      <p className="text-base font-bold ">
-                        Expire Date:{" "}
-                        {data?.expiry_date ? data?.expiry_date : "no date"}
-                      </p>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="text-white/80 mt-20 w-full">
-                      <CustomButton className={"w-full"}>
-                        <p>Upgrade Now</p>
-                      </CustomButton>
-                    </div>
-                  </>
-                )}
+
+                <>
+                  <div className="flex items-center gap-3 text-white/80 mt-20">
+                    <img src="/images/calender.svg" alt="" />
+                    <p className="text-base font-bold ">
+                      Expire Date:{" "}
+                      {formatUnixToDate(
+                        subscription_details?.billing_cycle_anchor
+                      )}
+                    </p>
+                  </div>
+                </>
               </div>
             </div>
             {/* --------premium plan */}
@@ -308,7 +288,7 @@ const Subscriptions = () => {
               </div>
             </div> */}
             {/* --------platinum plan */}
-            {data1?.map((item) => {
+            {products?.map((item) => {
               return (
                 <div className={`rounded-[20px]  overflow-hidden bg-white`}>
                   <div className=" w-full p-[25px]">

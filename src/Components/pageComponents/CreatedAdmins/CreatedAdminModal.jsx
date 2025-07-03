@@ -255,8 +255,8 @@ const CreatedAdminModal = ({ modalOPen, refetch, setModalOpen }) => {
                 Admin Created Successfully!
               </h2>
               <p className="text-[16px] font-[400] text-info">
-                Now, You Can Share With Admin Access Details Via Email Or
-                Whatsapp.
+                Now, You Can Share With Admin Access Details Via Email Or Phone
+                Number.
               </p>
             </div>
 
@@ -277,7 +277,7 @@ const CreatedAdminModal = ({ modalOPen, refetch, setModalOpen }) => {
                     type === "Whatsapp" ? "text-dark-gray" : "text-primary"
                   }`}
                 >
-                  Share Via Whatsapp
+                  Share Via Number
                 </button>
               </div>
               {type === "email" ? (

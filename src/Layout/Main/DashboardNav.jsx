@@ -24,7 +24,9 @@ const DashboardNav = () => {
     );
     setNotification(update);
   }, [data]);
-
+  const subscription_details = JSON.parse(
+    sessionStorage.getItem("subs_details")
+  );
   const findData = data?.Items?.filter((item) => item?.is_read === false);
   const handleSeeAll = () => {
     navigate("/admin/notifications");
@@ -54,6 +56,18 @@ const DashboardNav = () => {
       </div>
     </div>
   );
+  function getDaysLeft(unixTimestamp) {
+    const now = new Date();
+    const targetDate = new Date(unixTimestamp * 1000); // Convert to milliseconds
+
+    // Calculate the difference in milliseconds
+    const diffInMs = targetDate - now;
+
+    // Convert milliseconds to full days
+    const daysLeft = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+
+    return daysLeft > 0 ? daysLeft : 0; // Return 0 if date is in the past
+  }
 
   return (
     <>
@@ -71,23 +85,30 @@ const DashboardNav = () => {
             />
           </div>
         </div> */}
-        <ConfigProvider
-          theme={{
-            token: {
-              colorInfo: "#664DFF",
-            },
-          }}
-        >
-          <Alert
-            message={
-              <p>
-                Your Trail Will Be End in <b>20 days</b>
-              </p>
-            }
-            type="info"
-            showIcon
-          />
-        </ConfigProvider>
+        {subscription_details?.status == "trialing" && (
+          <ConfigProvider
+            theme={{
+              token: {
+                colorInfo: "#664DFF",
+              },
+            }}
+          >
+            <Alert
+              message={
+                <p>
+                  Your Trail Will Be End in{" "}
+                  <b>
+                    {getDaysLeft(subscription_details?.billing_cycle_anchor)}{" "}
+                    days
+                  </b>
+                </p>
+              }
+              type="info"
+              showIcon
+            />
+          </ConfigProvider>
+        )}
+
         <div>
           <Popover content={content} placement="bottomRight" trigger="click">
             {/* <button className=" text-sm flex  w-full items-center gap-2 rounded-[10px] font-medium text-light-black py-2 md:px-0 px-5">

@@ -65,7 +65,7 @@ export const apiSlice = createApi({
           const result = await queryFulfilled;
           console.log(result);
 
-          // sessionStorage.setItem("user_details", JSON.stringify(result?.data));
+          sessionStorage.setItem("subs_details", JSON.stringify(result?.data));
         } catch (error) {}
       },
     }),

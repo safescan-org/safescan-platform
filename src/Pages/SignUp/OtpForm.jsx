@@ -195,12 +195,14 @@ const AccountSuccess = ({ username, stripeCusID = "", userId = "" }) => {
   console.log(stripeCusID);
 
   const handleTrailing = async () => {
+    const basicPackage = data1.find((item) => item.name === "basic");
+
     const payload = {
       userid: userId,
       username: username,
       customerId: stripeCusID,
-      packageName: data1[0]?.name,
-      priceId: data1[0]?.priceId,
+      packageName: basicPackage?.name,
+      priceId: basicPackage?.priceId,
     };
 
     await createSubscription(payload);
